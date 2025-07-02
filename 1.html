@@ -7,12 +7,11 @@
 </head>
 <body>
 <script>
-   function introduce(name, age, ...hobbies) {
-    console.log("你好，我叫 " + name + "，今年 " + age + "岁。");
-    console.log("我的爱好有:", hobbies.join("、")); // hobbies 是个数组，可以直接用数组方法
-}
-
-introduce("张三", 25, "打篮球", "编程", "看电影");
+   const fruits = ["苹果", "香蕉"];
+fruits.forEach((fruit, index, originalArray) => {
+    console.log(`在索引 ${index} 的位置是 ${fruit}`);
+    // console.log(originalArray); // 会打印出 ["苹果", "香蕉"]
+});
 </script>
 </body>
 </html>
