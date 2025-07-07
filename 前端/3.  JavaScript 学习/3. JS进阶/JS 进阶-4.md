@@ -2,6 +2,11 @@
 
 ---
 
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-3.md">‹ 上一篇：JS进阶-3</a>
+  <a href="./JS 进阶-5.md">下一篇：JS进阶-5 ›</a>
+</div>
+
 ### 16. 数组 `reduce` 累计方法
 
 `reduce` 是数组方法中最强大、最灵活的一个，但也是初学者最容易感到困惑的一个。我们可以把它想象成一个“浓缩机”或“汇总器”。
@@ -677,4 +682,9 @@ console.log(myCat instanceof Dog);      // false (因为 Dog.prototype 不在 my
 ---
 
 现在我们已经理解了JS面向对象编程的底层逻辑。`prototype`, `constructor`, `__proto__` 这“三位一体”的关系，以及它们如何共同构建起强大的原型链继承体系。这是从“会用JS”到“懂JS”的巨大飞跃！
+
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-3.md">‹ 上一篇：JS进阶-3</a>
+  <a href="./JS 进阶-5.md">下一篇：JS进阶-5 ›</a>
+</div>
 

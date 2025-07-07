@@ -2,6 +2,11 @@
 
 ---
 
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-2.md">‹ 上一篇：JS进阶-2</a>
+  <a href="./JS 进阶-4.md">下一篇：JS进阶-4 ›</a>
+</div>
+
 ### 11. 构造函数 (Constructor Function)
 
 这个概念是理解JS中“类”和“对象”的基石。
@@ -326,3 +331,7 @@ console.log(user); // 输出: { name: "张三" } (毫无变化)
 
 ---
 
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-2.md">‹ 上一篇：JS进阶-2</a>
+  <a href="./JS 进阶-4.md">下一篇：JS进阶-4 ›</a>
+</div>

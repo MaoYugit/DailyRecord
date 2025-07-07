@@ -2,6 +2,10 @@
 
 ---
 
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-2.md">下一篇：JS进阶-2 ›</a>
+</div>
+
 ### 1. 作用域 (Scope) 和 作用域链 (Scope Chain)
 
 它们是JS世界里最基本的“规矩”。
@@ -408,4 +412,6 @@ console.log(updatedUser.age); // 31
 
 ---
 
-
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-2.md">下一篇：JS进阶-2 ›</a>
+</div>

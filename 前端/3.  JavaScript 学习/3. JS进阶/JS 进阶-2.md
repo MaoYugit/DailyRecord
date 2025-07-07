@@ -2,6 +2,11 @@
 
 ---
 
+<div style="display: flex; justify-content: space-between;">
+  <a href="./JS 进阶-1.md">‹ 上一篇：JS进阶-1</a>
+  <a href="./JS 进阶-3.md">下一篇：JS进阶-3 ›</a>
+</div>
+
 ### 6. ES6 箭头函数 (Arrow Functions)
 
 这东西刚出来的时候，所有JS程序员都乐开了花，因为它实在太方便了！
