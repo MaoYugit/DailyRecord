@@ -473,8 +473,9 @@ console.log(cat1.name); // 灰灰
 ---
 
 <div style="display: flex; justify-content: space-between;">
-  <a href="path/to/previous-page.md">‹ 上一篇：安装环境</a>
-  <a href="path/to/next-page.md">下一篇：核心概念 ›</a>
+  <a href="./JS 进阶-1.md">‹ 上一篇：JS进阶-1</a>
+  <a href="./JS 进阶-3.md">下一篇：JS进阶-3 ›</a>
 </div>
+
 
 
