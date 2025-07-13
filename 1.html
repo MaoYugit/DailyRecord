@@ -1,17 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-<script>
-   const fruits = ["苹果", "香蕉"];
-fruits.forEach((fruit, index, originalArray) => {
-    console.log(`在索引 ${index} 的位置是 ${fruit}`);
-    // console.log(originalArray); // 会打印出 ["苹果", "香蕉"]
-});
-</script>
-</body>
+  </head>
+  <body>
+    <script>
+      const myCat = {
+        name: 'mimi',
+        age: 2,
+        hobbies: ['sleep', 'eat'],
+        meow: function () {
+          console.log('miao~')
+        }
+      }
+      console.log('1. ', myCat.name, myCat.age)
+      myCat.meow()
+
+
+      function Cat(name, age) {
+        this.name = name;
+        this.age = age;
+        this.meow = function (){
+          console.log("miaomiao~~~")
+        }
+      }
+      cat1 = new Cat("maoyu", 20)
+      console.log("2. ", cat1.name, cat1.age)
+      cat1.meow()
+
+      class Cat1 {
+        constructor(name, age) {
+          this.name =name;
+          this.age = age;
+        }
+        meow() {
+          console.log("miaomiaomiao")
+        }
+      }
+
+      const cat2 = new Cat1("huyufei", 20)
+      console.log("3. ", cat2.name, cat2.age)
+      cat2.meow()
+
+
+      function createCat(name, age) {
+        return {
+          name: name,
+          age: age,
+          meow: function() {
+            console.log("miaomiaomiao")
+          }
+
+        }
+      }
+      const cat3 = createCat("maoyulong0", 555500)
+      console.log("4. ",cat3.name,cat3.age)
+      cat3.meow()
+    </script>
+  </body>
 </html>
