@@ -1,24 +1,18 @@
 ## JS API
 
-1. const let var
+1. 事件监听以及案例
 
-2. DOM DOM树 DOM对象
+2. 事件监听版本以及鼠标时间
 
-3. 获取DOM元素 
+3. 焦点事件
 
-   document.querySelector()
+4. 键盘事件
 
-   document.querySelectorAll()
+5. 事件对象event以及常见对象
 
-   getElementBy...
+6. 环境对象this以及回调函数
 
-4. DOM修改元素内容
-
-5. DOM修改元素常见属性
-
-6. 通过style修改样式属性
-
-7. 通过类名修改样式
+7. 事件流、事件捕获、事件冒泡以及阻止事件冒泡
 
 8. 通过classList修改样式
 
