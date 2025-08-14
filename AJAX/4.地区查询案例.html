@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地区查询案例</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="search">
+        <span>
+            省份：<input type="text" class="province" placeholder="请输入省份名称">
+        </span>
+        <span>
+            城市：<input type="text" class="city" placeholder="请输入城市名称">
+        </span>
+        <div>
+            <button class="btn-search">查询</button>
+        </div>
+    </div>
+    <div class="result">
+        <ul>
+            <!-- <li class="area">地区列表</li> -->
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.querySelector(".btn-search").addEventListener(("click"), () => {
+            let pname = document.querySelector(".province").value.trim();
+            let cname = document.querySelector(".city").value.trim();
+            if(!pname && !cname){
+                alert("请输入省份或城市名称");
+                return;
+            }
+            axios({
+            url: "https://hmajax.itheima.net/api/area",
+            params:{
+                pname,
+                cname
+            }
+        }).then(result => {
+            let areas = result.data.list;
+            console.log(areas);
+            let areaList = areas.map(areaName => `<li class="area">${areaName}</li>`).join("");
+            console.log(areaList);
+            document.querySelector(".result ul").innerHTML = areaList;
+            
+        })
+        })
+        
+    </script>
+</body>
+</html>
