@@ -351,5 +351,6 @@ console.log(myCat instanceof Dog);      // false (因为 Dog.prototype 不在 my
 
 <div style="display: flex; justify-content: space-between;">
   <a href="./JS 进阶-3.md">‹ 上一篇：JS进阶-4</a>
-  <a href="./JS 进阶-5.md">下一篇：JS进阶-6 ›</a>
+  <a href="./JS 进阶-6.md">下一篇：JS进阶-6 ›</a>
 </div>
+
