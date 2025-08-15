@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.返回省份下面的城市</title>
+</head>
+<body>
+    <p class="province"></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        axios({
+            url: "http://hmajax.itheima.net/api/city",
+            params: {
+                pname: "河北省"
+            }
+        }).then(resut => {
+            console.log(resut);
+            console.log(resut.data.list);
+            document.querySelector(".province").innerHTML = resut.data.list.join("<br>")
+            
+        })
+    </script>
+</body>
+</html>

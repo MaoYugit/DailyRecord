@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.获取新闻列表</title>
+</head>
+<body>
+    <p class="province"></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        axios({
+            url: "https://hmajax.itheima.net/api/news"
+        }).then(result => {
+            console.log(result);
+            console.log(result.data.data);
+            
+            
+        })
+    </script>
+</body>
+</html>

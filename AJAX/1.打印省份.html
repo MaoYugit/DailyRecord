@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.打印省份</title>
+</head>
+<body>
+    <p class="province"></p>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        axios({
+            url: "https://hmajax.itheima.net/api/province"
+        }).then(result => {
+            console.log(result);
+            console.log(result.data.list.join("\n"));
+            document.querySelector(".province").innerHTML = result.data.list.join("<br>")
+            console.log(result.data.list.length);
+            
+        })
+    </script>
+</body>
+</html>
