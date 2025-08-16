@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册账号</title>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            display: flex;
+            background-color: #fff;
+            padding: 2rem 3rem;
+            width: 500px;
+            height: 300px;
+            align-items: center;
+            justify-content: center;
+            /* box-sizing: border-box; */
+            box-shadow: 15px 20px 20px rgba(0,0,0,0.1) ;
+            text-align: center;
+            border-radius: 30px;
+        }
+        .register-head {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            box-shadow: 0 10px 5px rgba(0,0,0,0.1);
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 10px 5px rgba(0,123,255,0.25);
+        }
+        .register-btn {
+            width: 60%;
+            padding: 0.8rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 1px 6px 5px rgba(0, 123, 255, 0.329);
+        }
+        .register-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .register-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <form class="register-form">
+            <div class="register-head">账号注册</div>
+            <div class="input-group">
+                <label for="username">账号</label>
+                <input type="text" id="username" placeholder="请输出您的账号" required>
+            </div>
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请输入您的密码" required>
+            </div>
+            <button type="submit" class="register-btn">立即注册</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const usernameInput = document.querySelector("#username")
+        const passwordInput = document.querySelector("#password") 
+        document.querySelector(".register-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            axios({
+                url: "http://hmajax.itheima.net/api/register",
+                method: "post",
+                data: {
+                    username,
+                    password
+                }
+            }).then(result => {
+                console.log(result);
+                alert(result.data.message);
+            }).catch(error => {
+                console.dir(error);
+                alert(error.response.data.message)
+            })
+        })
+    </script>
+</body>
+</html>
