@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5.注册账号</title>
+    <title>6.登录</title>
     <style>
         body {
             background-color: #f0f2f5;
@@ -13,7 +13,7 @@
             height: 100vh;
             margin: 0;
         }
-        .register-container {
+        .login-container {
             display: flex;
             background-color: #fff;
             padding: 2rem 3rem;
@@ -26,7 +26,7 @@
             text-align: center;
             border-radius: 30px;
         }
-        .register-head {
+        .login-head {
             font-size: 1.8rem;
             font-weight: 700;
             color: #333;
@@ -56,7 +56,7 @@
             border-color: #007bff;
             box-shadow: 0 10px 5px rgba(0,123,255,0.25);
         }
-        .register-btn {
+        .login-btn {
             width: 60%;
             padding: 0.8rem 1rem;
             background-color: #007bff;
@@ -68,19 +68,19 @@
             cursor: pointer;
             box-shadow: 1px 6px 5px rgba(0, 123, 255, 0.329);
         }
-        .register-btn:hover {
+        .login-btn:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
         }
-        .register-btn:active {
+        .login-btn:active {
             transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <form class="register-form">
-            <div class="register-head">账号注册</div>
+    <div class="login-container">
+        <form class="login-form">
+            <div class="login-head">欢迎-登录</div>
             <div class="input-group">
                 <label for="username">账号</label>
                 <input type="text" id="username" placeholder="请输出您的账号" required>
@@ -89,19 +89,28 @@
                 <label for="password">密码</label>
                 <input type="password" id="password" placeholder="请输入您的密码" required>
             </div>
-            <button type="submit" class="register-btn">立即注册</button>
+            <button type="submit" class="login-btn">欢迎-登录
+            </button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         const usernameInput = document.querySelector("#username")
         const passwordInput = document.querySelector("#password") 
-        document.querySelector(".register-btn").addEventListener("click", (e) => {
+        document.querySelector(".login-btn").addEventListener("click", (e) => {
             e.preventDefault();
             const username = usernameInput.value;
             const password = passwordInput.value;
+            if (username.length < 8) {
+                alert("账号长度不能小于8位");
+                return;
+            }
+            if (password.length < 6) {
+                alert("密码长度不能小于6位");
+                return;
+            }
             axios({
-                url: "http://hmajax.itheima.net/api/register",
+                url: "http://hmajax.itheima.net/api/login",
                 method: "post",
                 data: {
                     username,

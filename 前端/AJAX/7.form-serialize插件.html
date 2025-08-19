@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.form-serialize插件 (调试版)</title>
+</head>
+<body>
+    <form action="javascript:;" class="example-form">
+        <input type="text" name="username" placeholder="请输入用户名">
+        <br>
+        <br>
+        <input type="password" name="password" placeholder="请输入密码">
+        <br>
+        <br>
+        <input type="button" class="btn" value="提交">
+    </form>
+
+   <!-- 1. 引入插件 -->
+   <script src="https://cdn.jsdelivr.net/npm/form-serialize@0.7.2/dist/form-serialize.min.js"></script>
+
+   <!-- 2. 编写我们自己的脚本 -->
+   <script>
+        // 等待整个文档加载并解析完成，这是最稳妥的方式
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const form = document.querySelector(".example-form");
+            const btn = document.querySelector(".btn");
+
+            btn.addEventListener("click", () => {
+                // 只有当 DOMContentLoaded 事件触发后，这里的代码才会执行
+                // 此时可以确保 serialize 函数已经存在
+                try {
+                    const data = serialize(form, { hash: true });
+                    console.log(data);
+                    alert(`提交的数据：${JSON.stringify(data)}`);
+                } catch (error) {
+                    console.error("按钮点击时发生错误:", error);
+                    alert("发生错误，请检查控制台！可能是 serialize 函数依然未定义。");
+                }
+            });
+        });
+   </script>
+</body>
+</html>
