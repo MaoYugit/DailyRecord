@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11.更换背景</title>
+</head>
+<body>
+    <input type="file" class="upload">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <script>
+        
+        document.querySelector('.uoload').addEventListener('change', e => {
+            
+        const formData = new FormData();
+        formData.append('img', e.target.files[0])
+            axios({
+            url: "https://hmajax.itheima.net/api/uploadimg",
+            method: 'post',
+            data: formData,
+        }).then(result => {
+            const imgUrl = result.data.data.url;
+            document.body.style.backgroundImage = `url(${imgUrl})`
+            
+        }).catch(err => {
+            console.error('上传图片失败:', err);
+            })
+        })
+        
+    </script>
+</body>
+</html>
