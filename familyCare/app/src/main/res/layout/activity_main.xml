@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="32dp"
     tools:context=".MainActivity">
 
-    <TextView
+    <!-- 1. 用于预览照片的区域 -->
+    <ImageView
+        android:id="@+id/iv_avatar_preview"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_menu_gallery"
+        android:contentDescription="@string/avatar_preview_description"/>
+
+    <!-- 2. 用于输入微信备注的文本框 (优化版) -->
+    <EditText
+        android:id="@+id/et_wechat_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="@string/wechat_remark_hint"
+        android:inputType="text"
+        android:maxLines="1"
+        android:minHeight="48dp"
+        android:autofillHints="name" />
+
+    <!-- 3. “选择照片”的按钮 -->
+    <Button
+        android:id="@+id/btn_select_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="24dp"
+        android:text="@string/select_photo_button" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 4. “保存设置”的按钮 -->
+    <Button
+        android:id="@+id/btn_save_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/save_settings_button" />
+
+</LinearLayout>

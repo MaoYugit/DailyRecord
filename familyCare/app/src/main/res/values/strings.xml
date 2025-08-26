@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Family Widget</string>
+    <string name="avatar_preview_description">亲人头像预览</string>
+    <string name="wechat_remark_hint">请在此输入对方的微信备注</string>
+    <string name="select_photo_button">选择照片</string>
+    <string name="save_settings_button">保存并生成小组件</string>
 </resources>
