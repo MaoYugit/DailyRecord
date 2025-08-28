@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 300px;
+    width: 500px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+    background-color: skyblue;
+    box-sizing: border-box;
+}
+
+.head {
+    margin-top: 20px;
+    width: 35%;
+    text-align: center;
+    padding: 10px;
+    color: #878494;
+    font-size: 15px;
+    background-color: skyblue;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+}
+.input-area {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    height: 60px;
+    margin: 0px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+    background-color: skyblue;
+    gap: 10px;
+}
+
+#task-input {
+    height: 20px;
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-left: 40px;
+}
+
+#add-btn {
+    margin-right: 40px;
+    border-radius: 8px;
+    height: 30px;
+    width: 60px;
+    color: #878494;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+    background-color: skyblue;
+    cursor: pointer;
+}
+
+#add-btn:hover {        
+    background-color: lightblue;
+}
+
+#task-list {
+    margin-top: 20px;
+    width: 80%;
+    height: 150px;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+    background-color: skyblue;
+}
