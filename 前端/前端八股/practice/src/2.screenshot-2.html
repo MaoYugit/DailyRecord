@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1.screenshot</title>
+    <title>2.screenshot</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
@@ -41,36 +41,47 @@
         </div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-      // 获取需要截图的 DOM 元素 获取按钮
-      const captureElement = document.querySelector("#screenshot-target");
+      async function captureScreen() {
+        try {
+          // 1. 请求用户授权并获取 MediaStream
+          const mediaStream = await navigator.mediaDevices.getDisplayMedia({
+            video: { cursor: "always" },
+            audio: false,
+          });
+
+          const track = mediaStream.getVideoTracks()[0];
+
+          // 2. 从视频轨道创建一个图片捕捉器
+          const imageCapture = new ImageCapture(track);
+
+          // 3. 抓取一帧
+          const bitmap = await imageCapture.grabFrame();
+
+          // 停止视频流
+          track.stop();
+
+          // 4. 将抓取到的帧绘制到 Canvas 上
+          const canvas = document.createElement("canvas");
+          canvas.width = bitmap.width;
+          canvas.height = bitmap.height;
+          const context = canvas.getContext("2d");
+          context.drawImage(bitmap, 0, 0);
+
+          // 5. 将 Canvas 转换为图片并下载
+          const imageUrl = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = imageUrl;
+          link.download = "screenshot.png";
+          link.click();
+        } catch (err) {
+          console.error("截图错误: ", err);
+        }
+      }
+
       const captureButton = document.getElementById("capture-btn");
 
-      // 给按钮绑定点击事件
-      captureButton.addEventListener("click", () => {
-        console.log("按钮被点击，开始截图...");
-
-        // 将截图逻辑放在事件监听器内部
-        html2canvas(captureElement).then((canvas) => {
-          // canvas 是绘制了 DOM 内容的 <canvas> 元素
-          // 可以选择不把 canvas 添加到页面上，直接下载
-          // document.body.appendChild(canvas);
-          console.log("canvas", canvas);
-
-          // 将 canvas 转换为图片 URL
-          const imageUrl = canvas.toDataURL("image/png");
-          console.log("imageUrl", imageUrl);
-
-          // 创建一个下载链接并自动点击以下载图片
-          const link = document.createElement("a");
-          console.log("link", link);
-
-          link.href = imageUrl;
-          link.download = "user-profile-card.png";
-          link.click();
-        });
-      });
+      captureButton.addEventListener("click", captureScreen);
     </script>
   </body>
 </html>
