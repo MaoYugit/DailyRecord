@@ -45,4 +45,12 @@
         android:layout_marginTop="16dp"
         android:text="@string/save_settings_button" />
 
+    <!-- 5. "测试小组件"的按钮 -->
+    <Button
+        android:id="@+id/btn_test_widget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/test_widget_button" />
+
 </LinearLayout>
