@@ -1,0 +1,234 @@
+/* 全局样式和重置 */
+:root {
+  --light-bg: #f5f5f5;
+  --light-text: #4d4d4d;
+  --light-border: #ededed;
+  --light-placeholder: #e6e6e6;
+  --dark-bg: #2d2d2d;
+  --dark-text: #ededed;
+  --dark-border: #4d4d4d;
+  --dark-placeholder: #555;
+  --danger-color: #af2f2f;
+  --secondary-color: #6c757d;
+}
+
+body {
+  font:
+    14px 'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.4em;
+  background: var(--light-bg);
+  color: var(--light-text);
+  min-width: 230px;
+  max-width: 550px;
+  margin: 0 auto;
+  font-weight: 300;
+}
+
+#app-wrapper {
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+#app-wrapper.dark {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: inherit;
+  font-weight: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App 布局 */
+.todoapp {
+  background: #fff;
+  margin: 130px 0 40px 0;
+  position: relative;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+#app-wrapper.dark .todoapp {
+  background: #3c3c3c;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.5),
+    0 25px 50px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.header h1 {
+  position: absolute;
+  top: -155px;
+  width: 100%;
+  font-size: 100px;
+  font-weight: 100;
+  text-align: center;
+  color: rgba(175, 47, 47, 0.15);
+}
+#app-wrapper.dark .header h1 {
+  color: rgba(255, 255, 255, 0.15);
+}
+.input-group {
+  display: flex;
+}
+.input-group input {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  border: 0;
+  color: inherit;
+  padding: 16px 16px 16px 60px;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+}
+#app-wrapper.dark .input-group input {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* TodoList & TodoItem */
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.todo-list li {
+  position: relative;
+  font-size: 24px;
+  border-bottom: 1px solid var(--light-border);
+}
+#app-wrapper.dark .todo-list li {
+  border-bottom: 1px solid var(--dark-border);
+}
+.todo-list li:last-child {
+  border-bottom: none;
+}
+.todo-list li .view {
+  display: flex;
+  align-items: center;
+}
+.todo-list li label {
+  word-break: break-all;
+  padding: 15px;
+  display: block;
+  line-height: 1.2;
+  transition: color 0.4s;
+  flex-grow: 1;
+}
+.todo-list li.completed label {
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+#app-wrapper.dark .todo-list li.completed label {
+  color: #777;
+}
+
+.todo-list li .destroy {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  font-size: 30px;
+  color: #cc9a9a;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
+}
+.todo-list li:hover .destroy {
+  display: block;
+}
+
+/* Footer */
+.footer {
+  color: #777777;
+  padding: 10px 15px;
+  height: 20px;
+  text-align: center;
+  border-top: 1px solid var(--light-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#app-wrapper.dark .footer {
+  color: #a0a0a0;
+  border-top: 1px solid var(--dark-border);
+}
+
+/* Notification */
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 16px;
+  border-radius: 4px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  min-width: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+#app-wrapper.dark .modal-content {
+  background: #3c3c3c;
+}
+.modal-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+.modal-footer button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.modal-footer .btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+  margin-left: 10px;
+}
+.modal-footer .btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
