@@ -4,4 +4,8 @@
     <string name="wechat_remark_hint">请在此输入对方的微信备注</string>
     <string name="select_photo_button">选择照片</string>
     <string name="save_settings_button">保存并生成小组件</string>
+    <string name="test_widget_button">测试小组件</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>
