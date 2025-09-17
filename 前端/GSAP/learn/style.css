@@ -4,7 +4,7 @@ body {
   background-color: #1a1a1a;
   color: #ffffffdd;
   position: relative;
-  /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
+  overflow: hidden; /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
   font-family: "Inter", sans-serif;
 }
 
@@ -21,18 +21,53 @@ body {
 
 /* 导航栏 */
 nav {
-  /* position: fixed; */
-  /* left: 0; */
-  /* top: 0; */
-  /* z-index: 50; */
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: space-between; */
-  /* padding: 20px 36px; */
-  /* font-weight: 500; */
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 36px;
+  font-weight: 500;
 }
 
-/* nav .svg-container {
+nav svg {
   width: 20px;
   height: 20px;
-} */
+}
+
+nav .svg-container {
+  width: 20px;
+  height: 20px;
+}
+
+nav > div {
+  display: inline-flex;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+nav > div:first-child {
+  gap: 10px;
+}
+
+nav > div:last-child {
+  gap: 24px;
+}
+
+nav > div:last-child > .active {
+  position: relative;
+}
+
+nav > div:last-child > .active::after {
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  position: absolute;
+  content: "";
+  height: 3px;
+  border-radius: 99px;
+  background-color: #ecad29;
+}
