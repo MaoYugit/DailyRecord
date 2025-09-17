@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScrollTrigger</title>
+    <style>
+      section {
+        height: 100vh; /* 每个区域占满整个屏幕高度 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+      }
+      .section-b {
+        background-color: #f0f0f0;
+      }
+      /* 初始时图片在屏幕外且透明 */
+      .content-image {
+        width: 500px;
+        height: auto;
+        opacity: 0;
+        transform: translateX(-200px);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section-a"><h1>向下滚动</h1></section>
+
+    <section class="section-b">
+      <img src="./building.jpg" alt="占位图片" class="content-image" />
+    </section>
+
+    <section class="section-c"><h1>滚动结束</h1></section>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+      // 别忘了先注册插件！
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.to(".content-image", {
+        x: 0, // 移动到本来位置
+        opacity: 1,
+        duration: 1.5,
+        // scrollTrigger 的魔法在这里！
+        scrollTrigger: {
+          trigger: ".content-image", // 触发器：指定哪个元素进入视窗时触发动画
+          start: "top center", // 触发时机：当元素的顶部(top)碰到视窗的中心(center)
+          end: "bottom center", // 结束时机：当元素的底部(bottom)碰到视窗的中心(center)
+          //   markers: true, // 开启标记！这是调试神器，会显示触发的起止位置
+          toggleActions: "play none none reverse", // 行为：进入时播放，离开时反向播放
+          scrub: 1, // 值可以是 true，或者一个数字，代表动画跟上滚动条的延迟秒数
+        },
+      });
+    </script>
+  </body>
+</html>

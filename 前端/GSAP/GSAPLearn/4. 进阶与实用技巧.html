@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>进阶与实用技巧</title>
+    <style>
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        width: 320px;
+      }
+      .grid-box {
+        width: 50px;
+        height: 50px;
+        background-color: #6c757d;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+      <div class="grid-box"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script>
+      gsap.from(".grid-box", {
+        duration: 1,
+        scale: 0,
+        opacity: 0,
+        rotation: 360,
+        stagger: 0.1,
+        ease: "power2.inOut",
+      });
+    </script>
+  </body>
+</html>

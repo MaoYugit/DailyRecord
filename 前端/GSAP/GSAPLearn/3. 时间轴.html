@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>时间轴</title>
+    <style>
+      .blue-box {
+        width: 80px;
+        height: 80px;
+        background-color: #007bff;
+        border-radius: 10px;
+      }
+
+      .dot {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 10px;
+        position: relative; /* 方便 GSAP 控制 */
+      }
+      .red {
+        background-color: red;
+      }
+      .green {
+        background-color: green;
+      }
+      .purple {
+        background-color: purple;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blue-box"></div>
+    <div class="dot red"></div>
+    <div class="dot green"></div>
+    <div class="dot purple"></div>
+    <button id="playBtn">播放</button>
+    <button id="pauseBtn">暂停</button>
+
+    <button id="resumeBtn">继续</button>
+    <button id="restartBtn">重新开始</button>
+    <button id="reverseBtn">反向</button>
+
+    <button id="timeScaleBtn1">0.5倍速</button>
+    <button id="timeScaleBtn2">1倍速</button>
+    <button id="timeScaleBtn3">1.5倍速</button>
+    <button id="timeScaleBtn4">2倍速</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.to(".blue-box", { duration: 1, x: 300 })
+        .to(".blue-box", { duration: 1, y: 300, yoyo: true, repeat: 2 })
+        .to(".blue-box", { duration: 1, rotation: 3600 });
+
+      // 1. 红色dot向右移动
+      tl.to(".red", { x: 500, duration: 2 });
+
+      // 2. 绿色dot移动，与红色dot的动画【同时开始】
+      tl.to(".green", { x: 500, duration: 2 }, "<");
+
+      // 3. 紫色dot移动，在绿色dot动画结束【前1.5秒】开始
+      tl.to(".purple", { x: 500, duration: 2 }, "-=1.5");
+
+      // 绑定按钮事件
+      document.getElementById("playBtn").onclick = () => tl.play();
+      document.getElementById("pauseBtn").onclick = () => tl.pause();
+      document.getElementById("reverseBtn").onclick = () => tl.reverse();
+
+      document.getElementById("restartBtn").onclick = () => tl.restart();
+      document.getElementById("resumeBtn").onclick = () => tl.resume();
+      document.getElementById("timeScaleBtn1").onclick = () =>
+        tl.timeScale(0.5);
+      document.getElementById("timeScaleBtn2").onclick = () => tl.timeScale(1);
+      document.getElementById("timeScaleBtn3").onclick = () =>
+        tl.timeScale(1.5);
+      document.getElementById("timeScaleBtn4").onclick = () => tl.timeScale(2);
+    </script>
+  </body>
+</html>

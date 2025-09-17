@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap");
+body {
+  margin: 0;
+  background-color: #1a1a1a;
+  color: #ffffffdd;
+  position: relative;
+  /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
+  font-family: "Inter", sans-serif;
+}
+
+/* 黄色进度条 */
+.indicator {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  z-index: 60;
+  background-color: #ecad29;
+}
+
+/* 导航栏 */
+nav {
+  /* position: fixed; */
+  /* left: 0; */
+  /* top: 0; */
+  /* z-index: 50; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  /* padding: 20px 36px; */
+  /* font-weight: 500; */
+}
+
+/* nav .svg-container {
+  width: 20px;
+  height: 20px;
+} */

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP 地址选择动画</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="address-selector">
+      <h1>选择您的地址</h1>
+      <div class="select-container">
+        <select id="province" onchange="updateCities()">
+          <option value="">请选择省份</option>
+        </select>
+      </div>
+      <div class="select-container" style="display: none">
+        <select id="city" onchange="updateDistricts()">
+          <option value="">请选择市</option>
+        </select>
+      </div>
+      <div class="select-container" style="display: none">
+        <select id="district" onchange="updateTowns()">
+          <option value="">请选择区/县</option>
+        </select>
+      </div>
+      <div class="select-container" style="display: none">
+        <select id="town">
+          <option value="">请选择乡镇</option>
+        </select>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="address-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
