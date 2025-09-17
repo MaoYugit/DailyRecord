@@ -83,8 +83,6 @@ src/
 
 ### **第二部分：在实战中学习组件通信**
 
-我们将按照功能的自然顺序构建应用，并在每个环节深入探讨其背后所使用的通信技术。
-
 #### **1. `Props`：数据的单向流动 (父 -> 子)**
 
 **场景**：我们需要将主应用 `App.vue` 中的待办事项数据列表，展示在 `TodoList.vue` 和 `TodoItem.vue` 中。
@@ -250,8 +248,11 @@ const emit = defineEmits(['toggle-complete', 'delete-todo']);
       @delete-todo="emit('delete-todo', $event)"
     />
   </ul>
-</template>```
-> **学习要点**：`$emit` 遵循“谁的数据，谁负责修改”的原则。它实现了子对父的通信，构成了 Vue 单向数据流的闭环：**Props down, Events up**。
+</template>
+
+```
+
+**学习要点**：`$emit` 遵循“谁的数据，谁负责修改”的原则。它实现了子对父的通信，构成了 Vue 单向数据流的闭环：**Props down, Events up**。
 
 ---
 
@@ -263,6 +264,7 @@ const emit = defineEmits(['toggle-complete', 'delete-todo']);
 使用 `defineModel`，我们可以用一行代码实现过去 `props` + `emit` 的复杂组合。
 
 **`src/components/TodoHeader.vue`**
+
 ```vue
 <script setup>
 // 1. 引入并使用 defineModel。它会返回一个可读写的 ref
@@ -283,6 +285,7 @@ const model = defineModel();
 ```
 
 **`src/App.vue`**
+
 ```vue
 <script setup>
 import { ref } from 'vue';

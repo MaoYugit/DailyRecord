@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import TodoList from './components/TodoList.vue'
+import TodoHeader from './components/TodoHeader.vue'
+
+const newTodoText = ref('')
 
 const todos = ref([
   { id: 1, text: 'learn vue props', completed: true },
@@ -21,6 +24,7 @@ const handleDeleteTodo = (id) => {
 
 <template>
   <div class="todoapp">
+    <TodoHeader v-model="newTodoText" />
     <TodoList
       :todos="todos"
       @toggle-complete="handleToggleComplete"
