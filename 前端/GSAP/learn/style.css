@@ -4,7 +4,8 @@ body {
   background-color: #1a1a1a;
   color: #ffffffdd;
   position: relative;
-  overflow: hidden; /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
+  /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
+  /* overflow: hidden; */
   font-family: "Inter", sans-serif;
 }
 
@@ -23,6 +24,7 @@ body {
 nav {
   position: fixed;
   left: 0;
+  right: 0;
   top: 0;
   z-index: 50;
   display: flex;
@@ -62,12 +64,104 @@ nav > div:last-child > .active {
 }
 
 nav > div:last-child > .active::after {
-  bottom: -8px;
+  content: "";
+  position: absolute;
   left: 0;
   right: 0;
-  position: absolute;
-  content: "";
   height: 3px;
-  border-radius: 99px;
   background-color: #ecad29;
+  border-radius: 99px;
+  bottom: -8px;
+}
+
+/* 信息区域 */
+
+.details {
+  position: absolute;
+  top: 240px;
+  left: 60px;
+  z-index: 22;
+}
+
+.details .place-box {
+  height: 46px;
+  overflow: hidden;
+}
+
+.details .place-box .text {
+  padding-top: 16px;
+  font-size: 20px;
+}
+
+.details .place-box .text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 4px;
+  border-radius: 99px;
+  background-color: white;
+}
+
+.details .title-1,
+.details .title-2 {
+  font-weight: 600;
+  font-size: 72px;
+  font-family: "Oswald", sans-serif;
+}
+
+.details .title-box-1,
+.details .title-box-2 {
+  margin-top: 2px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.details > .desc {
+  margin-top: 16px;
+  width: 500px;
+}
+
+.details > .cta {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin-top: 24px;
+}
+
+.details > .cta > .bookmark {
+  display: grid;
+  place-items: center;
+  border: none;
+  color: white;
+  background-color: #ecad29;
+  width: 36px;
+  height: 36px;
+  border-radius: 99px;
+}
+
+.details > .cta > .bookmark svg {
+  width: 20px;
+  height: 20px;
+}
+
+.details > .cta > .discover {
+  border: 1px solid #ffffff;
+  background-color: transparent;
+  height: 36px;
+  border-radius: 99px;
+  color: white;
+  padding: 4px 24px;
+  font-size: 12px;
+  margin-left: 16px;
+  text-transform: uppercase;
+}
+
+/* 分页控制器 */
+.pagination {
+  /* position: absolute; */
+  /* left: 0px;
+  top: 0px;
+  display: inline-flex; */
 }
