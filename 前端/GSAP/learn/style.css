@@ -5,7 +5,7 @@ body {
   color: #ffffffdd;
   position: relative;
   /* 隐藏超出屏幕的内容，防止动画过程中出现滚动条 */
-  /* overflow: hidden; */
+  overflow: hidden;
   font-family: "Inter", sans-serif;
 }
 
@@ -160,8 +160,129 @@ nav > div:last-child > .active::after {
 
 /* 分页控制器 */
 .pagination {
-  /* position: absolute; */
-  /* left: 0px;
+  position: absolute;
+  left: 0px;
   top: 0px;
-  display: inline-flex; */
+  display: inline-flex;
+}
+
+.pagination > .arrow {
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  border: 2px solid #ffffff55;
+}
+
+.pagination > .arrow:nth-child(2) {
+  margin-left: 20px;
+}
+
+.pagination > .arrow svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+  color: #ffffff99;
+}
+
+.pagination .progress-sub-container {
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  width: 500px;
+  height: 50px;
+  margin-left: 24px;
+  /* background-color: pink; */
+}
+
+.pagination .progress-sub-container .progress-sub-background {
+  width: 500px;
+  height: 3px;
+  background-color: #ffffff33;
+}
+.pagination
+  .progress-sub-container
+  .progress-sub-background
+  .progress-sub-foreground {
+  height: 3px;
+  background-color: #ecad29;
+}
+
+.pagination .slide-numbers {
+  z-index: 60;
+  overflow: hidden;
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+/* 注入的卡片内容 */
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 6px 6px 10px 2px rgba(0, 0, 0, 0.6);
+}
+
+.card-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ffffffdd;
+  padding-left: 16px;
+}
+
+.content-start {
+  width: 30px;
+  height: 5px;
+  border-radius: 99px;
+  background-color: #ffffffdd;
+}
+
+.content-place {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.content-title-1,
+.content-title-2 {
+  font-weight: 600;
+  font-size: 20px;
+  font-family: "Oswald", sans-serif;
+}
+
+/* 注入的底部分页 页码 */
+.pagination .slide-numbers .item {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  color: white;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+#btn {
+  position: absolute;
+  top: 690px;
+  left: 16px;
+  z-index: 99;
+}
+
+.cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 100;
 }
