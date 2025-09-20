@@ -1,10 +1,15 @@
+<!--  src/App.vue -->
 <script setup>
-import { ref } from 'vue'
-const count = ref(0)
+import NavHeader from '@/components/NavHeader.vue'
 </script>
 
 <template>
-  <button @click="count++">Count is: {{ count }}</button>
-</template>
+  <header>
+    <NavHeader />
+  </header>
 
-<style scoped></style>
+  <main>
+    <!-- 路由匹配到的组件将在这里渲染 -->
+    <router-view />
+  </main>
+</template>
