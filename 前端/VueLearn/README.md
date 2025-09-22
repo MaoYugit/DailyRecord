@@ -1,40 +1,6 @@
 # VueLearn
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-
+这是一个 Vue3 + js + router + pinia 项目，旨在通过构建一个学习Vue3的网站。 
 
 这是一个非常棒的想法！将我们创建的 Vue 项目本身作为学习笔记的载体，这会让我们的学习过程更具交互性和成就感。
 
