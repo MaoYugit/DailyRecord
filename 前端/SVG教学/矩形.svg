@@ -1,0 +1,19 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid black;">
+    <defs>
+        <path id="blade" d="M -15 -100
+                 L 15 -100
+                 L 10 0 
+                 L -10 0 Z
+            " fill="skyblue" />
+    </defs>
+    <g transform="translate(200, 150)">
+        <g>
+            <use href="#blade" transform="rotate(0, 0, 0)" />
+            <use href="#blade" transform="rotate(90, 0, 0)" />
+            <use href="#blade" transform="rotate(180, 0, 0)" />
+            <use href="#blade" transform="rotate(270, 0, 0)" />
+        </g>
+        <rect x="-5" y="0" width="10" height="150" />
+    </g>
+    
+</svg>
