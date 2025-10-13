@@ -1,34 +1,21 @@
 ## JS API
 
-1. const let var
+1. BOM
 
-2. DOM DOM树 DOM对象
+1. 延迟函数setTimeout
 
-3. 获取DOM元素 
+1. 事件循环eventloop
 
-   document.querySelector()
+1. location对象
 
-   document.querySelectorAll()
+1. navigation对象和history对象
 
-   getElementBy...
+1. 本地存储localstorage
 
-4. DOM修改元素内容
+1. 本地存储处理复杂数据类型
 
-5. DOM修改元素常见属性
+1. 综合案例--读取本地存储数据
 
-6. 通过style修改样式属性
-
-7. 通过类名修改样式
-
-8. 通过classList修改样式
-
-9. 获取设置表单的值
-
-10. H5自定义属性-data
-
-11. 定时器-间歇函数
-
-12. 
-
+1. 数组map和join方法
 
 

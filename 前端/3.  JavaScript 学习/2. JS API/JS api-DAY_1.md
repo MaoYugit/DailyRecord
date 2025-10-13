@@ -2,7 +2,7 @@
 
 ---
 
-### **第1章：变量声明的现代化 (Modern Variable Declaration)**
+### **1：变量声明的现代化 (Modern Variable Declaration)**
 
 在编写任何逻辑之前，我们需要存储数据。在现代JavaScript (ES6及以后版本)中，我们主要使用 `let` 和 `const` 来声明变量，而旧有的 `var` 则因其固有的缺陷已不被推荐使用。
 
@@ -100,7 +100,7 @@
 
 ---
 
-### **第2章：文档对象模型 (DOM)**
+### **2：文档对象模型 (DOM)**
 
 浏览器在加载一个HTML文档时，会将其解析成一个树形结构，这个结构就是**文档对象模型 (Document Object Model,简称DOM)**。JavaScript正是通过操作这个模型来实现对网页内容的动态控制。
 
@@ -110,7 +110,7 @@
 
 ---
 
-### **第3章：获取与操作DOM元素**
+### **3：获取与操作DOM元素**
 
 这是DOM操作的核心。首先要“抓住”你想操作的那个元素，然后才能对它为所欲为。
 
@@ -316,7 +316,7 @@ pSpecial.style.border = '2px solid red';
 
 刷新页面，你会看到元素的样式发生了显著的变化。
 
-### **本部分小结与作业**
+#### **本部分小结与作业**
 
 *   **小结：** 我们掌握了声明变量的现代化方式（`let` 和 `const`），并深入理解了DOM的核心概念。最重要的是，我们学会了如何使用 `querySelector` 和 `querySelectorAll` 精准获取页面元素，并利用 `.textContent` / `.innerHTML` 修改内容，直接访问属性来修改如 `src`、`href`，以及通过 `element.style` 对象来动态改变元素的CSS样式。
 
@@ -358,15 +358,13 @@ pSpecial.style.border = '2px solid red';
             *   使用 `.style` 属性，将其 `boxShadow` 设置为 `'0 4px 8px rgba(0,0,0,0.1)'`，使其看起来有立体感。
             *   获取价格 `span` 元素，如果 `productData.price` 小于 200，则使用 `.style.color` 将其颜色设置为 `'green'`。
 
-好的，我们继续按照模板风格，完成你提供的目录中剩余的部分。
+
 
 ---
 
-## **JavaScript核心交互：DOM进阶 (Advanced DOM Manipulation)**
 
-在掌握了基础的DOM操作后，本阶段我们将学习更高效、更灵活的技术来控制网页。这包括通过类名来批量管理样式、操作表单数据、利用HTML5自定义属性存储数据，以及创建动态效果的基石——定时器。
 
-### **第7章：通过类名 (ClassName) 修改样式**
+### **4：通过类名 (ClassName) 修改样式**
 
 直接通过 `element.style` 修改样式虽然直观，但有两大弊病：
 1.  **样式与逻辑耦合：** 大量的样式代码混杂在JavaScript逻辑中，难以维护。
@@ -374,7 +372,7 @@ pSpecial.style.border = '2px solid red';
 
 更优雅、更推荐的做法是：**在CSS中预先定义好样式类，然后用JavaScript动态地为元素添加或移除这些类。**
 
-#### **7.1 `element.className`**
+#### **4.1 `element.className`**
 
 这是一个简单直接的属性，它获取或设置一个元素的 `class` 属性的**整个字符串值**。
 
@@ -393,7 +391,7 @@ p.className = p.className + ' highlight'; // "intro highlight"
 ```
 由于这种操作的不便，我们现在更推荐使用 `classList`。
 
-### **第8章：通过 `classList` 修改样式 (推荐)**
+### **5：通过 `classList` 修改样式 (推荐)**
 
 `element.classList` 是一个更现代、更强大的API，它返回一个DOM元素的实时 `DOMTokenList` 集合。它提供了一系列便捷的方法来操作类，而无需手动处理字符串。
 
@@ -512,7 +510,7 @@ p.className = p.className + ' highlight'; // "intro highlight"
     ```
     打开 `index.html` 并点击按钮，你会看到 `status-box` 的样式随着类的增删而流畅地变化。这完美地实现了**样式与逻辑分离**。
 
-### **第9章：获取与设置表单的值**
+### **6：获取与设置表单的值**
 
 与用户交互最常见的方式就是通过表单。JavaScript可以轻松地获取和设置各种表单控件（input, textarea, select等）的值。
 
@@ -595,7 +593,7 @@ p.className = p.className + ' highlight'; // "intro highlight"
     ```
     现在，刷新页面，修改表单内容后点击“提交”按钮，你将看到获取到的数据被显示在页面下方。
 
-### **第10章：H5自定义属性-`data-*`**
+### **7：H5自定义属性-`data-*`**
 
 有时，我们需要在HTML元素上存储一些与样式无关、但与JavaScript逻辑相关的数据（例如，一个用户的ID，一个产品的编号）。直接添加自定义属性（如 `mydata="123"`）是不规范的。HTML5为此提供了一个标准化的解决方案：`data-*` 属性。
 
@@ -663,7 +661,7 @@ p.className = p.className + ' highlight'; // "intro highlight"
     ```
     点击不同的产品项，可以看到详情区域会根据每个元素上存储的`data-*`属性动态更新。
 
-### **第11章：定时器 - 间歇函数 `setInterval`**
+### **8：定时器 - 间歇函数 `setInterval`**
 
 定时器是让JavaScript代码能够**延迟执行**或**周期性执行**的机制，是实现动画、轮播图、倒计时等动态效果的基础。
 
@@ -724,7 +722,7 @@ p.className = p.className + ' highlight'; // "intro highlight"
     ```
     刷新页面，一个实时跳动的数字时钟就完成了！点击按钮可以停止它。
 
-### **本部分小结与作业**
+#### **本部分小结与作业**
 
 *   **小结：** 我们学习了更高级的DOM操作技巧。通过`classList`可以优雅地管理元素样式；通过`.value`和`.checked`可以轻松掌控表单数据；`data-*`属性为我们在HTML中附加数据提供了标准化的途径；而`setInterval`则为我们打开了通往动态网页效果的大门。
 

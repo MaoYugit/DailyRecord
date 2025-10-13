@@ -1,34 +1,18 @@
 ## JS API
 
-1. const let var
+1. 日期对象的使用
 
-2. DOM DOM树 DOM对象
+2. 时间戳的使用
 
-3. 获取DOM元素 
+3. 查找DOM节点
 
-   document.querySelector()
+4. 增加节点、克隆节点和删除节点
 
-   document.querySelectorAll()
+5. M端事件
 
-   getElementBy...
+6. swiper插件的使用
 
-4. DOM修改元素内容
-
-5. DOM修改元素常见属性
-
-6. 通过style修改样式属性
-
-7. 通过类名修改样式
-
-8. 通过classList修改样式
-
-9. 获取设置表单的值
-
-10. H5自定义属性-data
-
-11. 定时器-间歇函数
-
-12. 
+   
 
 
 
