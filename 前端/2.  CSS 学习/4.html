@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .card {
+        height: 400px;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        background-color: antiquewhite;
+      }
+      .card-body {
+        flex-grow: 1;
+      }
+      .card-footer {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">Header</div>
+      <div class="card-body">
+        <p>
+          This is the main content. It should grow to fill all available space.
+        </p>
+        <p>More content...</p>
+      </div>
+      <div class="card-footer">Footer</div>
+    </div>
+  </body>
+</html>
