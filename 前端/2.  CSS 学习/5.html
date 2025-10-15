@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .blog-layout {
+        width: 100%;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 200px 1fr 250px;
+        grid-template-rows: 100px 1fr 80px;
+        grid-template-areas:
+          "header header header"
+          "nav main sidebar"
+          "footer footer footer";
+      }
+      .blog-header {
+        grid-area: header;
+        background-color: aqua;
+      }
+      .blog-nav {
+        grid-area: nav;
+        background-color: aquamarine;
+      }
+      .blog-main {
+        grid-area: main;
+        background-color: antiquewhite;
+      }
+      .blog-sidebar {
+        grid-area: sidebar;
+        background-color: aquamarine;
+      }
+      .blog-footer {
+        grid-area: footer;
+        background-color: aqua;
+      }
+      @media (max-width: 768px) {
+        .blog-layout {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+          grid-template-areas: "header" "nav" "main" "sidebar" "footer";
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="blog-layout">
+      <header class="blog-header">Header</header>
+      <nav class="blog-nav">Navigation</nav>
+      <main class="blog-main">Main Content</main>
+      <aside class="blog-sidebar">Sidebar</aside>
+      <footer class="blog-footer">Footer</footer>
+    </div>
+  </body>
+</html>
