@@ -13,32 +13,69 @@
       body {
         margin: 0;
       }
-      .card {
-        width: min(90%, 400px);
+      .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: lightgray;
+        padding: 1rem;
       }
-      .card-contert {
-        padding: 10px;
+      .card {
+        /* 卡片宽度90% 最大400px */
+        width: min(90%, 400px);
+        background-color: aqua;
+        border-radius: 5rem;
+        padding: 1rem;
+      }
+      .card-image {
+        max-width: 100%;
+        height: auto;
+        /* display: block; 是一个好习惯，可以消除图片底部的微小空隙 */
+        display: block;
+        border-radius: 2rem;
+        box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+      }
+      .card-content {
+        padding: 1rem;
+        background-color: aquamarine;
+      }
+      .card-title {
+        font-size: clamp(1.25rem, 1rem + 2vw, 1.75rem);
       }
 
       @media (min-width: 768px) {
+        .card {
+          display: flex;
+          justify-content: space-between;
+          max-width: 700px;
+        }
       }
     </style>
   </head>
   <body>
-    <article class="card">
-      <img
-        src="./assets/images/image1.png"
-        alt="Article thumbnail"
-        class="card-image"
-      />
-      <div class="card-content">
-        <h2 class="card-title">Responsive Design Mastery</h2>
-        <p class="card-excerpt">
-          Learn how to build layouts that work on any device, starting with a
-          mobile-first approach.
-        </p>
-        <a href="#" class="card-link">Read More</a>
-      </div>
-    </article>
+    <div class="card-container">
+      <!-- 文章卡片 -->
+      <article class="card">
+        <!-- 文章图片 -->
+        <img
+          src="./assets/images/image1.png"
+          alt="Article thumbnail"
+          class="card-image"
+        />
+        <!-- 文章内容 -->
+        <div class="card-content">
+          <!-- 文章标题 -->
+          <h2 class="card-title">Responsive Design Mastery</h2>
+          <!-- 文章内容 -->
+          <p class="card-excerpt">
+            Learn how to build layouts that work on any device, starting with a
+            mobile-first approach.
+          </p>
+          <!-- 文章链接 -->
+          <a href="#" class="card-link">Read More</a>
+        </div>
+      </article>
+    </div>
   </body>
 </html>
