@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 块 (Block) 的样式 */
+      .card {
+        border: 1px solid #ccc;
+        padding: 16px;
+      }
+
+      /* 元素 (Elements) 的样式 */
+      .card__title {
+        font-size: 24px;
+        color: #333;
+      }
+
+      /* 按钮容器的布局样式 */
+      .card__actions {
+        margin-top: 16px;
+      }
+
+      /* 基础按钮的样式 */
+      .card__button {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #eee;
+        text-decoration: none;
+        color: #333; /* 最好也定义一下基础颜色 */
+      }
+
+      /* 修饰符 (Modifier) 的样式 */
+      /* 它只覆盖需要改变的样式，这里是背景和文字颜色 */
+      .card__button--primary {
+        background: blue;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <!-- 元素：标题。用 'title' 代替 'h2' 更具语义 -->
+      <h2 class="card__title">Article Title</h2>
+
+      <!-- 元素：描述文本 -->
+      <p class="card__text">Some preview text for the article.</p>
+
+      <!-- 元素：用于包裹按钮的容器，可以叫 'actions' 或 'footer' -->
+      <div class="card__actions">
+        <!-- 元素：一个基础按钮 -->
+        <a href="#" class="card__button">Read More</a>
+
+        <!-- 元素 + 修饰符：一个主要按钮 -->
+        <!-- 注意这里有两个类，一个是基础样式，一个是修饰符样式 -->
+        <a href="#" class="card__button card__button--primary">Share</a>
+      </div>
+    </div>
+  </body>
+</html>

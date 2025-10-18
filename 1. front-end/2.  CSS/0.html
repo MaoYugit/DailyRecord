@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS 动画模态框</title>
+    <style>
+      /* 页面基础样式，用于美化展示效果 */
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f2f5;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        color: white;
+        background-color: #007bff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* --- 任务核心代码开始 --- */
+
+      /* 1. 基础样式: 模态框遮罩层 */
+      .modal-overlay {
+        /* 固定定位，覆盖整个屏幕 */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+
+        /* 使用 flex 布局轻松实现内容居中 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /* 默认状态下隐藏 */
+        opacity: 0;
+        /* 使用 visibility 控制元素是否可被交互，配合 display: none 效果更好 */
+        visibility: hidden;
+
+        /* 3. 使用 transition 实现淡入淡出效果 */
+        /* 为 opacity 和 visibility 两个属性添加过渡效果 */
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+      }
+
+      /* 1. 基础样式: 模态框内容区域 */
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .modal-content h3 {
+        margin-top: 0;
+        font-size: 1.5rem;
+      }
+
+      .modal-content p {
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+
+      /* 2. 创建打开/关闭的类 */
+      /* 当 .modal-overlay 拥有 .is-visible 类时，它应该显示出来 */
+      .modal-overlay.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 4. 使用 @keyframes 定义内容弹出动画 */
+      @keyframes slideInUp {
+        from {
+          /* 初始状态：在下方 50px 的位置，完全透明 */
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          /* 结束状态：回到原始位置，完全不透明 */
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* 4. 当模态框可见时，为内容框应用动画 */
+      .modal-overlay.is-visible .modal-content {
+        animation: slideInUp 0.4s ease-out forwards;
+      }
+
+      /* --- 任务核心代码结束 --- */
+    </style>
+  </head>
+  <body>
+    <!-- HTML 结构 -->
+    <button id="open-modal-btn">打开模态框</button>
+
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <h3>模态框标题</h3>
+        <p>这是一个通过 CSS 过渡和动画实现的模态框。</p>
+        <button id="close-modal-btn">关闭</button>
+      </div>
+    </div>
+
+    <!-- JavaScript 提示 -->
+    <script>
+      const openBtn = document.getElementById("open-modal-btn");
+      const closeBtn = document.getElementById("close-modal-btn");
+      const overlay = document.querySelector(".modal-overlay");
+
+      openBtn.addEventListener("click", () => {
+        overlay.classList.add("is-visible");
+      });
+
+      closeBtn.addEventListener("click", () => {
+        overlay.classList.remove("is-visible");
+      });
+
+      // 额外功能：点击遮罩层关闭模态框
+      overlay.addEventListener("click", (event) => {
+        // 确保点击的是遮罩层本身，而不是其子元素（内容框）
+        if (event.target === overlay) {
+          overlay.classList.remove("is-visible");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 基础样式，用于美化页面 */
+      .container {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2rem;
+        width: 50rem;
+        align-items: center;
+        justify-content: center;
+        background-color: aquamarine;
+        border-radius: 3rem;
+      }
+      .my-link {
+        color: #007bff; /* 默认颜色 */
+        text-decoration: none;
+        font-size: 1rem;
+        transition: all 0.2s ease-out; /* 添加平滑过渡效果 */
+        padding: 0.25rem;
+      }
+      .my-link:hover {
+        color: pink;
+        text-decoration: underline;
+      }
+      .my-link:visited {
+        color: black; /* 访问过的链接显示为黑 */
+      }
+      .my-link:active {
+        color: red; /* 按下时变为红色 */
+        transform: translateY(2px); /* 轻微下沉效果 */
+      }
+      .my-link:focus {
+        outline: 2px solid #007bff; /* 添加清晰的轮廓 */
+        outline-offset: 2px; /* 让轮廓与元素之间有一点间距 */
+        background-color: #e7f3ff; /* 添加浅蓝色背景以突出显示 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>动态与用户行为伪类示例</h2>
+
+      <!-- 1. 链接: 应用所有四个伪类 -->
+      <a href="#" class="my-link">一个链接</a>
+
+      <!-- 2. 按钮: 主要看 :hover, :active 和 :focus -->
+      <button class="my-button">一个按钮</button>
+
+      <!-- 3. 输入框: 主要看 :focus -->
+      <input type="text" class="my-input" placeholder="点击我来获得焦点" />
+    </div>
+  </body>
+</html>
