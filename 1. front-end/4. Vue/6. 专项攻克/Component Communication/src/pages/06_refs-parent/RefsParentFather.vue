@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="RefsParentFather">
 import RefsParentChild from './RefsParentChild.vue'
 </script>
 

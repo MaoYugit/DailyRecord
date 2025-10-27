@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="CustomEventFather">
 import CustomEventChild from './CustomEventChild.vue'
 import { ref } from 'vue'
 

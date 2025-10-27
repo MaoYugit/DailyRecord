@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="AttrsFather">
 import AttrsChild from './AttrsChild.vue'
 </script>
 

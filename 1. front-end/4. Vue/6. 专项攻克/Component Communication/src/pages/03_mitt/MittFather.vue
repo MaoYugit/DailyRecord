@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="MittFather">
 import MittChild1 from './MittChild1.vue'
 import MittChild2 from './MittChild2.vue'
 </script>

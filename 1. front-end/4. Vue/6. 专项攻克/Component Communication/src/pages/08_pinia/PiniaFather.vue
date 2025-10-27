@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="PiniaFather">
 import PiniaChild from './PiniaChild.vue'
 </script>
 

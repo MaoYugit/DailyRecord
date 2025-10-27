@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Father">
+<script setup lang="ts" name="PropsFather">
 import PropsChild from './PropsChild.vue'
 import { ref } from 'vue'
 
