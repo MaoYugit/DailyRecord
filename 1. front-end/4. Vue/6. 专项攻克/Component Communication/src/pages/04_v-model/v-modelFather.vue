@@ -1,14 +1,20 @@
 <template>
   <div class="father">
     <h3>4.父组件</h3>
-    <input type="text" v-model="username" />
+    <!-- v-model 用在 HTML 标签上 -->
+    <!-- <input type="text" v-model="username" /> -->
+    <br />
+    <!-- 上面那个的底层原理 -->
+    <!-- <input type="text" :value="username" @input="username = $event.target.value" /> -->
+    <AtguiguInput />
   </div>
 </template>
 
-<script setup lang="ts" name="VModelFather">
-import { ref } from 'vue'
+<script setup name="VModelFather">
+// import { ref } from 'vue'
+import AtguiguInput from './AtguiguInput.vue'
 
-let username = ref('zhangsan')
+// let username = ref('zhangsan')
 </script>
 
 <style scoped>
