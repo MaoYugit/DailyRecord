@@ -1,10 +1,10 @@
-### **`props` —— 组件的“契约”**
+### **一、`props` —— 组件的“契约”**
 
 想象一下，你正在组装一台电脑。CPU（父组件）需要告诉显卡（子组件）要渲染什么画面。CPU 不会直接伸手去扭动显卡上的开关，而是通过一个标准化的插槽（PCIe 接口）来发送指令和数据。
 
 在 Vue 中，**`props` 就是这个标准化的“插槽”**。它是父组件向子组件传递数据的唯一官方通道，构成了组件间通信的基石。
 
-#### **一、 核心思想：单向数据流 (One-Way Data Flow)**
+#### **1. 核心思想：单向数据流 (One-Way Data Flow)**
 
 这是理解 `props` 最重要的概念，也是 Vue 的核心设计理念之一。
 
@@ -14,15 +14,16 @@
 *   **为什么这么设计？**
     为了让应用的状态变得**可预测**和**易于追踪**。想象一下，如果任何子组件都能随意修改来自父组件的数据，那么当应用出现问题时，你将很难定位是哪个组件把数据改错了。这就像一个公司的总部（父组件）下发指令（props），分公司（子组件）只能执行，不能篡改总部的原始指令。如果需要变更，必须向总部汇报。这种清晰的责任划分，使得调试和维护变得极其简单。我们称父组件为数据的**“唯一真理来源” (Single Source of Truth)**。
 
-#### **二、 学习要点：如何使用 `props`**
+#### **2. 学习要点：如何使用 `props`**
 
 我们将在 `<script setup>` 语法中学习，这是目前最现代、最简洁的方式。
 
-**1. 基本用法 (`defineProps`)**
+ **a. 基本用法 (`defineProps`)**
 
 在子组件中，我们使用 `defineProps` 宏来声明它期望从父组件接收哪些 `props`。
 
 *   **父组件 (`PropsEmit.vue`)**
+    
     ```vue
     <template>
       <!-- 传递一个静态字符串 -->
@@ -39,7 +40,7 @@
     const dynamicMessage = ref('你好，我是一个动态消息');
     </script>
     ```
-
+    
 *   **子组件 (`Child.vue`)**
     最简单的方式是使用一个字符串数组来声明 `props`。
     ```vue
@@ -53,7 +54,7 @@
     </script>
     ```
 
-**2. 类型校验与默认值 (Props Validation)**
+**b. 类型校验与默认值 (Props Validation)**
 
 在真实开发中，我们几乎**总是**使用对象形式的 `defineProps`，因为它允许我们对传入的数据进行校验。这是一种非常重要的防御性编程，能极大地提高组件的健壮性和可维护性。
 
@@ -98,7 +99,7 @@ Vue 的响应式系统是自动的。当父组件中一个响应式数据（如 
 
 你不需要在子组件做任何特殊处理，只需要确保父组件传递的是响应式数据即可，正如我们在“基本用法”中展示的 `dynamicMessage` 一样。
 
-#### **三、 注意事项：`props` 是只读的！**
+#### **3. 注意事项：`props` 是只读的！**
 
 这是新手最容易犯的错误。
 
@@ -117,43 +118,40 @@ function changeMessage() {
 *   **为什么不行？** 因为这直接违反了“单向数据流”原则。
 *   **如果非要改怎么办？** 子组件不应该“修改”，而应该“**请求修改**”。它需要通过触发一个事件（我们下一个要学的 `emit`）来通知父组件：“我希望这个值变成 xxx，请你来决定和操作”。
 
-#### **四、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "请解释一下 Vue 的单向数据流原则。"**
+**a. "请解释一下 Vue 的单向数据流原则。"**
 
 > **答：** Vue 的单向数据流是指，所有的数据都拥有一个“唯一真理来源”，通常是父组件。数据通过 `props` 从父组件单向地流向子组件。子组件可以读取和使用这些数据，但绝不能直接修改它们。如果子组件需要变更数据，它必须通过触发事件 (`$emit`) 的方式通知父组件，由父组件来完成状态的变更。这种模式使得应用的数据流向变得清晰、可预测，当出现问题时，能够快速定位到数据源，极大地简化了调试和维护的复杂度。
 
-**2. "为什么不建议在子组件里直接修改 props？如果需要基于 prop 做一些改变，应该怎么处理？"**
+**b. "为什么不建议在子组件里直接修改 props？如果需要基于 prop 做一些改变，应该怎么处理？"**
 
 > **答：** 不建议直接修改 `props` 主要有两个原因：第一，它破坏了单向数据流原则，会让数据状态变得混乱和不可预测。第二，当父组件更新时，子组件的这次修改也会被覆盖掉。
 > 如果确实需要处理，有两种常见的正确做法：
+>
 > 1.  **将 prop 定义为局部数据**：如果只是想把 `prop` 作为初始值，后续的变化与父组件无关，那么可以在子组件的 `setup` 中用一个本地的 `ref` 来接收它。例如 `const localCount = ref(props.initialCount)`。
 > 2.  **定义一个计算属性**：如果需要根据 `prop` 的值计算出另一个值，应该使用 `computed`。例如 `const doubled = computed(() => props.count * 2)`。这样当 `prop` 变化时，计算属性也会自动更新。
 > 3.  **（最终方案）触发事件**：如果用户的操作意图是改变这个 `prop` 本身（比如关闭一个弹窗），那么子组件应该 `$emit` 一个事件给父组件，由父组件去修改数据。
 
-**3. "如何在子组件中对 props 进行类型校验？`validator` 函数有什么作用？"**
+**c. "如何在子组件中对 props 进行类型校验？`validator` 函数有什么作用？"**
 
 > **答：** 在子组件的 `defineProps` 中，我们可以传入一个对象而不是数组来进行类型校验。这个对象的键是 `prop` 的名称，值是另一个包含校验规则的对象。
 > 常用的校验规则有 `type` (指定类型，如 `String`, `Number` 或 `[String, Number]`)、`required: true` (设为必填)、`default` (提供默认值)。
 > 而 `validator` 函数提供了最终的自定义校验能力。它是一个函数，接收 `prop` 的值作为参数，**必须返回一个布尔值**。返回 `true` 表示验证通过，返回 `false` 表示验证失败，Vue 会在控制台打印警告。它通常用在那些 `type` 无法满足的复杂业务逻辑校验上，比如，一个 `status` prop 的值必须是 `'success'`, `'warning'`, `'error'` 中的一个。
 
----
 
-教学部分结束。现在你已经对 `props` 有了系统性的理解。接下来，我们将进入第二步，动手把这些知识应用到我们的项目中，创建第一个真正的页面。
-
-
-
-Excellent. Now that we understand how data flows *down* from parent to child with `props`, let's learn how to send messages *up* from child to parent. This completes the communication loop and is absolutely essential for creating interactive applications.
 
 ---
 
-### **系统性教学：`emit` —— 子组件的“扬声器”**
+
+
+### **二、`emit` —— 子组件的“扬声器”**
 
 如果说 `props` 是父组件下达的“书面指令”，那么 `emit` 就是子组件用来向父组件喊话的“扬声器”。子组件不能直接改变父组件的状态，但它可以通过这个扬声器大喊：“嘿，我这里发生了一件事（比如用户点击了我），这是相关的信息！”
 
 父组件可以选择听（监听事件），也可以选择不听。如果它听了，它就可以根据收到的消息来决定如何更新自己的状态。
 
-#### **一、 核心思想：事件通知，而非命令**
+#### **1. 核心思想：事件通知，而非命令**
 
 `emit` 的核心是**通知**，不是**命令**。
 
@@ -171,9 +169,9 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
 
 这个流程完美地遵守了“单向数据流”，同时实现了父子间的双向交互。
 
-#### **二、 学习要点：如何使用 `emit`**
+#### **2. 学习要点：如何使用 `emit`**
 
-**1. 基本用法 (`defineEmits`)**
+**a. 基本用法 (`defineEmits`)**
 
 与 `defineProps` 类似，我们在子组件中使用 `defineEmits` 宏来声明该组件会触发哪些自定义事件。这不仅是好的代码实践，也让 Vue 能更好地进行性能优化。
 
@@ -212,7 +210,7 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
     </script>
     ```
 
-**2. 传递参数 (Payload)**
+**b. 传递参数 (Payload)**
 
 `emit` 最强大的功能之一是可以在触发事件时附带数据。`emit` 函数的第二个及以后的所有参数，都会被作为载荷（payload）传递给父组件的监听函数。
 
@@ -244,7 +242,7 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
     </template>
     ```
 
-**3. (进阶) 事件校验**
+**c.  事件校验**
 
 和 `props` 一样，`emits` 也可以使用对象语法来进行更详细的定义，包括对事件的载荷进行校验。这在开发需要被他人使用的底层组件库时特别有用。
 
@@ -270,9 +268,9 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
     ```
     如果 `emit('submit', ...)` 时传递的载荷不符合校验规则，验证函数返回 `false`，Vue 会在控制台打印一个警告，但事件**依然会被触发**。
 
-#### **三、 常见面试题解析**
+#### **3、 常见面试题解析**
 
-**1. "子组件如何与父组件通信？请举例说明。"**
+**a. "子组件如何与父组件通信？请举例说明。"**
 
 > **答：** 子组件与父组件通信主要通过自定义事件系统。这是一个“通知-监听”模式，遵循单向数据流原则。具体步骤如下：
 > 1.  **子组件声明事件**：在子组件的 `<script setup>` 中，使用 `defineEmits` 宏来声明它可能触发的事件名称，例如 `const emit = defineEmits(['update-name'])`。
@@ -282,7 +280,7 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
 >
 > 这样就完成了一次从子到父的通信，形成了一个完整的数据交互闭环。
 
-**2. "在自定义事件中，如何区分原生 DOM 事件的 `$event` 和自定义事件的载荷 `$event`？"**
+**b. "在自定义事件中，如何区分原生 DOM 事件的 `$event` 和自定义事件的载荷 `$event`？"**
 
 > **答：** 这是一个非常好的问题，关键在于理解 `$event` 变量的上下文。
 > 1.  **在原生 DOM 事件中**：当你在模板中监听一个原生事件时，比如 `<button @click="handleClick($event)">`，这里的 `$event` 是一个**原生的事件对象** (Event Object)，比如 `MouseEvent` 或 `KeyboardEvent`。你可以通过它来访问 `event.target`、`event.preventDefault()` 等原生属性和方法。
@@ -290,15 +288,13 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
 >
 > 总结来说：原生事件的 `$event` 是**事件对象**，而自定义组件事件的 `$event` 是**事件的载荷**。如果自定义事件有多个载荷，在模板中使用 `$event` 只能获取到第一个，要想获取全部载荷，最佳实践是直接绑定一个方法名，如 `@my-event="handleEvent"`，这样 `handleEvent` 函数的所有参数就会依次对应 `emit` 出来的所有载荷。
 
----
 
-现在，我们已经系统地学习了 `props` 和 `emit` 这对黄金搭档。理论知识已经储备完毕，是时候进入实战，完成我们的第一个页面了！
-
-好的，我们已经掌握了 `Props` 和 `Emit` 这两个基础招式。现在，我们将学习一个基于它们的“组合技”—— `v-model`。它能极大地简化我们在特定场景下的代码，让组件封装变得更加优雅。
 
 ---
 
-### **系统性教学：`v-model` —— 双向绑定的“快捷指令”**
+
+
+### **三、`v-model` —— 双向绑定的“快捷指令”**
 
 在我们刚刚学习的 `Props & Emit` 模式中，我们实现了一个完整的通信闭环：
 1.  父组件通过 **prop** (`:message`) 将数据传给子组件。
@@ -307,7 +303,7 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
 
 这个模式非常通用，但也有些繁琐。对于像表单输入框这类需要“双向绑定”的场景，Vue 提供了一个专门的语法糖来简化这个过程，它就是 `v-model`。
 
-#### **一、 核心思想：一个指令，两份工作**
+#### **1. 核心思想：一个指令，两份工作**
 
 `v-model` 的本质不是新功能，而是 `props` 和 `emit` 的一个**快捷方式**。当你在一个自定义组件上使用 `v-model` 时，Vue 会自动帮你完成两件事：
 
@@ -330,7 +326,7 @@ Excellent. Now that we understand how data flows *down* from parent to child wit
 
 理解了这个“等价关系”，你就掌握了 `v-model` 的核心秘密。
 
-#### **二、 学习要点：如何实现一个支持 `v-model` 的组件**
+#### **2. 学习要点：如何实现一个支持 `v-model` 的组件**
 
 既然 `v-model` 是父组件和子组件之间的一个“契约”，那么子组件就必须按照契约的规定来办事。
 
@@ -413,9 +409,9 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
     </script>
     ```
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "请解释一下在自定义组件上使用 `v-model` 的原理。"**
+**a. "请解释一下在自定义组件上使用 `v-model` 的原理。"**
 
 > **答：** 在自定义组件上使用 `v-model` 本质上是一个语法糖，它简化了 `props` 和 `emit` 的组合使用。默认情况下，`<CustomComponent v-model="data" />` 这行代码等同于 `<CustomComponent :modelValue="data" @update:modelValue="data = $event" />`。
 > 所以，它的原理就是：
@@ -423,7 +419,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 > 2.  **父组件**同时监听子组件触发的一个名为 `update:modelValue` 的自定义事件，并在事件触发时更新自己的数据。
 > 3.  **子组件**则必须接收 `modelValue` 这个 `prop` 来显示数据，并在内部数据需要改变时，`emit` 出 `update:modelValue` 事件，将新值作为载荷传递出去。
 
-**2. "如何在 Vue 3 的一个组件上实现多个 `v-model`？"**
+**b. "如何在 Vue 3 的一个组件上实现多个 `v-model`？"**
 
 > **答：** Vue 3 支持通过给 `v-model` 指令添加参数来实现多个双向绑定。语法是 `v-model:argumentName="data"`。
 > 例如，`v-model:title="pageTitle"` 会被 Vue 解析为：
@@ -436,19 +432,13 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 > 3.  在组件内部，当需要更新某个值时，`emit` 出对应的事件，例如 `emit('update:title', newTitle)`。
 > 这种方式在封装复杂的、需要管理多个状态的组件（如表单、弹窗）时非常有用。
 
----
 
-教学部分结束。现在你已经理解了 `v-model` 是如何作为 `props` 和 `emit` 的高效封装来工作的。接下来，我们将动手将这个强大的指令应用到我们的项目中。
-
-
-
-
-
-好的，我们继续前进，学习一个非常实用，尤其是在封装基础组件时大放异彩的特性：`$attrs`。
 
 ---
 
-### **系统性教学：`$attrs` —— 组件属性的“透传快递员”**
+
+
+### **四、`$attrs` —— 组件属性的“透传快递员”**
 
 想象一个场景：你（父组件）想送一个包裹（一些属性）给你的孙子（深层子组件）。但这个包裹必须经过你的儿子（中间层组件）转交。
 
@@ -456,7 +446,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 
 `$attrs` 就是一个聪明的“快递员”。你儿子拿到包裹后，甚至不用拆开看，直接对快递员说：“这个包裹 (`$attrs`) 你直接完整地 (`v-bind`) 送给我的儿子就行了。”
 
-#### **一、 核心思想：未被“认领”的属性集合**
+#### **1. 核心思想：未被“认领”的属性集合**
 
 `$attrs` 的核心很简单：它是一个对象，包含了父组件传递给当前组件的**所有属性**，但**排除了**那些已经被当前组件通过 `defineProps` 声明接收的属性。
 
@@ -465,9 +455,9 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 
 此外，`$attrs` 还会包含父组件传递的所有事件监听器（比如 `@click`），这在 Vue 2 中是由 `$listeners` 负责的，Vue 3 将它们合并了。
 
-#### **二、 学习要点：如何使用 `$attrs`**
+#### **2. 学习要点：如何使用 `$attrs`**
 
-**1. 基本用法：`useAttrs()` 和 `v-bind`**
+**a. 基本用法：`useAttrs()` 和 `v-bind`**
 
 在 `<script setup>` 语法中，我们不能直接访问 `$attrs`，需要通过 `useAttrs` 这个组合式 API 来获取它。
 
@@ -525,7 +515,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
     </template>
     ```
 
-**2. 进阶：`inheritAttrs: false` 和多层透传**
+**b. 进阶：`inheritAttrs: false` 和多层透传**
 
 默认情况下，如果一个组件没有根元素，或者 `v-bind="$attrs"` 没有被使用，那么 `$attrs` 里的属性会自动“坠落”并应用到组件的**根元素**上。这有时不是我们想要的行为。
 
@@ -584,9 +574,9 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
     ```
     在这个例子中，`ParentComponent` 完全不关心 `placeholder` 等属性是什么，它只是一个纯粹的“快递中转站”。
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "`$attrs` 和 `props` 有什么区别？"**
+**a. "`$attrs` 和 `props` 有什么区别？"**
 
 > **答：** 它们之间最核心的区别在于**“是否被子组件声明”**。
 > 1.  **`props`**：是子组件通过 `defineProps` **明确声明**希望接收的属性。子组件内部可以直接访问这些属性，并且它们是响应式的。`props` 是组件公开的、稳定的 API。
@@ -594,7 +584,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 >
 > 总结来说，`props` 是组件的“正式接口”，而 `$attrs` 是“透传通道”，主要用来方便地将属性传递给深层子组件或内部的某个特定元素，增强了组件的封装性和灵活性。
 
-**2. "请举一个你在真实项目中会使用 `$attrs` 的场景。"**
+**b. "请举一个你在真实项目中会使用 `$attrs` 的场景。"**
 
 > **答：** 最经典的场景就是封装基础 UI 组件，比如一个自定义的按钮 `ElButton` 或输入框 `ElInput`。
 >
@@ -606,19 +596,13 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 >
 > 这样一来，所有父组件传递过来的、未被 `props` 认领的属性（`id`, `class`, `disabled`, `@mouseover` 等）就会被 `$attrs` 收集，并自动应用到原生的 `<button>` 元素上。这让我的 `MyButton` 组件既有自定义功能，又具备了原生元素的全部灵活性，封装得非常完美和高内聚。
 
----
 
-教学部分结束。`$attrs` 的概念虽然简单，但它在编写可复用、高封装性的组件时是不可或缺的利器。接下来，我们就动手在项目中实践它。
-
-
-
-好的，我们来攻克一个稍微高级但非常重要的主题：`$refs` 与 `defineExpose`。
-
-前面的通信方式都是“声明式”的——父组件声明要传递的数据 (`props`)，子组件声明要发出的通知 (`emit`)。而 `ref` 是一种“命令式”的通信，它允许父组件直接对子组件下达命令。
 
 ---
 
-### **系统性教学：`ref` 与 `defineExpose` —— 父组件的“遥控器”**
+
+
+### **五、`ref` 与 `defineExpose` —— 父组件的“遥控器”**
 
 想象一下，子组件是一台高级电视机。
 
@@ -626,7 +610,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 *   `emit` 就像是电视机上的指示灯或蜂鸣器，当内部发生变化时（比如没信号了），它会主动向外界发出通知。
 *   `ref` 和 `defineExpose` 则相当于一个**专属遥控器**。父组件可以通过这个遥控器，直接命令电视机执行特定动作，比如“立即开机”、“切换到 HDMI 2”或“执行自检程序”。
 
-#### **一、 核心思想：获取引用，调用方法**
+#### **1. 核心思想：获取引用，调用方法**
 
 这种模式与 `props/emit` 的数据驱动思想不同，它是**行为驱动**的。父组件不再只是给子组件数据让其自行决定如何渲染，而是直接获取到子组件的一个“句柄”（引用），并通过这个句柄调用子组件**主动暴露**出来的方法或访问其属性。
 
@@ -635,11 +619,11 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 
 所以，我们的原则是：**能用 `props/emit` 解决的，就绝不用 `ref`。**只有当确实需要从外部命令式地触发一个内部行为时，才考虑使用它。
 
-#### **二、 学习要点：如何实现**
+#### **2. 学习要点：如何实现**
 
 这是一个两步走的过程：父组件“获取遥控器”，子组件“设计遥控器上的按钮”。
 
-**1. 父组件：通过模板引用 (`ref`) 获取遥控器**
+**a. 父组件：通过模板引用 (`ref`) 获取遥控器**
 
 首先，父组件需要一种方式来“抓住”子组件的实例。
 
@@ -679,7 +663,7 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
     });
     ```
 
-**2. 子组件：通过 `defineExpose` 设计遥控器**
+**b. 子组件：通过 `defineExpose` 设计遥控器**
 
 在 Vue 3 的 `<script setup>` 中，组件默认是“关闭”的。也就是说，即使父组件拿到了 `ref`，也无法访问子组件内部的任何东西。这是一种安全保护机制。
 
@@ -715,16 +699,16 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
     ```
     在这个例子中，父组件的 `childRef.value` 将会是一个形如 `{ publicMessage, publicMethod }` 的对象，而无法访问到 `secret` 和 `privateMethod`。
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "在 Vue 3 中，父组件如何调用子组件的方法？"**
+**a. "在 Vue 3 中，父组件如何调用子组件的方法？"**
 
 > **答：** 主要通过模板引用 (`ref`) 和 `defineExpose` API 配合实现，分为两步：
 > 1.  **在子组件中**，使用 `defineExpose` 宏来暴露一个或多个方法。例如 `defineExpose({ myMethod })`。这是必须的，因为 `<script setup>` 默认是关闭的，不暴露任何东西。
 > 2.  **在父组件中**，首先在 `<script setup>` 里创建一个 `ref`，例如 `const childInstance = ref(null)`。然后在模板中，将这个 `ref` 绑定到子组件标签上：`<ChildComponent ref="childInstance" />`。
 > 3.  当组件挂载后，父组件就可以通过 `childInstance.value.myMethod()` 的方式来调用子组件暴露出的方法了。需要注意的是，这个调用必须在组件挂载之后才能进行，比如在一个点击事件处理器或者 `onMounted` 钩子中。
 
-**2. "`defineExpose` 有什么作用？为什么要使用它？"**
+**b. "`defineExpose` 有什么作用？为什么要使用它？"**
 
 > **答：** `defineExpose` 是一个在 `<script setup>` 中使用的宏，它的**唯一作用**就是**定义一个组件向外暴露的公共接口**。
 >
@@ -735,15 +719,13 @@ Vue 3 的一个强大之处在于，你可以在一个组件上绑定多个 `v-m
 >
 > 总结来说，`defineExpose` 不是为了限制我们，而是为了帮助我们构建更健壮、更低耦合、接口更清晰的组件。
 
----
 
-教学部分结束。我们已经理解了这种命令式调用方式的实现原理和适用场景。接下来，我们将构建一个页面来实践它。
-
-Excellent. We are now moving into a more advanced and elegant communication pattern that solves a very common and painful problem in deeply nested component structures.
 
 ---
 
-### **系统性教学：`provide` & `inject` —— 组件的“Wi-Fi 网络”**
+
+
+### **六、`provide` & `inject` —— 组件的“Wi-Fi 网络”**
 
 想象一下你的组件树是一栋多层的大楼。
 
@@ -754,7 +736,7 @@ Excellent. We are now moving into a more advanced and elegant communication patt
     *   现在，大楼里的**任何一个房间**（任何后代组件），无论是在二楼还是五楼，只要有 Wi-Fi 密码 (`inject('Theme')`)，就可以直接连接并使用这个信号。
     *   中间的楼层（中间组件）完全不需要知道这个 Wi-Fi 信号的存在，它们只管做自己的事。
 
-#### **一、 核心思想：依赖注入 (Dependency Injection)**
+#### **1. 核心思想：依赖注入 (Dependency Injection)**
 
 `provide` / `inject` 是 Vue 内置的依赖注入系统。
 
@@ -763,9 +745,9 @@ Excellent. We are now moving into a more advanced and elegant communication patt
 
 这种模式极大地**解耦**了组件。中间层的组件不再因为要为后代传递属性而被污染，变得更加纯粹和可复用。
 
-#### **二、 学习要点：如何使用**
+#### **2. 学习要点：如何使用**
 
-**1. 基本用法 (`provide` 和 `inject`)**
+**a. 基本用法 (`provide` 和 `inject`)**
 
 *   **祖先组件 (Provider)**
     使用 `provide` 函数来“广播”数据。它接收两个参数：`key` 和 `value`。
@@ -794,7 +776,7 @@ Excellent. We are now moving into a more advanced and elegant communication patt
     const nonExistent = inject('non-existent-key', 'default value'); // 'default value'
     ```
 
-**2. 关键点：实现响应式**
+**b. 关键点：实现响应式**
 
 这是一个非常重要的知识点。默认情况下，如果你 provide 一个普通变量，它是**非响应式**的。
 
@@ -825,7 +807,7 @@ Excellent. We are now moving into a more advanced and elegant communication patt
     ```
     在子组件中 `inject(theme)` 会得到那个 `ref` 对象，模板中可以直接使用 `{{ theme }}`（模板会自动解包），在 JS 中需要使用 `theme.value`。
 
-**3. 提供方法 (修改数据的能力)**
+**c. 提供方法 (修改数据的能力)**
 
 为了维护“唯一真理来源”的原则，我们不应该让子组件直接修改注入的 `ref`。更好的做法是，祖先组件同时提供一个**方法**，让子组件可以调用这个方法来**请求**状态变更。
 
@@ -857,9 +839,9 @@ const { theme, toggleTheme } = inject('themeContext');
 <button @click="toggleTheme">Toggle Theme</button>
 ```
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "什么是‘Prop Drilling’（属性钻孔）？你可以用什么方法来解决这个问题？"**
+**a. "什么是‘Prop Drilling’（属性钻孔）？你可以用什么方法来解决这个问题？"**
 
 > **答：** “Prop Drilling” 是指在一个组件树中，为了将数据从顶层的祖先组件传递给深层的后代组件，需要将这个数据作为 `prop` 逐层地、手动地传递过所有中间组件的现象。
 >
@@ -872,7 +854,7 @@ const { theme, toggleTheme } = inject('themeContext');
 > 1.  **`provide` 和 `inject`**：这是 Vue 官方推荐的、专门用来解决 Prop Drilling 的方案。祖先组件通过 `provide` 提供数据，后代组件可以直接通过 `inject` 获取，完全绕过中间组件。
 > 2.  **状态管理库 (如 Pinia)**：如果这个数据是全局性的，被许多不相关的组件共享（比如用户信息），那么更好的方式是将其提升到一个全局的 Store 中。任何组件都可以从 Store 中直接获取数据，这也是一种更彻底的解耦方案。
 
-**2. "通过 `provide` 提供的数据是响应式的吗？如果不是，如何让它变成响应式的？"**
+**b. "通过 `provide` 提供的数据是响应式的吗？如果不是，如何让它变成响应式的？"**
 
 > **答：** 这个问题不绝对，**取决于你 `provide` 的是什么**。
 > *   **不是响应式的**：如果你 `provide` 的是一个普通的 JavaScript 变量（如字符串、数字、普通对象），那么当这个变量在提供者组件中改变时，注入了这个数据的消费者组件**不会**更新。因为消费者只在注入时获得了该变量的一个快照副本。
@@ -880,15 +862,13 @@ const { theme, toggleTheme } = inject('themeContext');
 >
 > 当消费者组件 `inject` 这个 `key` 时，它得到的是对这个 `ref` 或 `reactive` 对象的引用。因此，当提供者组件修改这个响应式对象时（比如 `theme.value = 'light'`），所有注入了它的消费者组件都能够侦测到这个变化并自动更新视图。
 
----
 
-教学部分结束。我们已经掌握了这种可以“穿越”组件层级的优雅通信方式。接下来，我们将通过一个经典的主题切换案例来实践它。
-
-Of course. We've mastered communication within the component tree. Now, let's learn how to manage data that doesn't neatly fit into that tree structure—data that needs to be accessible from anywhere in our application. This is where a state management library like Pinia shines.
 
 ---
 
-### **系统性教学：`Pinia` —— 应用的“中央数据仓库”**
+
+
+### **七、`Pinia` —— 应用的“中央数据仓库”**
 
 想象一下你的应用是一家大型连锁餐厅。
 
@@ -899,16 +879,16 @@ Of course. We've mastered communication within the component tree. Now, let's le
     *   **Getters (计算属性)**: 仓库里提前准备好的**半成品或配方**。它们根据原材料计算而来，比如根据购物车里的商品列表计算出“总价”，或者根据用户信息里的 `firstName` 和 `lastName` 组合出“全名”。它们是只读的，且会被缓存。
     *   **Actions (动作)**: 仓库里**唯一有权**更改原材料的**大厨团队**。当需要“添加商品到购物车”或“用户登录”时，你不能自己跑进仓库乱拿，而是要下一个指令给大厨（调用一个 Action），由他们按照预设的流程来安全地修改库存（State）。
 
-#### **一、 核心思想：集中式、可预测的状态管理**
+#### **1. 核心思想：集中式、可预测的状态管理**
 
 Pinia 的核心是创建一个或多个“Store”（仓库）。每个 Store 负责管理应用中某个特定部分的状态。
 
 *   **集中式**：所有相关的全局状态都存放在 Store 中，而不是散落在各个组件里。
 *   **可预测**：状态的变更不是随意的。你只能通过调用 `actions` 来修改 `state`。这使得数据流动变得非常清晰：`组件触发 Action -> Action 修改 State -> State 变化 -> 组件视图更新`。当出现问题时，你可以很容易地追踪到是哪个 Action 导致了状态的改变。
 
-#### **二、 学习要点：如何定义和使用 Store**
+#### **2. 学习要点：如何定义和使用 Store**
 
-**1. 定义一个 Store**
+**a. 定义一个 Store**
 
 我们通常在 `src/stores` 目录下为每个功能创建一个 Store 文件。
 
@@ -957,7 +937,7 @@ Pinia 的核心是创建一个或多个“Store”（仓库）。每个 Store �
     });
     ```
 
-**2. 在组件中使用 Store**
+**b. 在组件中使用 Store**
 
 在任何组件中，你只需要导入并调用这个 `useStore` 函数，就可以获得对 Store 实例的访问权限。
 
@@ -997,9 +977,9 @@ Pinia 的核心是创建一个或多个“Store”（仓库）。每个 Store �
     </script>
     ```
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "你为什么选择使用 Pinia（而不是 Vuex 或其他方案）？它有什么优点？"**
+**a. "你为什么选择使用 Pinia（而不是 Vuex 或其他方案）？它有什么优点？"**
 
 > **答：** 我选择 Pinia 主要是因为它现在是 Vue 官方推荐的状态管理库，并且相比于它的前身 Vuex，它具有几个显著的优点：
 > 1.  **完美的 TypeScript 支持**：Pinia 从一开始就是为 TypeScript 设计的。它的类型推断非常出色，无需复杂的类型声明就能获得完整的类型安全和自动补全，极大地提升了开发体验和代码健壮性。
@@ -1008,328 +988,27 @@ Pinia 的核心是创建一个或多个“Store”（仓库）。每个 Store �
 > 4.  **强大的 DevTools 支持**：与 Vue DevTools 完美集成，可以方便地追踪 State 的变化、时间旅行调试等。
 > 5.  **模块化和灵活性**：每个 Store 都是独立定义的，可以轻松地进行代码分割，也方便在多个项目中复用。
 
-**2. "请解释一下 Pinia 中的 State, Getters, Actions 分别是什么角色。"**
+**b. "请解释一下 Pinia 中的 State, Getters, Actions 分别是什么角色。"**
 
 > **答：** 当然。它们是构成 Pinia Store 的三个核心概念，各自扮演着清晰的角色：
 > *   **`State`**：是 Store 的**核心数据源**，相当于组件的 `data`。它是一个返回初始状态对象的函数，Pinia 会使其具有响应性。`State` 是我们应用中“唯一可信的数据来源”，所有组件都应该从这里读取全局状态。
 > *   **`Getters`**：是 Store 的**计算属性**，相当于组件的 `computed`。它们根据 `State` 派生出新的值。`Getters` 的结果会被缓存，只有当它依赖的 `State` 发生变化时才会重新计算，这有助于性能优化。例如，从购物车商品列表中计算出总价。
 > *   **`Actions`**：是 Store 的**方法**，相当于组件的 `methods`。它们是**唯一推荐**用来修改 `State` 的地方。`Actions` 可以包含任意复杂的业务逻辑，也可以是异步的（例如 API 请求）。通过将修改逻辑封装在 `Actions` 中，我们可以让状态变更变得可追踪和可预测。
 
----
 
-教学部分结束。Pinia 是构建中大型 Vue 应用的必备技能。接下来，我们将通过一个管理用户登录状态的简单例子，来亲手实践它。
-
-
-
-
-
-好的，理论学习结束，我们马上开始构建 `Pinia` 的演示页面。
-
-我们的场景是模拟一个最常见的应用：**用户登录状态管理**。我们将创建一个 `userStore` 来存放用户的登录状态和信息。页面上会有两个组件：一个用于展示用户信息和状态，另一个用于触发登录和登出的操作。这两个组件之间没有父子关系，它们将通过 Pinia 这个“中央仓库”来共享和修改数据。
 
 ---
 
-### **开始行动：实现 `Pinia` 页面**
-
-#### **第一步：定义 `userStore`**
-
-我们在 `src/stores` 目录下创建我们的第一个 Store。
-
-1.  在 `src/stores` 文件夹下，创建一个新文件，命名为 `userStore.ts`。
-
-2.  打开 `src/stores/userStore.ts` 并粘贴以下代码：
-
-    ```typescript
-    // src/stores/userStore.ts
-    import { defineStore } from 'pinia';
-    import { ref, computed } from 'vue';
-    
-    // Composition API (setup store) 写法
-    // 这是 Pinia 官方更推荐的写法，因为它能更好地利用组合式 API 的优势
-    export const useUserStore = defineStore('user', () => {
-      // --- State ---
-      const isLoggedIn = ref(false);
-      const userInfo = ref({
-        name: '',
-        email: '',
-      });
-    
-      // --- Getters ---
-      const welcomeMessage = computed(() => {
-        return isLoggedIn.value 
-          ? `欢迎回来, ${userInfo.value.name}!` 
-          : '你好, 游客!';
-      });
-    
-      // --- Actions ---
-      function login(name: string, email: string) {
-        isLoggedIn.value = true;
-        userInfo.value = { name, email };
-      }
-    
-      function logout() {
-        isLoggedIn.value = false;
-        userInfo.value = { name: '', email: '' };
-      }
-    
-      // 必须返回所有需要暴露给外部的状态、getters 和 actions
-      return {
-        isLoggedIn,
-        userInfo,
-        welcomeMessage,
-        login,
-        logout,
-      };
-    });
-    ```
-    *我们这里使用了 Pinia 的 Composition API 写法 (`setup store`)，这是目前更流行和灵活的方式，它和我们之前教学中介绍的 Options API 写法是完全等价的。*
-
-#### **第二步：创建所需组件文件**
-
-我们将创建两个独立的子组件，它们之间没有直接联系。
-
-1.  在 `src/components` 文件夹下，创建一个新文件夹，命名为 `pinia-demo`。
-2.  在 `src/components/pinia-demo` 文件夹下，创建两个新文件：`LoginStatus.vue` 和 `LoginControls.vue`。
-
-你的文件结构现在应该是：
-
-```
-src/
-├── stores/
-│   └── userStore.ts       <-- 新建
-└── components/
-    ├── ...
-    └── pinia-demo/
-        ├── LoginStatus.vue    <-- 新建
-        └── LoginControls.vue  <-- 新建
-```
-
-#### **第三步：创建视图文件并更新路由**
-
-1.  在 `src/views` 文件夹下，创建一个新文件，命名为 `PiniaView.vue`。
-2.  打开 `src/router/index.ts` 文件，添加 `Pinia` 页面的路由记录：
-
-    ```typescript{5}
-    // src/router/index.ts
-    // ...
-    const routes = [
-      // ... (保留之前的路由)
-      { path: '/pinia', name: 'Pinia', component: () => import('../views/PiniaView.vue') }
-    ]
-    // ...
-    ```
-
-#### **第四步：实现子组件**
-
-*   **`LoginStatus.vue` (状态展示组件)**
-    这个组件只负责从 Store 中读取数据并展示。
-
-    打开 `src/components/pinia-demo/LoginStatus.vue` 并粘贴以下代码：
-    ```vue
-    <!-- src/components/pinia-demo/LoginStatus.vue -->
-    <template>
-      <div class="login-status">
-        <h4>状态展示组件 (LoginStatus.vue)</h4>
-        <!-- 直接使用 store 的 getter -->
-        <p>{{ userStore.welcomeMessage }}</p>
-        <div v-if="isLoggedIn" class="user-info">
-          <!-- 解构出来的 ref，在模板中可以直接使用 -->
-          <p><strong>Email:</strong> {{ userInfo.email }}</p>
-        </div>
-      </div>
-    </template>
-    
-    <script setup lang="ts">
-    import { storeToRefs } from 'pinia';
-    import { useUserStore } from '@/stores/userStore';
-    
-    const userStore = useUserStore();
-    
-    // 使用 storeToRefs 来解构 state 和 getters，以保持其响应性
-    const { isLoggedIn, userInfo } = storeToRefs(userStore);
-    </script>
-    
-    <style scoped>
-    .login-status {
-      padding: 15px;
-      background-color: #e6f7ff;
-      border: 1px solid #91d5ff;
-      border-radius: 4px;
-    }
-    .user-info {
-      font-size: 0.9em;
-    }
-    </style>
-    ```
-
-*   **`LoginControls.vue` (操作控制组件)**
-    这个组件只负责调用 Store 的 actions 来改变状态。
-
-    打开 `src/components/pinia-demo/LoginControls.vue` 并粘贴以下代码：
-    ```vue
-    <!-- src/components/pinia-demo/LoginControls.vue -->
-    <template>
-      <div class="login-controls">
-        <h4>操作控制组件 (LoginControls.vue)</h4>
-        <p>这两个按钮会调用 Pinia store 的 actions。</p>
-        <button @click="handleLogin" :disabled="userStore.isLoggedIn">登录</button>
-        <button @click="handleLogout" :disabled="!userStore.isLoggedIn">退出</button>
-      </div>
-    </template>
-    
-    <script setup lang="ts">
-    import { useUserStore } from '@/stores/userStore';
-    
-    const userStore = useUserStore();
-    
-    function handleLogin() {
-      userStore.login('Coder Gemini', 'gemini@google.com');
-    }
-    
-    function handleLogout() {
-      userStore.logout();
-    }
-    </script>
-    
-    <style scoped>
-    .login-controls {
-      padding: 15px;
-      background-color: #f6ffed;
-      border: 1px solid #b7eb8f;
-      border-radius: 4px;
-    }
-    button {
-      margin-right: 10px;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid #d9d9d9;
-    }
-    button:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-    </style>
-    ```
-
-#### **第五步：实现主页面 (`PiniaView.vue`)**
-
-主页面会将这两个独立的子组件放在一起，并提供介绍和代码片段。
-
-打开 `src/views/PiniaView.vue` 并粘贴以下代码：
-```vue
-<!-- src/views/PiniaView.vue -->
-<template>
-  <div class="pinia-view">
-    <!-- 1. 介绍区 -->
-    <section class="intro-section">
-      <h1>6. Pinia</h1>
-      <p>
-        Pinia 是 Vue 官方推荐的状态管理库。它允许你创建集中的、全局共享的“数据仓库”(Store)，让任何组件都能方便地读取和修改状态，非常适合管理如用户信息、购物车等全局数据。
-      </p>
-      <ul>
-        <li><strong>State:</strong> 核心数据源 (响应式)。</li>
-        <li><strong>Getters:</strong> 基于 State 的计算属性 (带缓存)。</li>
-        <li><strong>Actions:</strong> 修改 State 的方法 (可以是异步的)。</li>
-      </ul>
-    </section>
-
-    <!-- 2. 演示区 -->
-    <section class="demo-section">
-      <h2>Live Demo</h2>
-      <p>下面这两个组件没有父子关系，它们通过同一个 Pinia Store 进行通信。</p>
-      <div class="demo-container">
-        <LoginStatus />
-        <LoginControls />
-      </div>
-    </section>
-
-    <!-- 3. 代码区 -->
-    <section class="code-section">
-      <h4>核心代码 (stores/userStore.ts)</h4>
-      <pre><code>{{ storeCode }}</code></pre>
-    </section>
-  </div>
-</template>
-
-<script setup lang="ts">
-import LoginStatus from '@/components/pinia-demo/LoginStatus.vue';
-import LoginControls from '@/components/pinia-demo/LoginControls.vue';
-
-const storeCode = `
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-
-export const useUserStore = defineStore('user', () => {
-  // State
-  const isLoggedIn = ref(false);
-  const userInfo = ref({ name: '', email: '' });
-
-  // Getters
-  const welcomeMessage = computed(() => {
-    return isLoggedIn.value 
-      ? \`欢迎回来, \${userInfo.value.name}!\` 
-      : '你好, 游客!';
-  });
-
-  // Actions
-  function login(name: string, email: string) {
-    isLoggedIn.value = true;
-    userInfo.value = { name, email };
-  }
-
-  function logout() {
-    isLoggedIn.value = false;
-    userInfo.value = { name: '', email: '' };
-  }
-
-  return { isLoggedIn, userInfo, welcomeMessage, login, logout };
-});
-`;
-</script>
-
-<style scoped>
-.pinia-view { max-width: 900px; }
-section { margin-bottom: 30px; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-.demo-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-pre { background-color: #2d2d2d; color: #f0f0f0; padding: 15px; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; }
-</style>```
 
 
-```
-
-#### **第六步：验证成果**
-
-1.  确保你的开发服务器仍在运行。
-2.  在浏览器中，点击侧边栏的 **"6. Pinia"** 链接。
-
-**请进行以下交互测试：**
-
-*   **初始状态**：`LoginStatus` 组件应显示 “你好, 游客!”。`LoginControls` 组件的 “登录” 按钮可点击，“退出” 按钮被禁用。
-*   **点击登录**：点击 `LoginControls` 组件的 “登录” 按钮。
-*   **观察变化**：几乎在同一瞬间，`LoginStatus` 组件的欢迎语会变为 “欢迎回来, Coder Gemini!” 并显示 Email 信息。同时，`LoginControls` 组件的按钮状态会反转，“登录” 被禁用，“退出” 变为可点击。
-*   **点击退出**：点击 “退出” 按钮，观察所有状态是否都恢复到了初始状态。
-
-这个无缝的同步过程完美地展示了 Pinia 的威力：无论组件在哪里，它们都共享着同一个中央数据源，一个组件触发的 `action` 可以立即被所有依赖该状态的组件所响应。
-
-
-
-Excellent. We've just covered Pinia, the robust, structured way to handle global state. Now, let's look at its much lighter, more freewheeling cousin: `mitt`, the event bus.
-
----
-
-### **系统性教学：`mitt` —— 应用的“公共广播系统”**
+### **八、`mitt` —— 应用的“公共广播系统”**
 
 如果说 Pinia 是一个有严格出入库管理的“中央仓库”，那么 `mitt` 就是一个覆盖全城的**“公共广播系统” (PA System)**。
 
 *   任何一个组件都可以拿起麦克风 (`emitter.emit`)，选择一个频道（事件名，如 `'show-notification'`)，然后广播一条消息（payload）。
 *   其他任何一个组件，无论它在城市的哪个角落（组件树的哪个位置），只要它有一个调谐到同一频道 (`'show-notification'`) 的收音机 (`emitter.on`)，就能接收到这条消息。
 
-#### **一、 核心思想：全局发布/订阅 (Pub/Sub)**
+#### **1. 核心思想：全局发布/订阅 (Pub/Sub)**
 
 `mitt` 实现的是经典的发布/订阅模式。
 
@@ -1344,13 +1023,13 @@ Excellent. We've just covered Pinia, the robust, structured way to handle global
 
 如果你需要通知另一个组件“某件事刚刚发生了”，用 `mitt`。如果你需要让多个组件共享“当前的数据是什么”，用 `Pinia`。
 
-#### **二、 学习要点：如何使用 `mitt`**
+#### **2. 学习要点：如何使用 `mitt`**
 
-**1. 全局实例 (我们已在项目基建中完成)**
+**a. 全局实例 (我们已在项目基建中完成)**
 
 我们已经在 `src/utils/emitter.ts` 中创建并导出了一个全局的 `emitter` 实例。这是所有组件通信的枢纽。
 
-**2. 订阅事件 (`emitter.on`) 与取消订阅 (`emitter.off`)**
+**b. 订阅事件 (`emitter.on`) 与取消订阅 (`emitter.off`)**
 
 这是使用 `mitt` 最关键、也最容易出错的地方。
 
@@ -1379,7 +1058,7 @@ Excellent. We've just covered Pinia, the robust, structured way to handle global
     </script>
     ```
 
-**3. 发布事件 (`emitter.emit`)**
+**c. 发布事件 (`emitter.emit`)**
 
 发布事件就简单多了。
 
@@ -1400,9 +1079,9 @@ Excellent. We've just covered Pinia, the robust, structured way to handle global
     </script>
     ```
 
-#### **三、 常见面试题解析**
+#### **3. 常见面试题解析**
 
-**1. "什么是事件总线？它有什么优缺点？"**
+**a. "什么是事件总线？它有什么优缺点？"**
 
 > **答：** 事件总线（Event Bus）是一种应用程序级别的通信模式，它允许各个组件之间进行通信而无需彼此了解。它本质上是一个全局的发布/订阅系统。一个组件可以发布一个事件，而其他订阅了该事件的组件就可以收到通知。
 >
@@ -1415,7 +1094,7 @@ Excellent. We've just covered Pinia, the robust, structured way to handle global
 > *   **潜在的命名冲突**：所有事件名都是全局的，如果不 carefully 地命名，很容易在不同功能模块间造成命名冲突。
 > *   **容易造成内存泄漏**：如果开发者忘记在组件销毁时解绑事件监听器，就会导致内存泄漏。
 
-**2. "使用事件总线时，有什么特别需要注意的地方吗？（面试官很可能在考察内存泄漏问题）"**
+**b. "使用事件总线时，有什么特别需要注意的地方吗？（面试官很可能在考察内存泄漏问题）"**
 
 > **答：** 最需要注意、也是最致命的陷阱就是**内存泄漏**。
 >
@@ -1425,17 +1104,11 @@ Excellent. We've just covered Pinia, the robust, structured way to handle global
 >
 > **解决方案是**：始终遵循一个原则——**“谁订阅，谁取消”**。在组件的 `onMounted` 或 `setup` 中注册监听器，就必须在 `onUnmounted` 这个生命周期钩子中，使用 `emitter.off()` 并传入完全相同的事件名和处理函数，来手动解绑它，确保组件可以被正常回收。
 
----
 
-教学部分结束。`mitt` 是一个简单但“危险”的工具，了解它的工作原理和陷阱至关重要。接下来，我们将通过一个例子来安全地使用它。
-
-
-
-Excellent. We've covered all the primary methods for **data communication**. Now we're moving to the final, and conceptually unique, topic: `slots`. This isn't about passing strings, numbers, or objects; it's about passing entire chunks of user interface.
 
 ---
 
-### **系统性教学：`slots` —— 组件的“内容定制卡槽”**
+### **九、`slots` —— 组件的“内容定制卡槽”**
 
 想象一下你买了一个模块化的书架（子组件）。
 
