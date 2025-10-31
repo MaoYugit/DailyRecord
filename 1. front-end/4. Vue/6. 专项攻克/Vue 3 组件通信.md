@@ -215,6 +215,7 @@ function changeMessage() {
 `emit` 最强大的功能之一是可以在触发事件时附带数据。`emit` 函数的第二个及以后的所有参数，都会被作为载荷（payload）传递给父组件的监听函数。
 
 *   **子组件 (`Child.vue`)**
+    
     ```vue
     <script setup lang="ts">
     // 声明事件，并可以传递参数
@@ -228,9 +229,10 @@ function changeMessage() {
     }
     </script>
     ```
-
+    
 *   **父组件 (`PropsEmit.vue`)**
     父组件的监听函数会自动接收到这些参数。
+    
     ```vue
     <script setup lang="ts">
     function handleUserUpdate(name: string, age: number) {
@@ -283,6 +285,7 @@ function changeMessage() {
 **b. "在自定义事件中，如何区分原生 DOM 事件的 `$event` 和自定义事件的载荷 `$event`？"**
 
 > **答：** 这是一个非常好的问题，关键在于理解 `$event` 变量的上下文。
+>
 > 1.  **在原生 DOM 事件中**：当你在模板中监听一个原生事件时，比如 `<button @click="handleClick($event)">`，这里的 `$event` 是一个**原生的事件对象** (Event Object)，比如 `MouseEvent` 或 `KeyboardEvent`。你可以通过它来访问 `event.target`、`event.preventDefault()` 等原生属性和方法。
 > 2.  **在自定义组件事件中**：当你在父组件模板中监听一个子组件的自定义事件时，比如 `<ChildComponent @my-event="handleEvent($event)" />`，这里的 `$event` 代表的是**子组件 `emit` 出来的第一个参数（payload）**。如果子组件调用 `emit('my-event', 'data1', 'data2')`，那么在父组件模板里的 `$event` 就等于 `'data1'`。
 >
@@ -339,6 +342,7 @@ function changeMessage() {
 3.  在需要更新数据时，`emit` 出 `update:modelValue` 事件，并带上新的值。
 
 *   **子组件 (`CustomInput.vue`) 的实现**
+    
     ```vue
     <template>
       <!-- 
@@ -1264,4 +1268,3 @@ Pinia 的核心是创建一个或多个“Store”（仓库）。每个 Store �
 
 ---
 
-教学部分结束。`slots` 是构建高度可复用和灵活 UI 组件库的基石。接下来，我们将通过一个综合案例来实践这三种插槽。
