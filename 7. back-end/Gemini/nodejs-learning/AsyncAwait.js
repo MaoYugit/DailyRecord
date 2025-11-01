@@ -2,6 +2,8 @@ async function sayHello() {
   return "Hello, World!";
 }
 
+console.log(sayHello());
+
 sayHello().then((value) => {
   console.log(value);
 });
@@ -9,6 +11,8 @@ sayHello().then((value) => {
 async function getSomething() {
   return new Promise((resolve) => resolve("Something"));
 }
+
+console.log(getSomething());
 
 async function throwError() {
   throw new Error("This is an error!");
