@@ -6,7 +6,7 @@ function fetchFrom(url, delay) {
   });
 }
 
-const fastServer = fetchFrom("server-A", 100);
+const fastServer = fetchFrom("server-A", 700);
 const slowServer = fetchFrom("server-B", 500);
 
 Promise.race([fastServer, slowServer])
