@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d610cca7-e445-4770-907c-b394d653458d" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/ControlFlowStatement/FlowControlPractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/ControlFlowStatement/GuessTheNumber.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/ControlFlowStatement/LeapYearChecker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/ControlFlowStatement/LoopPractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/ControlFlowStatement/MultiplicationTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/array/ArrayCalculator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/array/ArrayMaxFinder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/array/ArrayPractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/array/ArrayReverser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/method/ArrayHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/method/MethodPractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/method/NumberChecker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/method/ProfilePrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/operators/MyProfile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/operators/OperatorPractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/operators/ShoppingReceipt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/operators/SimpleCalculator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/basic/variable/VariablePractice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/Dog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/PetShop.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/Phone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/PhoneStore.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/School.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/SchoolConstructor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/classlearn/StudentConstructor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/encapsulation/School.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/encapsulation/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/inheritance/Person.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/inheritance/School.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/inheritance/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/inheritance/Teacher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/polymorphism/Person.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/polymorphism/School.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/polymorphism/Shape.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/polymorphism/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/learn/maoyu/oop/threegood/polymorphism/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../0.Java从零到精通-目录.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../1.Java从零到精通-第一阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../2.Java从零到精通-第二阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../3.Java从零到精通-第三阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../4.Java从零到精通-第四阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../5.Java从零到精通-第五阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../6.Java从零到精通-第六阶段.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Poem.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myFile.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Animal.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Array.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bird.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cat.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CollectionPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DateTimePractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Dog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ExceptionPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Flyable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HelloJava.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MathPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MethodPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Plane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/School.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StringApiPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Teacher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestFlyable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Zoo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heigh_level/CharacterStreamPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heigh_level/ExceptionPra.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heigh_level/FilePractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/heigh_level/ThreadCreationPractice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Java从零到精通.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="35UgW7lrJPLSlt5hI9uAJWThmJJ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/28745/Desktop/DailyRecord/2.Language/2. Java/Java基础/HelloJava/src/Main.java",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.ArrayCalculator.executor": "Run",
+    "应用程序.ArrayHelper.executor": "Run",
+    "应用程序.ArrayMaxFinder.executor": "Run",
+    "应用程序.ArrayPractice.executor": "Run",
+    "应用程序.ArrayReverser.executor": "Run",
+    "应用程序.FlowControlPractice.executor": "Run",
+    "应用程序.GuessTheNumber.executor": "Run",
+    "应用程序.LeapYearChecker.executor": "Run",
+    "应用程序.LoopPractice.executor": "Run",
+    "应用程序.Main.executor": "Run",
+    "应用程序.MethodPractice.executor": "Run",
+    "应用程序.MultiplicationTable.executor": "Run",
+    "应用程序.MyProfile.executor": "Run",
+    "应用程序.NumberChecker.executor": "Run",
+    "应用程序.OperatorPractice.executor": "Run",
+    "应用程序.PetShop.executor": "Run",
+    "应用程序.PhoneStore.executor": "Run",
+    "应用程序.ProfilePrinter.executor": "Run",
+    "应用程序.School.executor": "Run",
+    "应用程序.SchoolConstructor.executor": "Run",
+    "应用程序.ShoppingReceipt.executor": "Run",
+    "应用程序.SimpleCalculator.executor": "Run",
+    "应用程序.VariablePractice.executor": "Run"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="d610cca7-e445-4770-907c-b394d653458d" name="更改" comment="" />
+      <created>1763170096700</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763170096700</updated>
+      <workItem from="1763170097798" duration="14307000" />
+      <workItem from="1763190829272" duration="3674000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
