@@ -75,14 +75,6 @@ console.log(originalObject.b.c); // 输出: 200 (受到影响)
 *   **`console.log(originalObject.b.c); // 输出: 200 (受到影响)`**
     *   `copiedObject.b` 和 `originalObject.b` 指向同一个对象。 修改其中一个的内部属性，会影响到另一个。
 
-**核心概念：浅拷贝 (Shallow Copy) vs. 深拷贝 (Deep Copy)**
-
-为了更好地理解这个问题，我们需要区分浅拷贝和深拷贝：
-
-*   **浅拷贝 (Shallow Copy)**: 只复制对象的第一层属性。 如果属性值是基本类型，就复制值；如果属性值是引用类型（如对象或数组），就复制那个引用的地址。 新旧对象的引用类型属性指向同一个内存地址，因此修改其中一个会影响另一个。 `Object.assign()` 和扩展运算符 `...` 都是进行浅拷贝。
-
-*   **深拷贝 (Deep Copy)**: 会创建一个全新的对象，并递归地复制原对象的所有属性，包括嵌套的对象和数组。 新对象和原对象完全独立，互不影响。 实现深拷贝通常需要借助第三方库（如 Lodash 的 `_.cloneDeep`）或者 `JSON.parse(JSON.stringify(object))` 以及 `structuredClone()` 等方法。
-
 **总结一下这段代码的关键：** `Object.assign()` 实现了浅拷贝。对于 `originalObject` 中的基本类型属性 `a`，它复制了值；但对于对象属性 `b`，它只复制了引用。这就是为什么修改 `copiedObject.b` 会影响到 `originalObject`。
 
 **b) 展开运算符 (`...`)**
@@ -337,7 +329,13 @@ console.log(typeof copiedObject.d); // 输出: "function" (函数也被拷贝了
 
 在日常开发中，如果环境支持，我会优先选择 **`structuredClone()`**。如果项目已经引入了 Lodash，或者需要处理函数等 `structuredClone()` 不支持的类型，那么使用 **`_.cloneDeep()`** 是最稳妥的选择。
 
-好的，面试官您好。这几个关键字是 JavaScript 中错误处理和调试的核心工具，我来分别解释一下它们的作用以及它们是如何协同工作的。
+**核心概念：浅拷贝 (Shallow Copy) vs. 深拷贝 (Deep Copy)**
+
+为了更好地理解这个问题，我们需要区分浅拷贝和深拷贝：
+
+*   **浅拷贝 (Shallow Copy)**: 只复制对象的第一层属性。 如果属性值是基本类型，就复制值；如果属性值是引用类型（如对象或数组），就复制那个引用的地址。 新旧对象的引用类型属性指向同一个内存地址，因此修改其中一个会影响另一个。 `Object.assign()` 和扩展运算符 `...` 都是进行浅拷贝。
+
+*   **深拷贝 (Deep Copy)**: 会创建一个全新的对象，并递归地复制原对象的所有属性，包括嵌套的对象和数组。 新对象和原对象完全独立，互不影响。 实现深拷贝通常需要借助第三方库（如 Lodash 的 `_.cloneDeep`）或者 `JSON.parse(JSON.stringify(object))` 以及 `structuredClone()` 等方法。
 
 ## 三、异常处理 (Exception Handling)
 
