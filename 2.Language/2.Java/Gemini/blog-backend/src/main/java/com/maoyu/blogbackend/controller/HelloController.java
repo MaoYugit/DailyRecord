@@ -18,6 +18,6 @@ public class HelloController {
     @GetMapping("/hello")
     public String hello(){
         // 3. 返回的内容直接显示在浏览器上
-        return "Hello World";
+        return "Hello, My Blog! 这是一个个人博客的开始。";
     }
 }
