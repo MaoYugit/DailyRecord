@@ -1,0 +1,51 @@
+# 1. 服务器配置
+server:
+  port: 8080  # 项目启动端口
+
+# 2. Spring 核心配置
+spring:
+  application:
+    name: blog-backend
+
+  datasource:
+    # 1. 数据库驱动类 (MySQL 8.0+ 使用 cj.jdbc.Driver)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # 2. 数据库连接地址 (URL)
+    # 格式：jdbc:mysql://IP:端口/数据库名?参数
+    # serverTimezone: 设置时区为上海，防止时间差8小时
+    # useUnicode & characterEncoding: 强制使用 UTF-8 避免乱码
+    # useSSL: 开发环境通常关闭 SSL 安全连接，减少报错
+    url: jdbc:mysql://localhost:3306/blog_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+
+    # 3. 数据库账号
+    username: root
+
+    # 4. 数据库密码
+    password: 123456
+
+    # === HikariCP 连接池配置 ===
+    type: com.zaxxer.hikari.HikariDataSource # 指定数据源类型（可选，Spring Boot 会自动识别）
+    hikari:
+      # 1. 最小空闲连接数：系统很闲时，至少保留几个连接干活？
+      minimum-idle: 5
+
+      # 2. 最大连接数：最忙的时候，最多允许创建多少个连接？
+      # (超过这个数，新请求就会被阻塞等待，防止把数据库打挂)
+      maximum-pool-size: 15
+
+      # 3. 连接超时时间：如果池子满了，新请求愿意等多久？(毫秒)
+      # 这里设置 30秒。如果30秒还要不到连接，就报错。
+      connection-timeout: 30000
+
+      # 4. 最大生命周期：一个连接最多存活多久？(毫秒)
+      # 推荐设置比数据库的 wait_timeout 短一点，防止持有已断开的连接。
+      max-lifetime: 1800000 # 30分钟
+
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  configuration:
+    # 开启控制台 SQL 日志打印
+    # 这样当你调用 mapper.selectById(1) 时，控制台会显示：SELECT * FROM tb_user WHERE id = 1
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

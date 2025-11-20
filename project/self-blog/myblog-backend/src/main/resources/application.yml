@@ -1,0 +1,47 @@
+# ==========================================
+# 服务器配置
+# ==========================================
+server:
+  port: 8080  # 后端运行端口，默认 8080
+
+# ==========================================
+# Spring 核心配置
+# ==========================================
+spring:
+  application:
+    name: myblog-backend # 应用名称
+
+  # 数据库连接配置
+  datasource:
+    # MySQL 8.x 驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接串：
+    # 1. localhost:3306/myblog_db -> 对应我们之前创建的数据库名
+    # 2. serverTimezone=Asia/Shanghai -> 解决时差问题
+    # 3. useUnicode=true&characterEncoding=utf-8 -> 解决中文乱码
+    url: jdbc:mysql://localhost:3306/myblog_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+
+# ==========================================
+# MyBatis 配置
+# ==========================================
+mybatis:
+  # 告诉 MyBatis SQL XML 文件放在哪里 (classpath 对应 resources 目录)
+  mapper-locations: classpath:mapper/*.xml
+  # 别名扫描包 (写 XML 时 resultType 可以直接写 "User" 而不用写全限定名)
+  type-aliases-package: com.my.blog.entity
+  configuration:
+    # 开启驼峰命名映射
+    # 自动把数据库的 create_time 映射为 Java 的 createTime
+    map-underscore-to-camel-case: true
+    # 打印 SQL 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# ==========================================
+# PageHelper 分页插件配置
+# ==========================================
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true           # 分页合理化 (比如查第100页没数据，会自动返回最后一页，防止报错)
+  support-methods-arguments: true

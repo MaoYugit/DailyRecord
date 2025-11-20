@@ -1,40 +1,25 @@
 package com.maoyu.blogbackend.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 // 对应数据库里的 tb_user 表
+@Data // 自动生成 Getter/Setter
+@Builder
+@NoArgsConstructor // 生成无参构造
+@AllArgsConstructor // 生成全参构造
+@TableName("users")
 public class User {
+    @TableId(type = IdType.AUTO)
     private Integer id;
     private String username;
     private Integer age;
-
-    // 构造方法
-    public User(Integer id, String username, Integer age) {
-        this.id = id;
-        this.username = username;
-        this.age = age;
-    }
-
-    // Getter/Setter 方法
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+    private LocalDateTime createdAt;
 }

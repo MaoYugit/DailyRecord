@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 必须必须必须 对应 Mapper 接口的全限定名 -->
+<mapper namespace="com.my.blog.mapper.SysUserMapper">
+
+    <!--
+         1. id="insert": 对应接口中的方法名 insert
+         2. useGeneratedKeys="true": 告诉数据库，insert后把生成的主键ID取回来
+         3. keyProperty="id": 把取回来的主键ID赋值给 SysUser 对象的 id 属性
+    -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (
+            username, password, email, nickname, avatar, bio, role, create_time, update_time, is_deleted
+        ) VALUES (
+                     #{username}, #{password}, #{email}, #{nickname}, #{avatar}, #{bio}, #{role}, #{createTime}, #{updateTime}, #{isDeleted}
+                 )
+    </insert>
+
+    <!--
+         1. id="selectById": 对应接口中的方法名 selectById
+         2. resultType="SysUser": 返回值的类型。
+            因为我们在 yaml 里配置了 type-aliases-package，所以这里不用写全名 com.my.blog.entity.SysUser，直接写 SysUser 即可。
+            MyBatis 会自动根据 map-underscore-to-camel-case 把数据库的 create_time 塞给实体的 createTime。
+    -->
+    <select id="selectById" resultType="SysUser">
+        SELECT * FROM sys_user WHERE id = #{id}
+    </select>
+
+</mapper>
