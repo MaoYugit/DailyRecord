@@ -6,27 +6,81 @@
 <!-- namespace 必须必须必须 对应 Mapper 接口的全限定名 -->
 <mapper namespace="com.my.blog.mapper.SysUserMapper">
 
+    <!-- 通用查询映射结果 (即使开启了驼峰映射，显式定义 ResultMap 也是好习惯，特别是为了处理复杂字段) -->
+    <resultMap id="BaseResultMap" type="com.my.blog.entity.SysUser">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="nickname" property="nickname" />
+        <result column="avatar" property="avatar" />
+        <result column="bio" property="bio" />
+        <result column="role" property="role" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, email, nickname, avatar, bio, role, create_time, update_time, is_deleted
+    </sql>
+
+    <!-- 1. 根据ID查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <!-- 2. 根据用户名查询 -->
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM sys_user
+        WHERE username =#{username} AND is_deleted = 0
+    </select>
+
+    <!-- 3. 新增用户 -->
     <!--
-         1. id="insert": 对应接口中的方法名 insert
-         2. useGeneratedKeys="true": 告诉数据库，insert后把生成的主键ID取回来
-         3. keyProperty="id": 把取回来的主键ID赋值给 SysUser 对象的 id 属性
+         id="insert": 对应接口中的方法名 insert
+         useGeneratedKeys="true": 告诉数据库，insert后把生成的主键ID取回来
+         keyProperty="id": 把取回来的主键ID赋值给 SysUser 对象的 id 属性
     -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.my.blog.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_user (
             username, password, email, nickname, avatar, bio, role, create_time, update_time, is_deleted
         ) VALUES (
-                     #{username}, #{password}, #{email}, #{nickname}, #{avatar}, #{bio}, #{role}, #{createTime}, #{updateTime}, #{isDeleted}
+                     #{username}, #{password}, #{email}, #{nickname}, #{avatar}, #{bio}, #{role}, #{createTime}, #{updateTime}, 0
                  )
     </insert>
 
-    <!--
-         1. id="selectById": 对应接口中的方法名 selectById
-         2. resultType="SysUser": 返回值的类型。
-            因为我们在 yaml 里配置了 type-aliases-package，所以这里不用写全名 com.my.blog.entity.SysUser，直接写 SysUser 即可。
-            MyBatis 会自动根据 map-underscore-to-camel-case 把数据库的 create_time 塞给实体的 createTime。
-    -->
-    <select id="selectById" resultType="SysUser">
-        SELECT * FROM sys_user WHERE id = #{id}
-    </select>
+    <!-- 4. 更新用户 (使用动态SQL，不为空才更新) -->
+    <update id="update" parameterType="com.my.blog.entity.SysUser">
+        UPDATE sys_user
+        <set>
+            <if test="email != null">email = #{email},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="bio != null">bio = #{bio},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
 
+    <!-- 5. 逻辑删除 -->
+    <update id="deleteById">
+        UPDATE sys_user
+        SET is_deleted = 1
+        WHERE id = #{id}
+    </update>
+
+    <!-- 6. 查询所有 -->
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE is_deleted = 0
+    </select>
 </mapper>
