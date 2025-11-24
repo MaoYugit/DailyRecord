@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 用户实体类
@@ -68,13 +68,13 @@ public class SysUser {
      * 对应字段: create_time (datetime)
      * 注意：我们开启了 map-underscore-to-camel-case，所以自动对应 create_time
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      * 对应字段: update_time (datetime)
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 逻辑删除: 0-未删除, 1-已删除
