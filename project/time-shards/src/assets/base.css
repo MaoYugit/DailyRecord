@@ -1,0 +1,63 @@
+/* Time Shards - Visual Identity System */
+:root {
+  /* Light Mode (Day) */
+  --color-bg: #FFFFFF;
+  --color-container-bg: #F3F4F6;
+  --color-text-main: #374151;
+  --color-text-sub: #9CA3AF;
+  --color-accent-rational: #000000;
+  --color-accent-mystic: #7C3AED;
+  
+  --font-heading: 'Inter', 'Roboto', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  --transition-speed: 0.3s;
+}
+
+[data-theme='dark'] {
+  /* Dark Mode (Fracture) */
+  --color-bg: #0A0A0A;
+  --color-container-bg: rgba(255, 255, 255, 0.05);
+  --color-text-main: #E0E0E0;
+  --color-text-sub: #6B7280;
+  --color-accent-rational: #06B6D4;
+  --color-accent-mystic: #8B5CF6;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-heading);
+  margin: 0;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--color-accent-rational);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--color-accent-mystic);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-sub);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-mystic);
+}

@@ -1,0 +1,158 @@
+-- 1. 创建数据库
+CREATE DATABASE IF NOT EXISTS myblog_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE myblog_db;
+
+-- ==========================================
+-- 系统模块 (sys_)
+-- ==========================================
+
+-- 2. 用户表 (sys_user)
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `username` varchar(60) NOT NULL COMMENT '用户名',
+  `password` varchar(100) NOT NULL COMMENT '密码(BCrypt加密)',
+  `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
+  `nickname` varchar(60) DEFAULT NULL COMMENT '昵称',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像URL',
+  `bio` varchar(255) DEFAULT NULL COMMENT '简介',
+  `role` tinyint(4) NOT NULL DEFAULT '0' COMMENT '角色: 0-普通用户, 1-管理员',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除: 0-未删除, 1-已删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+-- 3. 系统配置表 (sys_config)
+DROP TABLE IF EXISTS `sys_config`;
+CREATE TABLE `sys_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `config_key` varchar(100) NOT NULL COMMENT '配置键',
+  `config_value` longtext COMMENT '配置值',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_config_key` (`config_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统配置表';
+
+-- 4. 附件表 (sys_attachment)
+DROP TABLE IF EXISTS `sys_attachment`;
+CREATE TABLE `sys_attachment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT '上传用户ID',
+  `original_name` varchar(255) NOT NULL COMMENT '原文件名',
+  `file_path` varchar(255) NOT NULL COMMENT '物理路径',
+  `file_url` varchar(255) NOT NULL COMMENT '访问URL',
+  `file_type` varchar(50) DEFAULT NULL COMMENT '文件类型',
+  `file_size` bigint(20) DEFAULT '0' COMMENT '文件大小(字节)',
+  `storage_location` tinyint(4) DEFAULT '0' COMMENT '存储位置: 0-本地, 1-阿里云, 2-七牛云',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='附件表';
+
+
+-- ==========================================
+-- 博客业务模块 (blog_)
+-- ==========================================
+
+-- 5. 分类表 (blog_category)
+DROP TABLE IF EXISTS `blog_category`;
+CREATE TABLE `blog_category` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL COMMENT '分类名称',
+  `slug` varchar(60) NOT NULL COMMENT 'URL别名',
+  `description` varchar(200) DEFAULT NULL COMMENT '描述',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父分类ID',
+  `sort` int(11) DEFAULT '0' COMMENT '排序(数字越小越前)',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_slug` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分类表';
+
+-- 6. 标签表 (blog_tag)
+DROP TABLE IF EXISTS `blog_tag`;
+CREATE TABLE `blog_tag` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL COMMENT '标签名称',
+  `slug` varchar(60) NOT NULL COMMENT 'URL别名',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_slug` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签表';
+
+-- 7. 文章主表 (blog_article)
+DROP TABLE IF EXISTS `blog_article`;
+CREATE TABLE `blog_article` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL COMMENT '作者ID',
+  `category_id` bigint(20) DEFAULT NULL COMMENT '分类ID',
+  `title` varchar(255) NOT NULL COMMENT '文章标题',
+  `slug` varchar(255) NOT NULL COMMENT '文章别名(URL)',
+  `summary` varchar(500) DEFAULT NULL COMMENT '文章摘要',
+  `content` longtext NOT NULL COMMENT '文章内容(Markdown)',
+  `content_html` longtext COMMENT '文章内容(HTML缓存)',
+  `cover_image` varchar(255) DEFAULT NULL COMMENT '封面图片',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态: 0-草稿, 1-已发布, 2-下架',
+  `is_top` tinyint(1) DEFAULT '0' COMMENT '是否置顶: 0-否, 1-是',
+  `view_count` int(11) DEFAULT '0' COMMENT '浏览量',
+  `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_slug` (`slug`),
+  KEY `idx_category_id` (`category_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
+
+-- 8. 文章-标签关联表 (blog_article_tag)
+DROP TABLE IF EXISTS `blog_article_tag`;
+CREATE TABLE `blog_article_tag` (
+  `article_id` bigint(20) NOT NULL COMMENT '文章ID',
+  `tag_id` bigint(20) NOT NULL COMMENT '标签ID',
+  PRIMARY KEY (`article_id`,`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章标签关联表';
+
+-- 9. 文章扩展属性表 (blog_article_meta)
+DROP TABLE IF EXISTS `blog_article_meta`;
+CREATE TABLE `blog_article_meta` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `article_id` bigint(20) NOT NULL COMMENT '文章ID',
+  `meta_key` varchar(50) NOT NULL COMMENT '属性名',
+  `meta_value` longtext COMMENT '属性值',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_article_key` (`article_id`, `meta_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章扩展属性表';
+
+-- 10. 评论表 (blog_comment)
+DROP TABLE IF EXISTS `blog_comment`;
+CREATE TABLE `blog_comment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `article_id` bigint(20) NOT NULL COMMENT '文章ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '评论人ID(空代表游客)',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父评论ID',
+  `nickname` varchar(60) NOT NULL COMMENT '评论人昵称',
+  `email` varchar(100) DEFAULT NULL COMMENT '评论人邮箱',
+  `website` varchar(200) DEFAULT NULL COMMENT '评论人网站',
+  `content` varchar(1000) NOT NULL COMMENT '评论内容',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态: 0-待审核, 1-通过, 2-垃圾评论',
+  `is_admin` tinyint(1) DEFAULT '0' COMMENT '是否博主回复',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '评论时间',
+  `is_deleted` tinyint(1) DEFAULT '0' COMMENT '逻辑删除',
+  PRIMARY KEY (`id`),
+  KEY `idx_article_id` (`article_id`),
+  KEY `idx_parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+
+-- 11. 插入一些测试数据
+INSERT INTO `sys_user` (`username`, `password`, `nickname`, `role`) VALUES ('admin', '$2a$10$EblZqNptyYgIzxRcyJjH.u.KfrLf.x/x/x/x/x/x/x/x', 'Admin', 1);
+
+INSERT INTO `blog_category` (`name`, `slug`, `description`) VALUES ('Java', 'java', 'Java related articles');
+INSERT INTO `blog_category` (`name`, `slug`, `description`) VALUES ('Vue', 'vue', 'Vue.js related articles');
+
+INSERT INTO `blog_article` (`user_id`, `category_id`, `title`, `slug`, `content`, `status`) VALUES 
+(1, 1, 'Hello World', 'hello-world', '# Hello World\nThis is my first post.', 1),
+(1, 2, 'Vue 3 Guide', 'vue-3-guide', '# Vue 3 Guide\nVue 3 is awesome.', 1);
