@@ -1,23 +1,32 @@
 package com.timeshards.mapper;
 
 import com.timeshards.entity.Tag;
-import org.apache.ibatis.annotations.*;
-
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
 public interface TagMapper {
 
-    @Select("SELECT * FROM blog_tag ORDER BY create_time DESC")
-    List<Tag> findAll();
+    // 基础查询
+    Tag selectById(@Param("id") Long id);
 
-    @Select("SELECT * FROM blog_tag WHERE id = #{id}")
-    Tag findById(Long id);
+    // 查重用 (关键)
+    Tag selectByName(@Param("name") String name);
+    Tag selectBySlug(@Param("slug") String slug);
 
-    @Insert("INSERT INTO blog_tag(name, slug, create_time) VALUES(#{name}, #{slug}, NOW())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Tag tag);
+    // 列表查询 (按时间倒序)
+    List<Tag> selectAll();
 
-    @Delete("DELETE FROM blog_tag WHERE id = #{id}")
-    void deleteById(Long id);
+    // 热门标签查询 (统计文章关联数，取前 Limit 个)
+    List<Tag> selectHotTags(@Param("limit") int limit);
+
+    // 写入
+    int insert(Tag tag);
+
+    // 修改 (例如修正错别字)
+    int updateById(Tag tag);
+
+    // 删除
+    int deleteById(@Param("id") Long id);
 }

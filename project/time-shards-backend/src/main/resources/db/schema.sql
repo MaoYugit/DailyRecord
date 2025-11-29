@@ -148,7 +148,7 @@ CREATE TABLE `blog_comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
 
 -- 11. 插入一些测试数据
-INSERT INTO `sys_user` (`username`, `password`, `nickname`, `role`) VALUES ('admin', '$2a$10$EblZqNptyYgIzxRcyJjH.u.KfrLf.x/x/x/x/x/x/x/x', 'Admin', 1);
+INSERT INTO `sys_user` (`username`, `password`, `nickname`, `role`) VALUES ('admin', '$admin123', 'Admin', 1);
 
 INSERT INTO `blog_category` (`name`, `slug`, `description`) VALUES ('Java', 'java', 'Java related articles');
 INSERT INTO `blog_category` (`name`, `slug`, `description`) VALUES ('Vue', 'vue', 'Vue.js related articles');

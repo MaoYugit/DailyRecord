@@ -3,5 +3,6 @@
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d3fb40a5-a7d4-4fce-8d35-0c979d8d5d0f/console.sql" value="d3fb40a5-a7d4-4fce-8d35-0c979d8d5d0f" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d3fb40a5-a7d4-4fce-8d35-0c979d8d5d0f/console_1.sql" value="d3fb40a5-a7d4-4fce-8d35-0c979d8d5d0f" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapper/CategoryMapper.xml" value="d3fb40a5-a7d4-4fce-8d35-0c979d8d5d0f" />
   </component>
 </project>

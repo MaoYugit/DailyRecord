@@ -5,15 +5,13 @@ spring:
   application:
     name: time-shards-backend
   datasource:
-    # 修改点：在末尾追加了 &allowPublicKeyRetrieval=true
     url: jdbc:mysql://localhost:3306/myblog_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    # 请确保这里的密码是你本地 MySQL 的真实密码
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
-      mode: always
+      mode: never
       schema-locations: classpath:db/schema.sql
 
 mybatis:
@@ -23,7 +21,18 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 springdoc:
-  api-docs:
-    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.timeshards.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

@@ -1,18 +1,27 @@
 package com.timeshards.mapper;
 
 import com.timeshards.entity.Attachment;
-import org.apache.ibatis.annotations.*;
-
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
 public interface AttachmentMapper {
 
-    @Select("SELECT * FROM sys_attachment WHERE user_id = #{userId} ORDER BY create_time DESC")
-    List<Attachment> findByUserId(Long userId);
+    /**
+     * 新增附件记录
+     */
+    int insert(Attachment attachment);
 
-    @Insert("INSERT INTO sys_attachment(user_id, original_name, file_path, file_url, file_type, file_size, storage_location, create_time) " +
-            "VALUES(#{userId}, #{originalName}, #{filePath}, #{fileUrl}, #{fileType}, #{fileSize}, #{storageLocation}, NOW())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Attachment attachment);
+    /**
+     * 删除附件记录 (物理删除)
+     * Service层需配合删除云端/本地文件
+     */
+    int deleteById(@Param("id") Long id);
+
+    /**
+     * 查询某用户的附件列表
+     * 按上传时间倒序排列
+     */
+    List<Attachment> selectByUserId(@Param("userId") Long userId);
 }

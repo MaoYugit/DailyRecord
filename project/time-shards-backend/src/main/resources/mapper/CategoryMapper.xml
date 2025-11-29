@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.timeshards.mapper.CategoryMapper">
+
+    <!-- 1. 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.timeshards.entity.Category">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="slug" property="slug" />
+        <result column="description" property="description" />
+        <result column="parent_id" property="parentId" />
+        <result column="sort" property="sort" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 2. 通用字段列表 -->
+    <sql id="Base_Column_List">
+        id, name, slug, description, parent_id, sort, create_time
+    </sql>
+
+    <!-- 3. 根据ID查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM blog_category
+        WHERE id = #{id}
+    </select>
+
+    <!-- 4. 根据Slug查询 -->
+    <select id="selectBySlug" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM blog_category
+        WHERE slug = #{slug}
+    </select>
+
+    <!-- 5. 根据Name查询 -->
+    <select id="selectByName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM blog_category
+        WHERE name = #{name}
+    </select>
+
+    <!-- 6. 查询所有 (按 sort 升序, create_time 降序) -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM blog_category
+        ORDER BY sort ASC, create_time DESC
+    </select>
+
+    <!-- 7. 插入数据 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO blog_category
+            (name, slug, description, parent_id, sort, create_time)
+        VALUES
+            (#{name}, #{slug}, #{description}, #{parentId}, #{sort}, NOW())
+    </insert>
+
+    <!-- 8. 动态更新 -->
+    <update id="updateById">
+        UPDATE blog_category
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="slug != null and slug != ''">slug = #{slug},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="sort != null">sort = #{sort},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 9. 物理删除 (表中无 is_deleted 字段) -->
+    <delete id="deleteById">
+        DELETE FROM blog_category
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

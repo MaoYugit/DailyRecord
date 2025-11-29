@@ -2,66 +2,86 @@ package com.timeshards.mapper;
 
 import com.timeshards.entity.Article;
 import com.timeshards.entity.ArticleMeta;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 文章核心 Mapper
+ * 融合了文章主体管理 + 标签关联管理 + Meta扩展属性管理
+ */
 @Mapper
 public interface ArticleMapper {
 
-    @Select("<script>" +
-            "SELECT a.*, c.name as categoryName, u.nickname as authorName " +
-            "FROM blog_article a " +
-            "LEFT JOIN blog_category c ON a.category_id = c.id " +
-            "LEFT JOIN sys_user u ON a.user_id = u.id " +
-            "WHERE a.is_deleted = 0 AND a.status = 1 " +
-            "<if test='categoryId != null'> AND a.category_id = #{categoryId} </if>" +
-            "<if test='keyword != null and keyword != \"\"'> AND (a.title LIKE CONCAT('%', #{keyword}, '%') OR a.content LIKE CONCAT('%', #{keyword}, '%')) </if>" +
-            "ORDER BY a.is_top DESC, a.create_time DESC " +
-            "LIMIT #{offset}, #{limit}" +
-            "</script>")
-    List<Article> findList(@Param("categoryId") Long categoryId, 
-                           @Param("keyword") String keyword, 
-                           @Param("offset") int offset, 
-                           @Param("limit") int limit);
+    // ==================== 查询 (Read) ====================
 
-    @Select("<script>" +
-            "SELECT COUNT(*) FROM blog_article a " +
-            "WHERE a.is_deleted = 0 AND a.status = 1 " +
-            "<if test='categoryId != null'> AND a.category_id = #{categoryId} </if>" +
-            "<if test='keyword != null and keyword != \"\"'> AND (a.title LIKE CONCAT('%', #{keyword}, '%') OR a.content LIKE CONCAT('%', #{keyword}, '%')) </if>" +
-            "</script>")
-    long count(@Param("categoryId") Long categoryId, @Param("keyword") String keyword);
+    /**
+     * 【详情】根据ID查询 (高性能 5表联查)
+     * 一次性带出：文章本体、作者、分类、标签列表、Meta列表
+     */
+    Article selectDetailById(@Param("id") Long id);
 
-    @Select("SELECT a.*, c.name as categoryName, u.nickname as authorName " +
-            "FROM blog_article a " +
-            "LEFT JOIN blog_category c ON a.category_id = c.id " +
-            "LEFT JOIN sys_user u ON a.user_id = u.id " +
-            "WHERE a.id = #{id} AND a.is_deleted = 0")
-    Article findById(Long id);
+    /**
+     * 【详情】根据Slug查询 (SEO路由用)
+     */
+    Article selectDetailBySlug(@Param("slug") String slug);
 
-    @Insert("INSERT INTO blog_article(user_id, category_id, title, slug, summary, content, cover_image, status, create_time) " +
-            "VALUES(#{userId}, #{categoryId}, #{title}, #{slug}, #{summary}, #{content}, #{coverImage}, #{status}, NOW())")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Article article);
+    /**
+     * 【列表】条件查询
+     * 支持：分类、标签(暂未实现复杂SQL)、用户、状态、关键词(标题+内容)
+     * 自动处理分页需要配合 PageHelper 或手动 Limit
+     */
+    List<Article> selectList(Article article);
 
-    // Tags
-    @Insert("INSERT INTO blog_article_tag(article_id, tag_id) VALUES(#{articleId}, #{tagId})")
-    void addTag(@Param("articleId") Long articleId, @Param("tagId") Long tagId);
+    /**
+     * 【统计】根据条件统计总数 (用于分页计算)
+     */
+    long selectCount(Article article);
 
-    @Delete("DELETE FROM blog_article_tag WHERE article_id = #{articleId}")
-    void deleteTagsByArticleId(Long articleId);
+    // ==================== 写入 (Write) ====================
 
-    @Select("SELECT t.* FROM blog_tag t JOIN blog_article_tag at ON t.id = at.tag_id WHERE at.article_id = #{articleId}")
-    List<com.timeshards.entity.Tag> findTagsByArticleId(Long articleId);
+    /**
+     * 1. 新增文章主体 (返回 ID)
+     */
+    int insert(Article article);
 
-    // Meta
-    @Insert("INSERT INTO blog_article_meta(article_id, meta_key, meta_value) VALUES(#{articleId}, #{metaKey}, #{metaValue})")
-    void addMeta(ArticleMeta meta);
+    /**
+     * 2. 更新文章主体
+     */
+    int updateById(Article article);
 
-    @Delete("DELETE FROM blog_article_meta WHERE article_id = #{articleId}")
-    void deleteMetasByArticleId(Long articleId);
+    /**
+     * 3. 逻辑删除文章
+     */
+    int deleteById(@Param("id") Long id);
 
-    @Select("SELECT * FROM blog_article_meta WHERE article_id = #{articleId}")
-    List<com.timeshards.entity.ArticleMeta> findMetasByArticleId(Long articleId);
+    /**
+     * 4. 阅读量 +1
+     */
+    int incrementViewCount(@Param("id") Long id);
+
+    // ==================== 关联管理 (Relations) ====================
+    // 你的代码里这些逻辑非常棒，我把它们转为 XML 实现以保持风格统一
+
+    /**
+     * 批量插入文章-标签关联
+     * Service 层保存文章后，把 List<Long> tagIds 传进来
+     */
+    int insertArticleTags(@Param("articleId") Long articleId, @Param("tagIds") List<Long> tagIds);
+
+    /**
+     * 删除该文章的所有标签关联 (用于更新文章时，先删后加)
+     */
+    int deleteTagsByArticleId(@Param("articleId") Long articleId);
+
+    /**
+     * 批量插入扩展属性
+     */
+    int insertArticleMetas(@Param("metas") List<ArticleMeta> metas);
+
+    /**
+     * 删除该文章的所有扩展属性
+     */
+    int deleteMetasByArticleId(@Param("articleId") Long articleId);
 }
