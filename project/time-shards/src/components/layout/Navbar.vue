@@ -11,7 +11,8 @@
       <!-- <router-link to="/search">搜索</router-link> -->
     </div>
     <div class="navbar-actions">
-      <div v-if="userStore.isAuthenticated" class="user-menu">
+      <div v-if="userStore.isLoggedIn" class="user-menu">
+        <router-link to="/editor" class="new-shard-btn">New Shard</router-link>
         <span>{{ userStore.user?.username }}</span>
         <button @click="handleLogout" class="logout-btn">Logout</button>
       </div>
@@ -141,5 +142,22 @@ const handleLogout = () => {
   color: var(--color-text-main);
   font-weight: bold;
   margin-right: 1rem;
+}
+
+.new-shard-btn {
+  background: var(--color-accent-rational);
+  color: #000 !important;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 1rem;
+  transition: all 0.2s;
+}
+
+.new-shard-btn:hover {
+  box-shadow: 0 0 10px var(--color-accent-rational);
+  transform: translateY(-1px);
 }
 </style>

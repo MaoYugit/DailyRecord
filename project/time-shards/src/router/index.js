@@ -24,6 +24,16 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: Register
+    },
+    {
+        path: '/editor',
+        name: 'ArticleCreate',
+        component: () => import('../views/ArticleEditor.vue')
+    },
+    {
+        path: '/editor/:id',
+        name: 'ArticleEdit',
+        component: () => import('../views/ArticleEditor.vue')
     }
 ];
 

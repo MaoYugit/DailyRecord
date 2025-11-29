@@ -1,87 +1,152 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { getComments, createComment } from "@/api";
-import { useUserStore } from "@/stores/user";
+import { ref, onMounted } from 'vue';
+import { getComments, createComment } from '@/api/comment';
+import { useUserStore } from '@/stores/user';
+import gsap from 'gsap';
 
 const props = defineProps({
   articleId: {
     type: [String, Number],
-    required: true,
-  },
+    required: true
+  }
 });
 
-const comments = ref([]);
-const newCommentContent = ref("");
 const userStore = useUserStore();
-const loading = ref(false);
+const comments = ref([]);
+const newComment = ref('');
+const replyTo = ref(null);
+const replyContent = ref('');
 
-const loadComments = async () => {
+const fetchComments = async () => {
   try {
     const res = await getComments(props.articleId);
-    comments.value = res || [];
+    // Assuming backend returns flat list or tree. If flat, we might need to build tree.
+    // For now assuming backend returns a list of comments, and we render them.
+    // If backend returns flat list with parent_id, we should process it.
+    // Let's assume the backend returns a flat list and we build the tree here or it returns a tree.
+    // Given the SQL, it has parent_id.
+    // Let's assume flat list for simplicity first, or simple nesting if backend handles it.
+    // I'll implement a simple flat list that renders replies indented if I build the tree, 
+    // but for now let's just render the list and handle "Reply" by setting parent_id.
+    
+    // Let's build a simple tree if it's flat
+    if (Array.isArray(res)) {
+        const map = {};
+        const roots = [];
+        res.forEach(c => {
+            c.children = [];
+            map[c.id] = c;
+        });
+        res.forEach(c => {
+            if (c.parent_id && c.parent_id !== 0 && map[c.parent_id]) {
+                map[c.parent_id].children.push(c);
+            } else {
+                roots.push(c);
+            }
+        });
+        comments.value = roots;
+    } else {
+        comments.value = [];
+    }
   } catch (error) {
-    console.error("Failed to load comments:", error);
+    console.error('Failed to load comments:', error);
   }
 };
 
-const submitComment = async () => {
-  if (!newCommentContent.value.trim()) return;
+const submitComment = async (parentId = 0) => {
+  if (!userStore.isLoggedIn) {
+    alert('Please login to comment');
+    return;
+  }
+  
+  const content = parentId === 0 ? newComment.value : replyContent.value;
+  if (!content.trim()) return;
 
   try {
-    // 获取昵称逻辑：优先取昵称 -> 其次取用户名 -> 最后默认"时空旅人"
-    const nickname =
-      userStore.user?.nickname || userStore.user?.username || "Time Traveler";
-
     await createComment({
-      articleId: props.articleId,
-      content: newCommentContent.value,
-      userId: userStore.user?.id,
-      nickname: nickname, // <--- 【添加这一行】
+      article_id: props.articleId,
+      content: content,
+      parent_id: parentId
     });
-
-    newCommentContent.value = "";
-    await loadComments();
+    
+    // Clear inputs
+    newComment.value = '';
+    replyContent.value = '';
+    replyTo.value = null;
+    
+    // Reload comments
+    await fetchComments();
   } catch (error) {
-    console.error("Failed to post comment:", error);
-    alert("Failed to post comment: " + error.message);
+    console.error('Failed to post comment:', error);
+    alert('Failed to post comment');
   }
+};
+
+const setReply = (comment) => {
+    if (replyTo.value === comment.id) {
+        replyTo.value = null;
+    } else {
+        replyTo.value = comment.id;
+    }
 };
 
 onMounted(() => {
-  loadComments();
+  fetchComments();
 });
 </script>
 
 <template>
   <div class="comment-section">
     <h3>Comments</h3>
-
-    <div v-if="userStore.isAuthenticated" class="comment-form">
-      <textarea
-        v-model="newCommentContent"
-        placeholder="Leave a trace..."
-        rows="3"
+    
+    <div class="comment-form">
+      <textarea 
+        v-model="newComment" 
+        placeholder="Leave a shard of thought..."
+        :disabled="!userStore.isLoggedIn"
       ></textarea>
-      <button @click="submitComment">Transmit</button>
-    </div>
-    <div v-else class="login-prompt">
-      <router-link to="/login">Login</router-link> to comment.
+      <div class="form-actions">
+        <button @click="submitComment(0)" :disabled="!userStore.isLoggedIn">Post Comment</button>
+        <span v-if="!userStore.isLoggedIn" class="login-hint">Login to comment</span>
+      </div>
     </div>
 
     <div class="comments-list">
       <div v-for="comment in comments" :key="comment.id" class="comment-item">
-        <div class="comment-header">
-          <span class="author">{{ comment.username || "Anonymous" }}</span>
-          <span class="date">{{
-            new Date(comment.createTime).toLocaleString()
-          }}</span>
+        <div class="comment-avatar">
+            <!-- Placeholder avatar -->
+            <div class="avatar-placeholder">{{ comment.nickname ? comment.nickname[0].toUpperCase() : 'U' }}</div>
         </div>
         <div class="comment-content">
-          {{ comment.content }}
+            <div class="comment-header">
+                <span class="nickname">{{ comment.nickname }}</span>
+                <span class="date">{{ new Date(comment.create_time).toLocaleDateString() }}</span>
+            </div>
+            <p>{{ comment.content }}</p>
+            <button class="reply-btn" @click="setReply(comment)">Reply</button>
+            
+            <!-- Reply Form -->
+            <div v-if="replyTo === comment.id" class="reply-form">
+                <textarea v-model="replyContent" placeholder="Write a reply..."></textarea>
+                <button @click="submitComment(comment.id)">Submit Reply</button>
+            </div>
+
+            <!-- Children -->
+            <div v-if="comment.children && comment.children.length > 0" class="replies">
+                <div v-for="child in comment.children" :key="child.id" class="comment-item child-comment">
+                    <div class="comment-avatar small">
+                        <div class="avatar-placeholder">{{ child.nickname ? child.nickname[0].toUpperCase() : 'U' }}</div>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="nickname">{{ child.nickname }}</span>
+                            <span class="date">{{ new Date(child.create_time).toLocaleDateString() }}</span>
+                        </div>
+                        <p>{{ child.content }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div v-if="comments.length === 0" class="no-comments">
-        No signals detected.
       </div>
     </div>
   </div>
@@ -94,52 +159,111 @@ onMounted(() => {
   padding-top: 2rem;
 }
 
-.comment-form {
-  margin-bottom: 2rem;
-}
-
-textarea {
+.comment-form textarea, .reply-form textarea {
   width: 100%;
-  padding: 1rem;
-  background: var(--color-bg-secondary);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border);
   color: var(--color-text-main);
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  resize: vertical;
+  padding: 1rem;
+  border-radius: 8px;
+  min-height: 100px;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 button {
   background: var(--color-accent-rational);
-  color: #fff;
+  color: #000;
   border: none;
   padding: 0.5rem 1.5rem;
-  cursor: pointer;
   border-radius: 4px;
-  font-family: var(--font-mono);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.login-hint {
+  color: var(--color-text-sub);
+  font-size: 0.9rem;
+}
+
+.comments-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .comment-item {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  gap: 1rem;
+}
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  background: var(--color-accent-mystic);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.comment-content {
+  flex: 1;
 }
 
 .comment-header {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--color-text-sub);
 }
 
-.author {
+.nickname {
   font-weight: bold;
-  color: var(--color-accent-mystic);
+  color: var(--color-accent-rational);
+  margin-right: 1rem;
 }
 
-.no-comments {
+.date {
   color: var(--color-text-sub);
-  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.reply-btn {
+  background: none;
+  color: var(--color-text-sub);
+  padding: 0;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.reply-btn:hover {
+  color: var(--color-text-main);
+}
+
+.replies {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-border);
+}
+
+.child-comment {
+    margin-top: 1rem;
+}
+
+.avatar-placeholder.small {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
 }
 </style>
