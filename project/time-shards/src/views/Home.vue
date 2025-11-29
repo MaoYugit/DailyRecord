@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useArticleStore } from '../stores/article';
-import ShardCard from '../components/common/ShardCard.vue';
-import gsap from 'gsap';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from "vue";
+import { useArticleStore } from "../stores/article";
+import ShardCard from "../components/common/ShardCard.vue";
+import gsap from "gsap";
+import { useRouter } from "vue-router";
 
 const articleStore = useArticleStore();
 const router = useRouter();
@@ -19,25 +19,17 @@ const loadArticles = async () => {
   try {
     const res = await articleStore.fetchArticles({
       page: page.value,
-      limit: 10
+      limit: 10,
     });
-    
-    // Assuming res.list is the array
     const newArticles = res.list || [];
     if (newArticles.length === 0) {
       finished.value = true;
     } else {
       articles.value.push(...newArticles);
       page.value++;
-      
-      // Animate new items
-      // We need to wait for DOM update, but for simplicity let's just animate the whole list or use a transition group
-      // Better: use nextTick or just animate on enter in CSS/TransitionGroup.
-      // Or use GSAP on mounted for initial load.
     }
-
   } catch (error) {
-    console.error('Failed to load articles:', error);
+    console.error("Failed to load articles:", error);
   } finally {
     loading.value = false;
   }
@@ -52,9 +44,9 @@ const onEnter = (el, done) => {
     opacity: 0,
     y: 50,
     duration: 0.6,
-    ease: 'power2.out',
+    ease: "power2.out",
     onComplete: done,
-    delay: el.dataset.index * 0.1 // Stagger effect
+    delay: el.dataset.index * 0.1,
   });
 };
 
@@ -71,11 +63,7 @@ onMounted(() => {
     </div>
 
     <div class="articles-list">
-      <transition-group
-        appear
-        @enter="onEnter"
-        :css="false"
-      >
+      <transition-group appear @enter="onEnter" :css="false">
         <ShardCard
           v-for="(article, index) in articles"
           :key="article.id"
@@ -86,9 +74,7 @@ onMounted(() => {
       </transition-group>
     </div>
 
-    <div v-if="loading" class="loading-indicator">
-      Loading...
-    </div>
+    <div v-if="loading" class="loading-indicator">Loading...</div>
     <div v-if="finished && articles.length > 0" class="end-indicator">
       - End of Transmission -
     </div>
@@ -130,7 +116,8 @@ onMounted(() => {
   gap: 1.5rem;
 }
 
-.loading-indicator, .end-indicator {
+.loading-indicator,
+.end-indicator {
   text-align: center;
   margin-top: 2rem;
   color: var(--color-text-sub);
