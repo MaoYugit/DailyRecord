@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.timeshards.mapper.UserMapper">
+
+    <!-- 1. 标准结果映射 (Best Practice: 显式映射优于隐式转换) -->
+    <resultMap id="BaseResultMap" type="com.timeshards.entity.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="nickname" property="nickname" />
+        <result column="avatar" property="avatar" />
+        <result column="bio" property="bio" />
+        <result column="role" property="role" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 2. 通用查询列 (Best Practice: 避免 SELECT *) -->
+    <sql id="Base_Column_List">
+        id, username, password, email, nickname, avatar, bio, role, create_time, update_time, is_deleted
+    </sql>
+
+    <!-- 3. 根据ID查询 (过滤逻辑删除) -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE id = #{id} AND is_deleted = 0
+    </select>
+
+    <!-- 4. 根据用户名查询 (过滤逻辑删除) -->
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE username = #{username} AND is_deleted = 0
+    </select>
+
+    <!-- 5. 插入数据 (主键回填) -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user
+        (username, password, email, nickname, avatar, bio, role, create_time, update_time, is_deleted)
+        VALUES
+            (#{username}, #{password}, #{email}, #{nickname}, #{avatar}, #{bio}, #{role}, NOW(), NOW(), 0)
+    </insert>
+
+    <!-- 6. 动态更新 (核心功能: 自动处理 null 值) -->
+    <update id="updateById">
+        UPDATE sys_user
+        <set>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+            <if test="bio != null">bio = #{bio},</if>
+            <if test="role != null">role = #{role},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id} AND is_deleted = 0
+    </update>
+
+    <!-- 7. 逻辑删除 -->
+    <update id="deleteById">
+        UPDATE sys_user
+        SET is_deleted = 1, update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+</mapper>

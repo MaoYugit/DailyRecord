@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.timeshards.mapper.AttachmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.timeshards.entity.Attachment">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="original_name" property="originalName" />
+        <result column="file_path" property="filePath" />
+        <result column="file_url" property="fileUrl" />
+        <result column="file_type" property="fileType" />
+        <result column="file_size" property="fileSize" />
+        <result column="storage_location" property="storageLocation" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_attachment
+        (user_id, original_name, file_path, file_url, file_type, file_size, storage_location, create_time)
+        VALUES
+        (#{userId}, #{originalName}, #{filePath}, #{fileUrl}, #{fileType}, #{fileSize}, #{storageLocation}, NOW())
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM sys_attachment WHERE id = #{id}
+    </delete>
+
+    <!-- 采纳你的建议：按时间倒序 -->
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT * FROM sys_attachment
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+</mapper>

@@ -1,12 +1,16 @@
 package com.timeshards.controller;
 
 import com.timeshards.common.ApiResponse;
+import com.timeshards.common.JwtUtils;
 import com.timeshards.entity.User;
 import com.timeshards.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -16,12 +20,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "用户登录", description = "通过用户名和密码登录")
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Operation(summary = "用户登录", description = "通过用户名和密码登录，返回 Token")
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody User loginReq) {
+    public ApiResponse<Map<String, Object>> login(@RequestBody User loginReq) {
+        // 1. 验证账号密码
         User user = userService.login(loginReq.getUsername(), loginReq.getPassword());
-        user.setPassword(null); // 不返回密码
-        return ApiResponse.success(user);
+        
+        // 2. 生成 Token
+        String token = jwtUtils.generateToken(user.getUsername());
+        
+        // 3. 构建返回结果
+        Map<String, Object> result = new HashMap<>();
+        user.setPassword(null); // 抹除密码
+        result.put("user", user);
+        result.put("token", token);
+        
+        return ApiResponse.success(result);
     }
 
     @Operation(summary = "用户注册", description = "注册新用户")
