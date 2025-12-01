@@ -30,4 +30,11 @@ public class AttachmentController {
     public ApiResponse<List<Attachment>> getAttachments(@RequestParam Long userId) {
         return ApiResponse.success(attachmentService.getAttachments(userId));
     }
+
+    @Operation(summary = "删除附件", description = "删除附件记录")
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteAttachment(@PathVariable Long id) {
+        attachmentService.deleteAttachment(id);
+        return ApiResponse.success("删除成功");
+    }
 }

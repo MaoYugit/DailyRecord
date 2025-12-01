@@ -25,8 +25,11 @@ public class ConfigController {
 
     @Operation(summary = "更新配置", description = "更新或添加配置项")
     @PostMapping
-    public ApiResponse<String> updateConfig(@RequestBody Map<String, String> configs) {
-        configs.forEach((k, v) -> configService.updateConfig(k, v));
+    public ApiResponse<String> updateConfig(@RequestBody Map<String, String> payload) {
+        // payload 格式: { "key": "value", "description": "desc" } 
+        // 简化起见，这里假设 payload 是 key-value 对，description 暂时忽略或通过特定约定传递
+        // 实际场景建议定义一个 ConfigRequest DTO
+        payload.forEach((k, v) -> configService.updateConfig(k, v, null));
         return ApiResponse.success("配置更新成功");
     }
 }

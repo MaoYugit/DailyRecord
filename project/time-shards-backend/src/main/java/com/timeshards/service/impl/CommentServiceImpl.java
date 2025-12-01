@@ -1,9 +1,9 @@
 package com.timeshards.service.impl;
 
 import com.timeshards.entity.Comment;
-import com.timeshards.entity.User; // 引入 User 实体
+import com.timeshards.entity.User;
 import com.timeshards.mapper.CommentMapper;
-import com.timeshards.mapper.UserMapper; // 引入 UserMapper
+import com.timeshards.mapper.UserMapper;
 import com.timeshards.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,36 +17,41 @@ public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
 
     @Autowired
-    private UserMapper userMapper; // 【新增】我们需要查用户信息
+    private UserMapper userMapper;
 
     @Override
-    public List<Comment> getCommentsByArticleId(Long articleId) {
-        return commentMapper.findByArticleId(articleId);
+    public List<Comment> getComments(Long articleId, Integer status) {
+        return commentMapper.selectList(articleId, status);
     }
 
     @Override
     public Comment createComment(Comment comment) {
-        // 1. 设置默认状态
+        // 1. 设置默认状态 (待审核)
         if (comment.getStatus() == null) {
-            comment.setStatus(1);
+            comment.setStatus(0); 
         }
 
-        // 2. 【关键修复】处理 nickname 为空的情况
-        if (comment.getNickname() == null || comment.getNickname().trim().isEmpty()) {
-            if (comment.getUserId() != null) {
-                // 根据 userId 查询用户信息
-                User user = userMapper.findById(comment.getUserId());
-                if (user != null) {
-                    // 优先使用昵称，没有则用用户名
-                    String name = (user.getNickname() != null && !user.getNickname().isEmpty())
-                            ? user.getNickname()
-                            : user.getUsername();
-                    comment.setNickname(name);
+        // 2. 自动填充用户信息
+        if (comment.getUserId() != null) {
+            User user = userMapper.selectById(comment.getUserId());
+            if (user != null) {
+                // 如果前端没传昵称，用数据库的
+                if (comment.getNickname() == null || comment.getNickname().trim().isEmpty()) {
+                    comment.setNickname(user.getNickname() != null ? user.getNickname() : user.getUsername());
+                }
+                // 如果前端没传邮箱，用数据库的
+                if (comment.getEmail() == null || comment.getEmail().trim().isEmpty()) {
+                    comment.setEmail(user.getEmail());
+                }
+                // 如果是管理员发评，标记一下
+                if (user.getRole() != null && user.getRole() == 1) {
+                    comment.setIsAdmin(1);
+                    comment.setStatus(1); // 管理员评论直接通过
                 }
             }
         }
 
-        // 3. 最后的兜底：如果查不到用户，或者没传userId，给个默认值防止报错
+        // 3. 游客兜底
         if (comment.getNickname() == null || comment.getNickname().trim().isEmpty()) {
             comment.setNickname("Anonymous");
         }
@@ -58,5 +63,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void auditComment(Long id, Integer status) {
         commentMapper.updateStatus(id, status);
+    }
+
+    @Override
+    public void deleteComment(Long id) {
+        commentMapper.deleteById(id);
     }
 }

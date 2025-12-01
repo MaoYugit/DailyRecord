@@ -18,7 +18,7 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Map<String, String> getAllConfigs() {
-        List<Config> configs = configMapper.findAll();
+        List<Config> configs = configMapper.selectAll();
         Map<String, String> map = new HashMap<>();
         for (Config config : configs) {
             map.put(config.getConfigKey(), config.getConfigValue());
@@ -27,11 +27,12 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
-    public void updateConfig(String key, String value) {
-        if (configMapper.findByKey(key) == null) {
+    public void updateConfig(String key, String value, String description) {
+        if (configMapper.selectByKey(key) == null) {
             Config config = new Config();
             config.setConfigKey(key);
             config.setConfigValue(value);
+            config.setDescription(description);
             configMapper.insert(config);
         } else {
             configMapper.updateValue(key, value);

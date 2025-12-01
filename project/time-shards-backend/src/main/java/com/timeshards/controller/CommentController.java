@@ -18,10 +18,12 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @Operation(summary = "获取文章评论", description = "根据文章ID获取评论列表")
+    @Operation(summary = "获取评论列表", description = "根据文章ID或状态获取评论")
     @GetMapping
-    public ApiResponse<List<Comment>> getComments(@RequestParam Long articleId) {
-        return ApiResponse.success(commentService.getCommentsByArticleId(articleId));
+    public ApiResponse<List<Comment>> getComments(
+            @RequestParam(required = false) Long articleId,
+            @RequestParam(required = false) Integer status) {
+        return ApiResponse.success(commentService.getComments(articleId, status));
     }
 
     @Operation(summary = "发表评论", description = "发表新评论")
@@ -35,5 +37,12 @@ public class CommentController {
     public ApiResponse<String> auditComment(@PathVariable Long id, @RequestParam Integer status) {
         commentService.auditComment(id, status);
         return ApiResponse.success("操作成功");
+    }
+
+    @Operation(summary = "删除评论", description = "删除评论")
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteComment(@PathVariable Long id) {
+        commentService.deleteComment(id);
+        return ApiResponse.success("删除成功");
     }
 }

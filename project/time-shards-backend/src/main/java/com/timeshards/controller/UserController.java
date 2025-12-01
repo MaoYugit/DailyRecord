@@ -41,4 +41,11 @@ public class UserController {
         }
         return ApiResponse.success(user);
     }
+
+    @Operation(summary = "更新用户信息", description = "更新用户资料")
+    @PutMapping("/users")
+    public ApiResponse<String> updateUser(@RequestBody User user) {
+        userService.updateUser(user);
+        return ApiResponse.success("更新成功");
+    }
 }
