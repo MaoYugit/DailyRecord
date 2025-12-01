@@ -1,6 +1,21 @@
 <template>
   <div class="app-container">
-    <ParticleBackground />
+    <!-- 背景管理器 -->
+    <BackgroundManager :backgroundType="currentBackground" />
+    
+    <!-- 鼠标特效 -->
+    <MouseEffectManager 
+      :effectType="currentMouseEffect" 
+      :enabled="mouseEffectEnabled" 
+    />
+    
+    <!-- 特效控制面板 -->
+    <EffectControlPanel 
+      @update:mouseEffect="currentMouseEffect = $event"
+      @update:mouseEffectEnabled="mouseEffectEnabled = $event"
+      @update:background="currentBackground = $event"
+    />
+    
     <Navbar />
     <main>
       <router-view />
@@ -9,12 +24,20 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useThemeStore } from './stores/theme';
 import Navbar from './components/layout/Navbar.vue';
-import ParticleBackground from './components/common/ParticleBackground.vue';
+import BackgroundManager from './components/three/BackgroundManager.vue';
+import MouseEffectManager from './components/effects/MouseEffectManager.vue';
+import EffectControlPanel from './components/common/EffectControlPanel.vue';
 
 // Initialize theme
 const themeStore = useThemeStore();
+
+// 特效状态管理
+const currentMouseEffect = ref('flower');
+const mouseEffectEnabled = ref(true);
+const currentBackground = ref('shards');
 </script>
 
 <style scoped>
