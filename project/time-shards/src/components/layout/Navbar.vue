@@ -43,7 +43,7 @@
       <router-link to="/editor" v-if="userStore.isLoggedIn">{{
         t("new")
       }}</router-link>
-      <a href="#">{{ t("about") }}</a>
+      <router-link to="/about">{{ t("about") }}</router-link>
     </div>
 
     <!-- 3. 右侧区域：操作按钮 -->
@@ -142,7 +142,7 @@
         @click="closeMobileMenu"
         >{{ t("new") }}</router-link
       >
-      <a href="#" @click="closeMobileMenu">{{ t("about") }}</a>
+      <router-link to="/about" @click="closeMobileMenu">{{ t("about") }}</router-link>
       <router-link to="/settings" @click="closeMobileMenu">设置</router-link>
 
       <div class="mobile-auth" v-if="userStore.isLoggedIn">

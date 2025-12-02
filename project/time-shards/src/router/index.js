@@ -71,6 +71,11 @@ const routes = [
         component: () => import('../views/Settings.vue')
     },
     {
+        path: '/about',
+        name: 'About',
+        component: () => import('../views/About.vue')
+    },
+    {
         path: '/editor',
         name: 'ArticleCreate',
         component: () => import('../views/ArticleEditor.vue')
