@@ -7,7 +7,7 @@
 
     <div class="categories-grid" v-if="!loading">
       <div 
-        v-for="(category, index)" 
+        v-for="(category, index) in categories" 
         :key="category.id" 
         class="category-card"
         :data-index="index"

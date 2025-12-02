@@ -36,14 +36,14 @@
     <!-- 2. 中间区域：导航链接 (桌面端) -->
     <div class="navbar-links desktop-only">
       <router-link to="/">{{ t("home") }}</router-link>
-      <a href="#">{{ t("shards") }}</a>
+      <router-link to="/categories">分类</router-link>
+      <router-link to="/tags">标签</router-link>
+      <router-link to="/archive">归档</router-link>
       <!-- 知识库 -->
       <router-link to="/editor" v-if="userStore.isLoggedIn">{{
         t("new")
       }}</router-link>
-      <!-- 新增 -->
       <a href="#">{{ t("about") }}</a>
-      <!-- 关于 -->
     </div>
 
     <!-- 3. 右侧区域：操作按钮 -->
@@ -63,9 +63,14 @@
         <span v-else>☀️</span>
       </button>
 
+      <!-- 设置 -->
+      <button @click="router.push('/settings')" class="icon-btn" title="Settings">
+        <span>⚙️</span>
+      </button>
+
       <!-- 用户信息 (桌面端精简显示，移动端在菜单里) -->
       <div v-if="userStore.isLoggedIn" class="user-menu desktop-only">
-        <span>{{ userStore.user?.username }}</span>
+        <router-link to="/profile" class="username-link">{{ userStore.user?.username }}</router-link>
         <button @click="handleLogout" class="logout-btn">Logout</button>
       </div>
       <div v-else class="auth-links desktop-only">
@@ -128,7 +133,9 @@
       </div>
 
       <router-link to="/" @click="closeMobileMenu">{{ t("home") }}</router-link>
-      <a href="#" @click="closeMobileMenu">{{ t("shards") }}</a>
+      <router-link to="/categories" @click="closeMobileMenu">分类</router-link>
+      <router-link to="/tags" @click="closeMobileMenu">标签</router-link>
+      <router-link to="/archive" @click="closeMobileMenu">归档</router-link>
       <router-link
         to="/editor"
         v-if="userStore.isLoggedIn"
@@ -136,9 +143,10 @@
         >{{ t("new") }}</router-link
       >
       <a href="#" @click="closeMobileMenu">{{ t("about") }}</a>
+      <router-link to="/settings" @click="closeMobileMenu">设置</router-link>
 
       <div class="mobile-auth" v-if="userStore.isLoggedIn">
-        <span>{{ userStore.user?.username }}</span>
+        <router-link to="/profile" @click="closeMobileMenu">{{ userStore.user?.username }}</router-link>
         <button @click="handleLogout" class="logout-btn">Logout</button>
       </div>
       <div class="mobile-auth" v-else>
@@ -183,10 +191,11 @@ const closeMobileMenu = () => {
 };
 
 const handleSearch = () => {
-  console.log("Searching for:", searchQuery.value);
-  // 这里可以跳转到搜索结果页
-  // router.push({ path: '/search', query: { q: searchQuery.value } });
-  closeMobileMenu();
+  if (searchQuery.value.trim()) {
+    router.push({ path: '/search', query: { q: searchQuery.value } });
+    closeMobileMenu();
+    searchQuery.value = "";
+  }
 };
 
 const handleLogout = () => {
