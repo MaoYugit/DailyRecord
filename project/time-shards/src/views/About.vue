@@ -35,7 +35,7 @@
     <div v-if="loading" class="loading">加载中...</div>
     
     <!-- 管理员编辑入口 (仅演示，实际应在后台管理) -->
-    <div v-if="userStore.user?.role === 'admin'" class="admin-actions">
+    <div v-if="userStore.user?.role == 1" class="admin-actions">
       <button class="edit-btn" @click="showEditModal = true">编辑内容</button>
     </div>
 
