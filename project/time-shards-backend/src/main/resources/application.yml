@@ -4,7 +4,7 @@ server:
 upload:
   # 确保电脑上存在这个文件夹！
   # 注意：路径末尾一定要带 /
-  path: C:/Users/28745/Desktop/DailyRecord/project/timeshards_uploads/
+  path: C:/Users/28745/Desktop/DailyRecord/project/time-shards-backend/uploads/
 
 spring:
   application:

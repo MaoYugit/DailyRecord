@@ -21,6 +21,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.ext.gfm.tables.TablesExtension;
+import java.util.Arrays;
+
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
@@ -71,6 +77,52 @@ public class ArticleServiceImpl implements ArticleService {
         return article;
     }
 
+    // =========================================================
+    //  Markdown 转 HTML 的辅助方法
+    // =========================================================
+    private String convertMarkdownToHtml(String markdown) {
+        if (markdown == null) return "";
+
+        // 扩展功能：支持表格 (GitHub Flavor)
+        List<org.commonmark.Extension> extensions = Arrays.asList(TablesExtension.create());
+
+        Parser parser = Parser.builder()
+                .extensions(extensions)
+                .build();
+
+        Node document = parser.parse(markdown);
+
+        HtmlRenderer renderer = HtmlRenderer.builder()
+                .extensions(extensions)
+                .build();
+
+        return renderer.render(document);
+    }
+
+    // =========================================================
+    //  Slug 生成辅助方法
+    // =========================================================
+    private String generateSlugFromTitle(String title) {
+        if (title == null) return "";
+
+        // 1. 去除首尾空格，转小写
+        String slug = title.trim().toLowerCase();
+
+        // 2. 正则替换：将非字母、非数字、非汉字(支持中文URL)的字符，替换为 "-"
+        // [^a-z0-9\u4e00-\u9fa5] 表示匹配“除了字母数字汉字以外的字符”
+        slug = slug.replaceAll("[^a-z0-9\\u4e00-\\u9fa5]+", "-");
+
+        // 3. 去除首尾可能多余的 "-" (例如标题是 "-Hello-")
+        slug = slug.replaceAll("^-|-$", "");
+
+        // 4. 如果处理完变成空了 (比如标题全是符号 "!!!"), 还是给一个随机ID兜底
+        if (slug.isEmpty()) {
+            return UUID.randomUUID().toString();
+        }
+
+        return slug;
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createArticle(Article article) {
@@ -104,13 +156,26 @@ public class ArticleServiceImpl implements ArticleService {
 
         // ============================================================
 
-        // 4. 处理 Slug
+        // 4. 处理 Slug (标题 -> Slug)
+        // ============================================================
         if (article.getSlug() == null || article.getSlug().trim().isEmpty()) {
-            article.setSlug(UUID.randomUUID().toString());
+            // 如果前端没填 Slug，则使用标题生成
+            String generatedSlug = generateSlugFromTitle(article.getTitle());
+            article.setSlug(generatedSlug);
         }
-        // 查重 Slug
+
+        // [查重逻辑]
+        // 如果标题生成的 Slug 已经存在（比如发了两次 "Hello World"），
+        // 这里会抛出异常，前端会提示 "文章别名已存在"。
+        // 这是一个合理保护机制，提示用户手动修改 Slug。
         if (articleMapper.selectDetailBySlug(article.getSlug()) != null) {
-            throw new BusinessException("文章别名(Slug)已存在，请更换");
+            // 如果你想自动去重（比如自动变成 hello-world-1），逻辑会变得很复杂，
+            // 建议先保留抛出异常，让用户自己决定怎么改。
+            throw new BusinessException("文章已存在");
+        }
+
+        if (article.getContent() != null) {
+            article.setContentHtml(convertMarkdownToHtml(article.getContent()));
         }
 
         // 5. 插入主体
@@ -134,6 +199,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateArticle(Article article) {
+        if (article.getContent() != null) {
+            article.setContentHtml(convertMarkdownToHtml(article.getContent()));
+        }
         // 1. 更新主体
         articleMapper.updateById(article);
 

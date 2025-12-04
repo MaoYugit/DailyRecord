@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     // 3. 静态资源映射 (把 URL 指向本地硬盘)
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 当访问 /uploads/xxxxx.jpg 时
+        // 当访问 /timeshards_uploads/xxxxx.jpg 时
         registry.addResourceHandler("/uploads/**")
                 // 去本地磁盘的 uploadPath 目录下找
                 // 注意：必须加 "file:" 前缀，告诉 Spring 这是一个文件系统路径

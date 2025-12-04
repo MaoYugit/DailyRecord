@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.timeshards.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.timeshards.entity.Comment">
+        <id column="id" property="id" />
+        <result column="article_id" property="articleId" />
+        <result column="user_id" property="userId" />
+        <result column="parent_id" property="parentId" />
+        <result column="nickname" property="nickname" />
+        <result column="email" property="email" />
+        <result column="website" property="website" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+        <result column="is_admin" property="isAdmin" />
+        <result column="create_time" property="createTime" />
+        <result column="is_deleted" property="isDeleted" />
+
+        <!-- 连表字段 -->
+        <result column="avatar" property="avatar" />
+        <result column="article_title" property="articleTitle" />
+    </resultMap>
+
+    <!-- 融合了你的 Join 逻辑和动态查询 -->
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT
+        c.*,
+        u.avatar AS avatar,
+        a.title AS article_title
+        FROM blog_comment c
+        LEFT JOIN sys_user u ON c.user_id = u.id
+        LEFT JOIN blog_article a ON c.article_id = a.id
+        WHERE c.is_deleted = 0
+        <if test="articleId != null">
+            AND c.article_id = #{articleId}
+        </if>
+        <if test="status != null">
+            AND c.status = #{status}
+        </if>
+        ORDER BY c.create_time ASC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT c.*, u.avatar
+        FROM blog_comment c
+        LEFT JOIN sys_user u ON c.user_id = u.id
+        WHERE c.id = #{id} AND c.is_deleted = 0
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO blog_comment
+        (article_id, user_id, parent_id, nickname, email, website, content, status, is_admin, create_time, is_deleted)
+        VALUES
+        (#{articleId}, #{userId}, #{parentId}, #{nickname}, #{email}, #{website}, #{content}, #{status}, #{isAdmin}, NOW(), 0)
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE blog_comment SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <update id="deleteById">
+        UPDATE blog_comment SET is_deleted = 1 WHERE id = #{id}
+    </update>
+</mapper>

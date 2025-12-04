@@ -6,7 +6,6 @@ import Vditor from "vditor";
 import "vditor/dist/index.css";
 
 // 引入你的 Store 和 API
-import { useArticleStore } from "@/stores/article";
 import { useUserStore } from "@/stores/user";
 import { createArticle, updateArticle, getArticleById } from "@/api/article";
 import { uploadFile } from "@/api/attachment";
@@ -109,7 +108,12 @@ const initVditor = () => {
           // 调用后端 API 上传
           const res = await uploadFile(file, userStore.user.id);
           const name = file.name;
-          const url = res.file_url;
+
+          console.log("上传接口返回结果:", res);
+
+          const baseURL = "http://localhost:8080";
+
+          const url = baseURL + res.fileUrl;
 
           // 插入 Markdown 图片语法
           vditorInstance.value.insertValue(`![${name}](${url})`);
@@ -174,14 +178,24 @@ const initForm = async () => {
   }
 };
 
-// --- 其他操作 ---
+// --- 上传封面图 ---
 const handleCoverUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
+
   try {
     const res = await uploadFile(file, userStore.user.id);
-    form.value.cover_image = res.file_url;
+
+    console.log("封面上传结果:", res);
+
+    // [核心修复]
+    // 2. 必须拼接后端地址，否则前端 <img src="/uploads/..."> 会去 5173 找图片导致 404
+    const fullUrl = "http://localhost:8080" + res.fileUrl;
+
+    // 赋值给表单，这样图片就能立马显示出来了
+    form.value.cover_image = fullUrl;
   } catch (error) {
+    console.error("Cover upload failed:", error);
     alert("Cover upload failed");
   }
 };
@@ -410,13 +424,10 @@ onBeforeUnmount(() => {
 .sidebar {
   width: 300px;
   overflow-y: auto;
-  /* 侧边栏如果也想要一样的效果，可以同步改成 0.2 */
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 1rem;
 }
-
-/* ... 侧边栏内部 input 等样式保持不变 ... */
 .form-group {
   margin-bottom: 1.5rem;
 }

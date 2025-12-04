@@ -36,12 +36,22 @@ public class SecurityConfig {
 
                 // 4. 路径权限控制
                 .authorizeHttpRequests(auth -> auth
+                        // ============================================================
+                        // [新增] 放行图片访问路径
+                        // 必须放行，因为浏览器直接访问图片链接不带 Token
+                        // ============================================================
+                        .requestMatchers("/uploads/**").permitAll()
+
                         // 放行静态资源和文档
                         .requestMatchers("/doc.html", "/webjars/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+
                         // 放行登录注册接口
                         .requestMatchers("/api/login", "/api/users").permitAll()
+
                         // 放行公共 GET 接口 (比如看文章列表不需要登录)
+                        // 注意：这里建议限定为 HttpMethod.GET，防止恶意 POST，不过暂时这样也行
                         .requestMatchers("/api/articles/**", "/api/tags/**", "/api/categories/**", "/api/comments/**").permitAll()
+
                         // 其他接口需要认证
                         .anyRequest().authenticated()
                 );
