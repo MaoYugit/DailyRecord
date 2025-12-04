@@ -1,0 +1,54 @@
+{
+  "entryPagePath": "pages/index/index",
+  "pages": [
+    "pages/index/index",
+    "pages/list/list",
+    "pages/cate/cate",
+    "pages/profile/profile",
+    "pages/cart/cart"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "/assets/tabbar/index.svg",
+        "selectedIconPath": "/assets/tabbar/index-active.svg"
+      },
+      {
+        "text": "分类",
+        "pagePath": "pages/cate/cate",
+        "iconPath": "/assets/tabbar/cate.svg",
+        "selectedIconPath": "/assets/tabbar/cate-active.svg"
+      },
+      {
+        "text": "列表",
+        "pagePath": "pages/list/list",
+        "iconPath": "/assets/tabbar/list.svg",
+        "selectedIconPath": "/assets/tabbar/list-active.svg"
+      },
+      {
+        "text": "购物车",
+        "pagePath": "pages/cart/cart",
+        "iconPath": "/assets/tabbar/cart.svg",
+        "selectedIconPath": "/assets/tabbar/cart-active.svg"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/profile/profile",
+        "iconPath": "/assets/tabbar/profile.svg",
+        "selectedIconPath": "/assets/tabbar/profile-active.svg"
+      }
+  ]
+  },
+  "window": {
+    "navigationBarTitleText": "Normal Strule",
+    "navigationBarBackgroundColor": "#f3514f",
+    "enablePullDownRefresh": true,
+    "backgroundColor": "#efefef",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

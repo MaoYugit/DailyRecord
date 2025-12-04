@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 购物车车身（对称规整造型） -->
+  <path d="M5 8H7L10 5H18L20 7V16C20 16.5523 19.5523 17 19 17H5C4.44772 17 4 16.5523 4 16V9C4 8.44772 4.44772 8 5 8Z" 
+        fill="#F8F8F8" stroke="#868686" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- 车身分隔线（水平居中） -->
+  <path d="M7 11H19" stroke="#868686" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- 车轮（对称分布，尺寸统一） -->
+  <circle cx="7" cy="18" r="1.2" fill="#868686"/>
+  <circle cx="17" cy="18" r="1.2" fill="#868686"/>
+</svg>
