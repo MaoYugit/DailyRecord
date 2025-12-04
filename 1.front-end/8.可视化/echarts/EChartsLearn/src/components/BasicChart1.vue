@@ -35,28 +35,71 @@ const initChart = () => {
 
   // 3. 配置 option：定义图表的数据和样式（这是未来打交道最多的地方）
   const option = {
+    //--------------- 组件层（5）----------------
     // 标题
     title: {
       text: "我的第一个 ECharts 图表",
+      subtext: "BasicChart1.vue 示例",
+      left: "center",
+      textStyle: {
+        color: "#2d7bed",
+      },
+      subtextStyle: {
+        color: "#2dfbed",
+      },
     },
-    // 提示框组件 (鼠标悬停时的浮层)
-    tooltip: {},
+
     // 图例
     legend: {
-      data: ["销量"],
+      data: ["销量", "库存"],
+      orient: "vertical",
     },
+
+    // 绘图网格
+    grid: {
+      left: "100px",
+      right: "100px",
+      top: "100px",
+      bottom: "100px",
+      containLable: true,
+    },
+
+    // 提示框组件 (鼠标悬停时的浮层)
+    tooltip: {
+      trigger: "axis",
+      // formatter:
+    },
+
+    // 工具箱
+    toolbox: {
+      feature: { saveAsImage: {} },
+    },
+
+    //--------------- 坐标系层（2）----------------
     // x 轴
     xAxis: {
       data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
     },
+
     // y 轴
     yAxis: {},
+
+    //--------------- 数据层（1）----------------
     // 系列数据（核心数据区）
     series: [
       {
         name: "销量",
         type: "bar", // 图表类型：柱状图
         data: [5, 20, 36, 10, 10, 20], // 数据
+        label: { show: true },
+        itemStyle: {
+          color: "#e13e30",
+        },
+      },
+      {
+        name: "库存",
+        type: "bar", // 图表类型：柱状图
+        data: [15, 20, 39, 15, 5, 20], // 数据
       },
     ],
   };

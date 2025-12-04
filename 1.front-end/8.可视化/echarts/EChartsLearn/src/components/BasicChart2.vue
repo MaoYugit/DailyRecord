@@ -35,28 +35,73 @@ const initChart = () => {
 
   // 3. 配置 option：定义图表的数据和样式（这是未来打交道最多的地方）
   const option = {
+    //--------------- 组件层（5）----------------
     // 标题
     title: {
       text: "我的第一个 ECharts 图表",
+      subtext: "BasicChart1.vue 示例",
+      left: "center",
+      textStyle: {
+        color: "#2d7bed",
+      },
+      subtextStyle: {
+        color: "#2dfbed",
+      },
     },
-    // 提示框组件 (鼠标悬停时的浮层)
-    tooltip: {},
+
     // 图例
     legend: {
-      data: ["销量"],
+      data: ["邮件营销", "联盟广告"],
+      orient: "vertical",
     },
+
+    // 绘图网格
+    grid: {
+      left: "100px",
+      right: "100px",
+      top: "100px",
+      bottom: "100px",
+      containLable: true,
+    },
+
+    // 提示框组件 (鼠标悬停时的浮层)
+    tooltip: {
+      trigger: "axis",
+      // formatter:
+    },
+
+    // 工具箱
+    toolbox: {
+      feature: { saveAsImage: {} },
+    },
+
+    //--------------- 坐标系层（2）----------------
     // x 轴
     xAxis: {
       data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
     },
+
     // y 轴
     yAxis: {},
+
+    //--------------- 数据层（1）----------------
     // 系列数据（核心数据区）
     series: [
       {
-        name: "销量",
-        type: "bar", // 图表类型：柱状图
-        data: [5, 20, 36, 10, 10, 20], // 数据
+        name: "邮件营销",
+        type: "line",
+        stack: "总量", // 堆叠标记
+        smooth: true, // 平滑
+        areaStyle: {}, // 填充
+        data: [120, 132, 101, 134, 90, 230, 210],
+      },
+      {
+        name: "联盟广告",
+        type: "line",
+        stack: "总量", // 相同的标记，会堆叠在上一条线之上
+        smooth: true,
+        areaStyle: {},
+        data: [220, 182, 191, 234, 290, 330, 310],
       },
     ],
   };

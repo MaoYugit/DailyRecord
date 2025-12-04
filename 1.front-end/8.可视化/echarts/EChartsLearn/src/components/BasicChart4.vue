@@ -35,28 +35,58 @@ const initChart = () => {
 
   // 3. 配置 option：定义图表的数据和样式（这是未来打交道最多的地方）
   const option = {
-    // 标题
-    title: {
-      text: "我的第一个 ECharts 图表",
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "cross" }, // 十字准星指示器，更专业
     },
-    // 提示框组件 (鼠标悬停时的浮层)
-    tooltip: {},
-    // 图例
     legend: {
-      data: ["销量"],
+      data: ["销售额", "毛利率"],
     },
-    // x 轴
-    xAxis: {
-      data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-    },
-    // y 轴
-    yAxis: {},
-    // 系列数据（核心数据区）
+    xAxis: [
+      {
+        type: "category",
+        data: ["1月", "2月", "3月", "4月", "5月", "6月"],
+        axisPointer: { type: "shadow" },
+      },
+    ],
+    // 重点：Y轴变成了一个数组
+    yAxis: [
+      {
+        type: "value",
+        name: "销售额",
+        min: 0,
+        max: 2500,
+        interval: 500,
+        axisLabel: { formatter: "{value} 元" },
+      },
+      {
+        type: "value",
+        name: "毛利率",
+        min: 0,
+        max: 100, // 百分比通常 0-100
+        interval: 20,
+        axisLabel: { formatter: "{value} %" },
+        // 这一行决定了它在右边
+        position: "right",
+        // 去掉右侧的网格线，防止和左侧的网格线重叠显得乱
+        splitLine: { show: false },
+      },
+    ],
     series: [
       {
-        name: "销量",
-        type: "bar", // 图表类型：柱状图
-        data: [5, 20, 36, 10, 10, 20], // 数据
+        name: "销售额",
+        type: "bar",
+        // 默认 yAxisIndex: 0，走左轴
+        data: [200, 490, 700, 232, 256, 767],
+        itemStyle: { color: "#5470C6" },
+      },
+      {
+        name: "毛利率",
+        type: "line",
+        // ⚠️ 关键点：指定走索引为 1 的轴（即右轴）
+        yAxisIndex: 1,
+        data: [20, 22, 33, 45, 63, 12],
+        itemStyle: { color: "#91CC75" },
       },
     ],
   };
