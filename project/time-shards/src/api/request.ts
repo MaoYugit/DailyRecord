@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 
 // 创建 axios 实例
 const service = axios.create({
@@ -10,12 +11,12 @@ const service = axios.create({
 // 请求拦截器 (Request Interceptor)
 // =================================================
 service.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     // 1. 从 localStorage 获取用户信息 (包含 token)
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     // 2. 如果存在 Token，则添加到请求头中
-    if (user.token) {
+    if (user.token && config.headers) {
       // 【关键修改】后端 JwtAuthenticationFilter 要求格式必须为 "Bearer <token>"
       // 注意：Bearer 后面的空格不能少
       config.headers["Authorization"] = `Bearer ${user.token}`;
@@ -31,7 +32,7 @@ service.interceptors.request.use(
 // 响应拦截器 (Response Interceptor)
 // =================================================
 service.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
     const res = response.data;
 
     // 后端 ApiResponse 结构: { code: 200, message: "...", data: ... }
@@ -52,7 +53,7 @@ service.interceptors.response.use(
 
     // 2. 成功: 直接返回 data 数据部分 (这样前端调用时不用再写 .data.data)
     // 如果 data 是 null (例如 void 接口)，也返回 res 以防万一
-    return res.data !== undefined ? res.data : res;
+    return (res.data !== undefined ? res.data : res) as any;
   },
   (error) => {
     // 处理网络层面的错误 (如 404, 500, 网络断开)
