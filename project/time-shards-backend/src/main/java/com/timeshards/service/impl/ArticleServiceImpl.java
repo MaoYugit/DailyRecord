@@ -6,9 +6,12 @@ import com.timeshards.common.BusinessException;
 import com.timeshards.entity.Article;
 import com.timeshards.entity.ArticleMeta;
 import com.timeshards.entity.Tag;
+import com.timeshards.entity.User; // 引入 User 实体
 import com.timeshards.mapper.ArticleMapper;
+import com.timeshards.mapper.UserMapper; // 引入 UserMapper
 import com.timeshards.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder; // 引入 Security上下文
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
+    // --- 新增：注入 UserMapper ---
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public Map<String, Object> getArticleList(Long categoryId, Long tagId, Integer status, Integer isTop, String keyword, int page, int limit) {
         // 构建查询条件
@@ -31,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
         condition.setCategoryId(categoryId);
         condition.setStatus(status);
         condition.setIsTop(isTop);
-        condition.setTitle(keyword); // Mapper XML 中 title 字段被复用为关键词搜索
+        condition.setTitle(keyword);
 
         // 开启分页
         PageHelper.startPage(page, limit);
@@ -67,7 +74,37 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createArticle(Article article) {
-        // 1. 处理 Slug
+        // ============================================================
+        // 核心修复：自动设置当前登录用户的 ID
+        // ============================================================
+
+        // 1. 从 Spring Security 上下文中获取当前登录的用户名
+        String currentUsername = null;
+        try {
+            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        } catch (Exception e) {
+            // 如果上下文为空，说明未经过 Token 认证
+            throw new BusinessException("无法获取登录信息，请重新登录");
+        }
+
+        if (currentUsername == null || "anonymousUser".equals(currentUsername)) {
+            throw new BusinessException("当前用户未登录");
+        }
+
+        // 2. 根据用户名查询数据库获取完整用户对象 (包含 ID)
+        User currentUser = userMapper.selectByUsername(currentUsername);
+
+        if (currentUser == null) {
+            throw new BusinessException("当前登录用户数据异常(未找到用户)");
+        }
+
+        // 3. 将查到的 ID 赋值给文章对象
+        // 这一步解决了 "Column 'user_id' cannot be null" 的报错
+        article.setUserId(currentUser.getId());
+
+        // ============================================================
+
+        // 4. 处理 Slug
         if (article.getSlug() == null || article.getSlug().trim().isEmpty()) {
             article.setSlug(UUID.randomUUID().toString());
         }
@@ -76,16 +113,16 @@ public class ArticleServiceImpl implements ArticleService {
             throw new BusinessException("文章别名(Slug)已存在，请更换");
         }
 
-        // 2. 插入主体
+        // 5. 插入主体
         articleMapper.insert(article);
 
-        // 3. 插入标签关联
+        // 6. 插入标签关联
         if (article.getTags() != null && !article.getTags().isEmpty()) {
             List<Long> tagIds = article.getTags().stream().map(Tag::getId).collect(Collectors.toList());
             articleMapper.insertArticleTags(article.getId(), tagIds);
         }
 
-        // 4. 插入 Meta 关联
+        // 7. 插入 Meta 关联
         if (article.getMetas() != null && !article.getMetas().isEmpty()) {
             for (ArticleMeta meta : article.getMetas()) {
                 meta.setArticleId(article.getId());

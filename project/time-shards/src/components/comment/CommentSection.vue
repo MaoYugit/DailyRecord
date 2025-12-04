@@ -1,93 +1,84 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getComments, createComment } from '@/api/comment';
-import { useUserStore } from '@/stores/user';
-import gsap from 'gsap';
+import { ref, onMounted } from "vue";
+import { getComments, createComment } from "@/api/comment";
+import { useUserStore } from "@/stores/user";
+import gsap from "gsap";
 
 const props = defineProps({
   articleId: {
     type: [String, Number],
-    required: true
-  }
+    required: true,
+  },
 });
 
 const userStore = useUserStore();
 const comments = ref([]);
-const newComment = ref('');
+const newComment = ref("");
 const replyTo = ref(null);
-const replyContent = ref('');
+const replyContent = ref("");
 
 const fetchComments = async () => {
   try {
-    const res = await getComments(props.articleId);
-    // Assuming backend returns flat list or tree. If flat, we might need to build tree.
-    // For now assuming backend returns a list of comments, and we render them.
-    // If backend returns flat list with parent_id, we should process it.
-    // Let's assume the backend returns a flat list and we build the tree here or it returns a tree.
-    // Given the SQL, it has parent_id.
-    // Let's assume flat list for simplicity first, or simple nesting if backend handles it.
-    // I'll implement a simple flat list that renders replies indented if I build the tree, 
-    // but for now let's just render the list and handle "Reply" by setting parent_id.
-    
-    // Let's build a simple tree if it's flat
+    const res = await getComments({ articleId: props.articleId });
+
     if (Array.isArray(res)) {
-        const map = {};
-        const roots = [];
-        res.forEach(c => {
-            c.children = [];
-            map[c.id] = c;
-        });
-        res.forEach(c => {
-            if (c.parent_id && c.parent_id !== 0 && map[c.parent_id]) {
-                map[c.parent_id].children.push(c);
-            } else {
-                roots.push(c);
-            }
-        });
-        comments.value = roots;
+      const map = {};
+      const roots = [];
+      res.forEach((c) => {
+        c.children = [];
+        map[c.id] = c;
+      });
+      res.forEach((c) => {
+        if (c.parent_id && c.parent_id !== 0 && map[c.parent_id]) {
+          map[c.parent_id].children.push(c);
+        } else {
+          roots.push(c);
+        }
+      });
+      comments.value = roots;
     } else {
-        comments.value = [];
+      comments.value = [];
     }
   } catch (error) {
-    console.error('Failed to load comments:', error);
+    console.error("Failed to load comments:", error);
   }
 };
 
 const submitComment = async (parentId = 0) => {
   if (!userStore.isLoggedIn) {
-    alert('Please login to comment');
+    alert("Please login to comment");
     return;
   }
-  
+
   const content = parentId === 0 ? newComment.value : replyContent.value;
   if (!content.trim()) return;
 
   try {
     await createComment({
-      article_id: props.articleId,
+      articleId: props.articleId,
       content: content,
-      parent_id: parentId
+      parentId: parentId,
     });
-    
+
     // Clear inputs
-    newComment.value = '';
-    replyContent.value = '';
+    newComment.value = "";
+    replyContent.value = "";
     replyTo.value = null;
-    
+
     // Reload comments
     await fetchComments();
   } catch (error) {
-    console.error('Failed to post comment:', error);
-    alert('Failed to post comment');
+    console.error("Failed to post comment:", error);
+    alert("Failed to post comment");
   }
 };
 
 const setReply = (comment) => {
-    if (replyTo.value === comment.id) {
-        replyTo.value = null;
-    } else {
-        replyTo.value = comment.id;
-    }
+  if (replyTo.value === comment.id) {
+    replyTo.value = null;
+  } else {
+    replyTo.value = comment.id;
+  }
 };
 
 onMounted(() => {
@@ -98,54 +89,76 @@ onMounted(() => {
 <template>
   <div class="comment-section">
     <h3>Comments</h3>
-    
+
     <div class="comment-form">
-      <textarea 
-        v-model="newComment" 
+      <textarea
+        v-model="newComment"
         placeholder="Leave a shard of thought..."
         :disabled="!userStore.isLoggedIn"
       ></textarea>
       <div class="form-actions">
-        <button @click="submitComment(0)" :disabled="!userStore.isLoggedIn">Post Comment</button>
-        <span v-if="!userStore.isLoggedIn" class="login-hint">Login to comment</span>
+        <button @click="submitComment(0)" :disabled="!userStore.isLoggedIn">
+          Post Comment
+        </button>
+        <span v-if="!userStore.isLoggedIn" class="login-hint"
+          >Login to comment</span
+        >
       </div>
     </div>
 
     <div class="comments-list">
       <div v-for="comment in comments" :key="comment.id" class="comment-item">
         <div class="comment-avatar">
-            <!-- Placeholder avatar -->
-            <div class="avatar-placeholder">{{ comment.nickname ? comment.nickname[0].toUpperCase() : 'U' }}</div>
+          <!-- Placeholder avatar -->
+          <div class="avatar-placeholder">
+            {{ comment.nickname ? comment.nickname[0].toUpperCase() : "U" }}
+          </div>
         </div>
         <div class="comment-content">
-            <div class="comment-header">
-                <span class="nickname">{{ comment.nickname }}</span>
-                <span class="date">{{ new Date(comment.create_time).toLocaleDateString() }}</span>
-            </div>
-            <p>{{ comment.content }}</p>
-            <button class="reply-btn" @click="setReply(comment)">Reply</button>
-            
-            <!-- Reply Form -->
-            <div v-if="replyTo === comment.id" class="reply-form">
-                <textarea v-model="replyContent" placeholder="Write a reply..."></textarea>
-                <button @click="submitComment(comment.id)">Submit Reply</button>
-            </div>
+          <div class="comment-header">
+            <span class="nickname">{{ comment.nickname }}</span>
+            <span class="date">{{
+              new Date(comment.create_time).toLocaleDateString()
+            }}</span>
+          </div>
+          <p>{{ comment.content }}</p>
+          <button class="reply-btn" @click="setReply(comment)">Reply</button>
 
-            <!-- Children -->
-            <div v-if="comment.children && comment.children.length > 0" class="replies">
-                <div v-for="child in comment.children" :key="child.id" class="comment-item child-comment">
-                    <div class="comment-avatar small">
-                        <div class="avatar-placeholder">{{ child.nickname ? child.nickname[0].toUpperCase() : 'U' }}</div>
-                    </div>
-                    <div class="comment-content">
-                        <div class="comment-header">
-                            <span class="nickname">{{ child.nickname }}</span>
-                            <span class="date">{{ new Date(child.create_time).toLocaleDateString() }}</span>
-                        </div>
-                        <p>{{ child.content }}</p>
-                    </div>
+          <!-- Reply Form -->
+          <div v-if="replyTo === comment.id" class="reply-form">
+            <textarea
+              v-model="replyContent"
+              placeholder="Write a reply..."
+            ></textarea>
+            <button @click="submitComment(comment.id)">Submit Reply</button>
+          </div>
+
+          <!-- Children -->
+          <div
+            v-if="comment.children && comment.children.length > 0"
+            class="replies"
+          >
+            <div
+              v-for="child in comment.children"
+              :key="child.id"
+              class="comment-item child-comment"
+            >
+              <div class="comment-avatar small">
+                <div class="avatar-placeholder">
+                  {{ child.nickname ? child.nickname[0].toUpperCase() : "U" }}
                 </div>
+              </div>
+              <div class="comment-content">
+                <div class="comment-header">
+                  <span class="nickname">{{ child.nickname }}</span>
+                  <span class="date">{{
+                    new Date(child.create_time).toLocaleDateString()
+                  }}</span>
+                </div>
+                <p>{{ child.content }}</p>
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -159,7 +172,8 @@ onMounted(() => {
   padding-top: 2rem;
 }
 
-.comment-form textarea, .reply-form textarea {
+.comment-form textarea,
+.reply-form textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border);
@@ -258,12 +272,12 @@ button:disabled {
 }
 
 .child-comment {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .avatar-placeholder.small {
-    width: 30px;
-    height: 30px;
-    font-size: 0.8rem;
+  width: 30px;
+  height: 30px;
+  font-size: 0.8rem;
 }
 </style>
