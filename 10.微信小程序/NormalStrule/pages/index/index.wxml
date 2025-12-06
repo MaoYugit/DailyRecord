@@ -1,7 +1,30 @@
-<!--index.wxml-->
-<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    Weixin
-  </view>
-</scroll-view>
+<!-- 轮播图 -->
+<view class="swiper">
+  <swiper 
+    autoplay="true" 
+    interval="1000" 
+    indicator-dots="true" 
+    indicator-color="#fff" 
+    indicator-active-color="#60e0ff"
+    circular="true"
+  >
+    <swiper-item>
+      
+    </swiper-item>
+    <swiper-item>
+      
+    </swiper-item>
+    <swiper-item>
+      
+    </swiper-item>
+  </swiper>
+</view>
+
+<!-- 信息 -->
+<view class="info"></view>
+
+<!-- 导航 -->
+<view class="good-nav"></view>
+
+<!-- 热销商品 -->
+<view class="good-hot"></view>

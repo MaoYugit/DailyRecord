@@ -8,42 +8,48 @@
     "pages/cart/cart"
   ],
   "tabBar": {
+    "selectedColor": "#f3514f",
+    "color": "#666",
+    "backgroundColor": "#60e0ff",
+    "borderStyle": "black",
+    "position": "bottom",
     "list": [
       {
         "text": "首页",
         "pagePath": "pages/index/index",
-        "iconPath": "/assets/tabbar/index.svg",
-        "selectedIconPath": "/assets/tabbar/index-active.svg"
+        "iconPath": "/assets/tabbar/腊肠犬.png",
+        "selectedIconPath": "/assets/tabbar/白猫.png"
       },
       {
         "text": "分类",
         "pagePath": "pages/cate/cate",
-        "iconPath": "/assets/tabbar/cate.svg",
-        "selectedIconPath": "/assets/tabbar/cate-active.svg"
+        "iconPath": "/assets/tabbar/柴犬.png",
+        "selectedIconPath": "/assets/tabbar/白猫.png"
       },
       {
         "text": "列表",
         "pagePath": "pages/list/list",
-        "iconPath": "/assets/tabbar/list.svg",
-        "selectedIconPath": "/assets/tabbar/list-active.svg"
+        "iconPath": "/assets/tabbar/哈士奇.png",
+        "selectedIconPath": "/assets/tabbar/可达鸭.png"
       },
       {
         "text": "购物车",
         "pagePath": "pages/cart/cart",
-        "iconPath": "/assets/tabbar/cart.svg",
-        "selectedIconPath": "/assets/tabbar/cart-active.svg"
+        "iconPath": "/assets/tabbar/腊肠犬.png",
+        "selectedIconPath": "/assets/tabbar/柯基.png"
       },
       {
         "text": "我的",
         "pagePath": "pages/profile/profile",
-        "iconPath": "/assets/tabbar/profile.svg",
-        "selectedIconPath": "/assets/tabbar/profile-active.svg"
+        "iconPath": "/assets/tabbar/可达鸭.png",
+        "selectedIconPath": "/assets/tabbar/柴犬.png"
       }
   ]
   },
   "window": {
     "navigationBarTitleText": "Normal Strule",
-    "navigationBarBackgroundColor": "#f3514f",
+    "navigationBarBackgroundColor": "#60e0ff",
+    "navigationBarTextStyle":"black",
     "enablePullDownRefresh": true,
     "backgroundColor": "#efefef",
     "backgroundTextStyle": "light"
