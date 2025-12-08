@@ -2,26 +2,37 @@
 <view class="swiper">
   <swiper 
     autoplay="true" 
-    interval="1000" 
+    interval="1500" 
     indicator-dots="true" 
     indicator-color="#fff" 
     indicator-active-color="#60e0ff"
     circular="true"
   >
     <swiper-item>
-      
+      <image src="../../assets/banner/banner-1.jpg" mode=""/>
     </swiper-item>
+
     <swiper-item>
-      
+      <image src="../../assets/banner/banner-2.jpg" mode=""/>
     </swiper-item>
+
     <swiper-item>
-      
+      <image src="../../assets/banner/banner-3.jpg" mode=""/>
+    </swiper-item>
+
+    <swiper-item>
+      <image src="../../assets/banner/banner-4.jpg" mode=""/>
     </swiper-item>
   </swiper>
 </view>
 
 <!-- 信息 -->
-<view class="info"></view>
+<view class="info">
+<text user-select="true" space="ensp">同城配送</text>
+<text user-select="true" space="ensp">尚行业龙头</text>
+<text user-select="true" space="ensp">半小时送达</text>
+<text user-select="true" space="ensp">百分百好评</text>
+</view>
 
 <!-- 导航 -->
 <view class="good-nav"></view>
