@@ -1,0 +1,52 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src", // 告诉 TS 源码在 src
+    "outDir": "./dist", // 告诉 TS 编译后的 JS 放在 dist
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "nodenext", // 生成符合 ES Module 规范的代码
+    //  CommonJS：老派 Node.js 风格（使用 require 和 module.exports）。
+    //  ESNext：现代标准风格（使用 import 和 export）。
+    //  NodeNext / Node16 (推荐)：这是 2025 年的最佳实践。它非常聪明，它会根据你 package.json 里的 "type" 字段自动决定编译成 CJS 还是 ESM。
+    "target": "esnext", // 目标运行环境支持的最新 JS 特性
+    "types": [],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true, // 访问对象属性时，TS 会假设属性可能不存在，从而避免潜在的运行时错误
+    "exactOptionalPropertyTypes": true,
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    // verbatimModuleSyntax
+    // 以前： TS 会自作聪明地帮你删掉它认为没用的 import。
+    // 现在： 开启这个选项后，TS 变得诚实了。你写的 import 除非是显式标注了 import type，否则它会原封不动地保留。这解决了混合使用 CJS 和 ESM 时很多奇怪的 Bug。
+    "isolatedModules": true, // 每个文件都被当作单独的模块来编译，确保没有文件间的依赖
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true // 跳过库文件的类型检查，加快编译速度
+  },
+  "include": ["src/**/*"], // 告诉 TS 只要检查 src 目录下的文件
+  "exclude": ["node_modules"] // 排除掉第三方库文件夹
+}
