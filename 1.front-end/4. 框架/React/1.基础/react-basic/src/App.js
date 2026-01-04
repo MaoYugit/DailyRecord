@@ -1,6 +1,9 @@
 // src/App.js
 // 根组件 App
 // App -> index.js -> public/index.html(root)
+
+import { useState } from "react";
+
 const count = 100;
 function getName() {
   return "React";
@@ -24,7 +27,20 @@ function getArticleType(type) {
   }
 }
 
+function Button() {
+  return <button>按钮</button>;
+}
 function App() {
+  function handleClick(e) {
+    console.log("按钮被点击了", e);
+  }
+  function handleClick2(name) {
+    console.log("按钮被点击了", name);
+  }
+  const [count, setCount] = useState(0);
+  const handleClick3 = () => {
+    setCount(count + 1);
+  };
   return (
     <div className="App">
       <h1>Hello, World!</h1>
@@ -41,6 +57,10 @@ function App() {
       {isLoggedIn && <span>登录成功</span>}
       {isLoggedIn ? <span>已登录</span> : <span>未登录</span>}
       {getArticleType(articleType)}
+      <button onClick={handleClick}>点击我</button>
+      <button onClick={() => handleClick2("jack")}>点击我</button>
+      <Button />
+      <button onClick={handleClick3}>{count}</button>
     </div>
   );
 }
