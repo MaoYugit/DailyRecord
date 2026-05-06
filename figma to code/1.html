@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        gap: 50px;
+        padding: 50px;
+        flex-wrap: wrap;
+      }
+
+      .box {
+        width: 50px;
+        height: 50px;
+        background-color: #3498db;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        transition: transform 1s 1s;
+        border: 2px dashed #333;
+      }
+
+      .box-translate:hover {
+        transform: translate(100%, 0px);
+      }
+
+      .box-scale:hover {
+        transform: scale(1.2);
+      }
+
+      .box-rotate:hover {
+        transform-origin: left top;
+        transform: rotate(45deg);
+      }
+
+      .box-skew:hover {
+        transform: skew(0deg, 20deg);
+      }
+
+      .box-multi:hover {
+        /* 先平移，后缩放，再旋转 */
+        transform: translate(20px, 20px) scale(0.8) rotate(10deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box box-translate">平移</div>
+      <div class="box box-scale">缩放</div>
+      <div class="box box-rotate">旋转</div>
+      <div class="box box-skew">倾斜</div>
+      <div class="box box-multi">组合</div>
+    </div>
+  </body>
+</html>
