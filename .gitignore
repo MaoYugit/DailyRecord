@@ -1,0 +1,54 @@
+# Build artifacts
+*.jar
+*.war
+target/
+build/
+dist/
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar
+
+# Design/media files (learning materials)
+*.psd
+*.pxcp
+*.ai
+*.sketch
+
+# OS files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+jspm_packages/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Logs
+*.log
+
+# Temp
+tmp/
+temp/
